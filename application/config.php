@@ -138,10 +138,17 @@ return [
         'taglib_begin' => '{',
         // 标签库标签结束标记
         'taglib_end'   => '}',
+        //开启layout_on
+        'layout_on'     =>  true,
+        //目录位置
+        'layout_name'   =>  'layout/admin',
+        //布局替换变量
+        'layout_item'   =>  '{__CONTENT__}'
     ],
-
     // 视图输出字符串内容替换
-    'view_replace_str'       => [],
+    'view_replace_str'       => [
+        '__static__' => '/public/static/'
+    ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
     'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
