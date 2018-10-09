@@ -1,18 +1,24 @@
 <div class="layui-btn-group demoTable">
     <div class="layui-inline">
-        <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
     </div>
     <button class="layui-btn" data-type="reload">搜索</button>
-    <a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>
+    <a href="{:url('rule/add')}?productid={$productid}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加规则</button></a>
 </div>
 
-<table class="layui-table" lay-data="{width: 685, height:667, url:'{:url('product/getProduct')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1590, height:680, url:'{:url('rule/getRule')}?productid={$productid}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
     <tr>
-        <th lay-data="{field:'id', width:180, sort: true, fixed: true}">ID</th>
-        <th lay-data="{field:'product_name', width:180}">产品名称</th>
-        <th lay-data="{field:'product_type', width:80,templet: '#titleTpl'}">类型</th>
-        <th lay-data="{fixed: 'right', width:240, align:'center', toolbar: '#barDemo'}"></th>
+        <th lay-data="{field:'rule_name', width:180}">规则名称</th>
+        <th lay-data="{field:'product_type', width:70,templet: '#titleTpl'}">类型</th>
+        <th lay-data="{field:'rule_status', width:70,templet: '#rule_status'}">状态</th>
+        <th lay-data="{field:'rule_host', width:180}">域名</th>
+        <th lay-data="{field:'rule_exhost', width:180}">HOST排除</th>
+        <th lay-data="{field:'rule_exuri', width:180}">URL排除</th>
+        <th lay-data="{field:'rule_exua', width:180}">UA排除</th>
+        <th lay-data="{field:'rule_precise_exua', width:180}">UA精准排除</th>
+        <th lay-data="{field:'rule_excookie', width:180}">COOkIE排除</th>
+        <th lay-data="{fixed: 'right', width:240, align:'center', toolbar: '#barDemo'}">操作项</th>
     </tr>
     </thead>
 </table>
@@ -20,15 +26,22 @@
 
 <script type="text/html" id="titleTpl">
     {{#  if(d.product_type ==0){ }}
-         通匹
+    通匹
     {{#  } else if(d.product_type ==1){ }}
-         基本
+    基本
     {{#  } }}
 </script>
 
+<script type="text/html" id="rule_status">
+    {{#  if(d.rule_status ==0){ }}
+    关闭
+    {{#  } else if(d.rule_status ==1){ }}
+    开启
+    {{#  } }}
+</script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">子规则</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -46,14 +59,14 @@
         table.on('tool(demo)', function(obj){
             var data = obj.data;
             if(obj.event === 'detail'){
-                window.location.href="{:url('Rule/index')}?id="+data.id;
+                window.location.href="{:url('childrule/index')}?id="+data.id;
             } else if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     layui.use('jquery',function(){
                         var $=layui.$;
                         $.ajax({
                             type: 'post',
-                            url: "{:url('product/delAction')}", // ajax请求路径
+                            url: "{:url('rule/delAction')}", // ajax请求路径
                             data: obj.data,
                             success: function(data){
                                 if(data.code==0){
@@ -68,7 +81,7 @@
                     });
                 });
             } else if(obj.event === 'edit'){
-                window.location.href="{:url('product/edit')}?id="+data.id;
+                window.location.href="{:url('rule/edit')}?id="+data.id;
             }
         });
 

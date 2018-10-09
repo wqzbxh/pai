@@ -4,14 +4,15 @@ namespace app\admin\controller;
 use think\Controller;
 
 
-class Product extends Controller
+class Rule extends Controller
 {
     /**
      * @return mixed
-     * 渲染策略模式主题下产品管理首页
+     * 渲染规则页面
      */
     public function index()
     {
+        $this->assign('productid',$_GET['id']);
         return $this->fetch('index');
     }
 
@@ -20,9 +21,14 @@ class Product extends Controller
      * @param page 页码
      * @param limit 限制条数
      */
-    public function getProduct()
+    public function getRule()
     {
-        $productDataModel = new \app\common\model\Productdata();
+        $ruleDataModel = new \app\common\model\Ruledata();
+        if(isset($_GET["productid"])){
+            $productid = $_GET["productid"];
+        }else{
+            return false;
+        }
         if(isset($_GET["page"])){
             $offset = ($_GET["page"] -1) * 15;
         }else{
@@ -34,7 +40,7 @@ class Product extends Controller
             $limit = 15;
         }
 
-        $result = $productDataModel->getProductList(9,9,'',0,$offset,$limit);
+        $result = $ruleDataModel->getRuleList('',$offset,$limit,$productid);
         if($result['code'] == 0) {
             return $result;
         }
@@ -46,31 +52,28 @@ class Product extends Controller
      */
     public function add()
     {
+        $this->assign('productid',$_GET['productid']);
         return $this->fetch('add');
     }
 
 
     /**
      * 添加产品动作
-     * @param product_name 产品名称
-     * @param product_type 产品类型：0为通匹，1为基本，默认值为1
-     * @param match_type 通匹类型：0为APK，1为EXE，默认值为0
+     * @param $_POST['data'] 添加的参数 array
      */
     public function addAction()
     {
         $data = array();
-        $data['product_name'] = isset($_POST['product_name']) ? $_POST['product_name'] : '';
-        $data['product_type'] = isset($_POST['product_type']) ? $_POST['product_type'] : 1;
-        $data['match_type'] = isset($_POST['match_type']) ? $_POST['match_type'] : 0;
-        $data['createtime'] = time();
-        if(!empty($data['product_name'])){
-            $productDataModel = new \app\common\model\Productdata();
-            $result = $productDataModel->addProduct($data);
+        if(!empty($_POST['data'])){
+            $data = $_POST['data'];
+            $data['createtime'] = time();
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->addRule($data);
         }else{
             $errorModel = new \app\common\model\Error();
             $result = array(
-                'code' => 20002,
-                'msg' => $errorModel::ERRORCODE[20002],
+                'code' => 30001,
+                'msg' => $errorModel::ERRORCODE[30001],
                 'data' => array()
             );
         }
@@ -86,9 +89,9 @@ class Product extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_GET['id'])){
-            $productDataModel = new \app\common\model\Productdata();
-            $result = $productDataModel->getProductOne($_GET['id']);
-            $this->assign('product',$result['data'][0]);
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->getRuleOne($_GET['id']);
+            $this->assign('rule',$result['data'][0]);
             return $this->fetch('edit');
         }else{
             $result = array(
@@ -107,8 +110,8 @@ class Product extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['data'])){
-            $productDataModel = new \app\common\model\Productdata();
-            $result = $productDataModel->updateProduct($_POST['data']);
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->updateRule($_POST['data']);
         }else{
             $result = array(
                 'code' => 20005,
@@ -129,8 +132,8 @@ class Product extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['id'])){
-            $productDataModel = new \app\common\model\Productdata();
-            $result = $productDataModel->delProduct($_POST['id']);
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->delRule($_POST['id']);
         }else{
             $result = array(
                 'code' => 20005,
