@@ -53,4 +53,57 @@ class Childrule extends Controller
         }
         return $result;
     }
+
+
+    /**
+     * 获取子规则列表
+     * @param page 页码
+     * @param limit 限制几个
+     * @param ruleid 父级id
+     */
+
+    public function getChildrule()
+    {
+        $childruleDataModel = new \app\common\model\Childruledata();
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * 15;
+        }else{
+            $offset = 0;
+        }
+        if(isset($_GET["limit"])){
+            $limit = $_GET["limit"];
+        }else{
+            $limit = 15;
+        }
+        if(isset($_GET["ruleid"])){
+            $childruleid = $_GET["ruleid"];
+        }
+        $result = $childruleDataModel->getChildruleRuleList('',$offset,$limit,$childruleid);
+        if($result['code'] == 0) {
+            return $result;
+        }
+    }
+
+
+    /**
+     * 修改产品操作
+     * @param id 产品的id int
+     */
+    public function edit()
+    {
+        $errorModel = new \app\common\model\Error();
+        if(!empty($_GET['id'])){
+            $childruleDataModel = new \app\common\model\Childruledata();
+            $result = $childruleDataModel->getChildruleOne($_GET['id']);
+            $this->assign('childrule',$result['data'][0]);
+            return $this->fetch('edit');
+        }else{
+            $result = array(
+                'code' => 20003,
+                'msg' => $errorModel::ERRORCODE[20003],
+                'data' => array()
+            );
+        }
+    }
+
 }

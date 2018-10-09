@@ -26,24 +26,19 @@ class Childruledata extends Model
      */
 
 
-    public function getRuleList($rule_name = '',$offset,$limit,$productid)
+    public function getChildruleRuleList($childrule_name = '',$offset,$limit,$childruleid)
     {
         $criteria = array();
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
-        $criteria['r.is_del'] = 0;
-        $criteria['productid'] = $productid;
-        $result = self::alias('r')
-                    ->join('productdata p','r.productid = p.id',"LEFT" )
-                    ->where($criteria)
-                    ->field(self::jionField)
+        $criteria['is_del'] = 0;
+        $criteria['ruleid'] = $childruleid;
+        $result = self::where($criteria)
                     ->limit($offset,$limit)
                     ->select()
                     ->toArray();
 
-        $count = self::alias('r')
-                    ->join('productdata p','r.productid = p.id',"LEFT" )
-                    ->where($criteria)
+        $count = self::where($criteria)
                     ->count();
 
         if(!empty($result)){
@@ -102,7 +97,7 @@ class Childruledata extends Model
      * 获取单个产品信息
      * @param id 产品的自增ID
      */
-    public function getRuleOne($id)
+    public function getChildruleOne($id)
     {
         $errorModel = new \app\common\model\Error();
         $returnArray = array();

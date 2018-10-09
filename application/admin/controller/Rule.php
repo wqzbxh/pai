@@ -23,7 +23,7 @@ class Rule extends Controller
      */
     public function getRule()
     {
-        $ruleDataModel = new \app\common\model\Ruledata();
+        $childruleDataModel = new \app\common\model\Ruledata();
         if(isset($_GET["productid"])){
             $productid = $_GET["productid"];
         }else{
@@ -40,7 +40,7 @@ class Rule extends Controller
             $limit = 15;
         }
 
-        $result = $ruleDataModel->getRuleList('',$offset,$limit,$productid);
+        $result = $childruleDataModel->getRuleList('',$offset,$limit,$productid);
         if($result['code'] == 0) {
             return $result;
         }
@@ -67,8 +67,8 @@ class Rule extends Controller
         if(!empty($_POST['data'])){
             $data = $_POST['data'];
             $data['createtime'] = time();
-            $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->addRule($data);
+            $childruleDataModel = new \app\common\model\Ruledata();
+            $result = $childruleDataModel->addRule($data);
         }else{
             $errorModel = new \app\common\model\Error();
             $result = array(
@@ -89,8 +89,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_GET['id'])){
-            $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->getRuleOne($_GET['id']);
+            $childruleDataModel = new \app\common\model\Ruledata();
+            $result = $childruleDataModel->getRuleOne($_GET['id']);
             $this->assign('rule',$result['data'][0]);
             return $this->fetch('edit');
         }else{
@@ -110,8 +110,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['data'])){
-            $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->updateRule($_POST['data']);
+            $childruleDataModel = new \app\common\model\Ruledata();
+            $result = $childruleDataModel->updateRule($_POST['data']);
         }else{
             $result = array(
                 'code' => 20005,
@@ -132,8 +132,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['id'])){
-            $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->delRule($_POST['id']);
+            $childruleDataModel = new \app\common\model\Ruledata();
+            $result = $childruleDataModel->delRule($_POST['id']);
         }else{
             $result = array(
                 'code' => 20005,

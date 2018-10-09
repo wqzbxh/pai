@@ -307,7 +307,7 @@ abstract class Builder
     }
 
     // where子单元分析
-    protected function parseWhereItem($field, $val, $rule = '', $options = [], $binds = [], $bindName = null)
+    protected function parseWhereItem($field, $val, $childrule = '', $options = [], $binds = [], $bindName = null)
     {
         // 字段分析
         $key = $field ? $this->parseKey($field, $options, true) : '';
@@ -323,15 +323,15 @@ abstract class Builder
             $item = array_pop($val);
             // 传入 or 或者 and
             if (is_string($item) && in_array($item, ['AND', 'and', 'OR', 'or'])) {
-                $rule = $item;
+                $childrule = $item;
             } else {
                 array_push($val, $item);
             }
             foreach ($val as $k => $item) {
                 $bindName = 'where_' . str_replace('.', '_', $field) . '_' . $k;
-                $str[]    = $this->parseWhereItem($field, $item, $rule, $options, $binds, $bindName);
+                $str[]    = $this->parseWhereItem($field, $item, $childrule, $options, $binds, $bindName);
             }
-            return '( ' . implode(' ' . $rule . ' ', $str) . ' )';
+            return '( ' . implode(' ' . $childrule . ' ', $str) . ' )';
         }
 
         // 检测操作符
@@ -343,7 +343,7 @@ abstract class Builder
                 throw new Exception('where express error:' . $exp);
             }
         }
-        $bindName = $bindName ?: 'where_' . $rule . '_' . str_replace(['.', '-'], '_', $field);
+        $bindName = $bindName ?: 'where_' . $childrule . '_' . str_replace(['.', '-'], '_', $field);
         if (preg_match('/\W/', $bindName)) {
             // 处理带非单词字符的字段名
             $bindName = md5($bindName);

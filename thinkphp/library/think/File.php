@@ -33,7 +33,7 @@ class File extends SplFileObject
     /**
      * @var string 文件上传命名规则
      */
-    protected $rule = 'date';
+    protected $childrule = 'date';
 
     /**
      * @var array 文件上传验证规则
@@ -174,12 +174,12 @@ class File extends SplFileObject
     /**
      * 设置文件的命名规则
      * @access public
-     * @param  string $rule 文件命名规则
+     * @param  string $childrule 文件命名规则
      * @return $this
      */
-    public function rule($rule)
+    public function rule($childrule)
     {
-        $this->rule = $rule;
+        $this->rule = $childrule;
 
         return $this;
     }
@@ -187,12 +187,12 @@ class File extends SplFileObject
     /**
      * 设置上传文件的验证规则
      * @access public
-     * @param  array $rule 验证规则
+     * @param  array $childrule 验证规则
      * @return $this
      */
-    public function validate(array $rule = [])
+    public function validate(array $childrule = [])
     {
-        $this->validate = $rule;
+        $this->validate = $childrule;
 
         return $this;
     }
@@ -210,27 +210,27 @@ class File extends SplFileObject
     /**
      * 检测上传文件
      * @access public
-     * @param  array $rule 验证规则
+     * @param  array $childrule 验证规则
      * @return bool
      */
-    public function check($rule = [])
+    public function check($childrule = [])
     {
-        $rule = $rule ?: $this->validate;
+        $childrule = $childrule ?: $this->validate;
 
         /* 检查文件大小 */
-        if (isset($rule['size']) && !$this->checkSize($rule['size'])) {
+        if (isset($childrule['size']) && !$this->checkSize($childrule['size'])) {
             $this->error = 'filesize not match';
             return false;
         }
 
         /* 检查文件 Mime 类型 */
-        if (isset($rule['type']) && !$this->checkMime($rule['type'])) {
+        if (isset($childrule['type']) && !$this->checkMime($childrule['type'])) {
             $this->error = 'mimetype to upload is not allowed';
             return false;
         }
 
         /* 检查文件后缀 */
-        if (isset($rule['ext']) && !$this->checkExt($rule['ext'])) {
+        if (isset($childrule['ext']) && !$this->checkExt($childrule['ext'])) {
             $this->error = 'extensions to upload is not allowed';
             return false;
         }

@@ -24,7 +24,7 @@ class Ruledata extends Model
      */
 
 
-    public function getRuleList($rule_name = '',$offset,$limit,$productid)
+    public function getRuleList($childrule_name = '',$offset,$limit,$productid)
     {
         $criteria = array();
         $returnArray = array();
