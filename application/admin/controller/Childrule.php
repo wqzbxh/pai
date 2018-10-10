@@ -106,4 +106,45 @@ class Childrule extends Controller
         }
     }
 
+
+    /**
+     * 修改操作
+     * @param data 修改的数据集合 array
+     */
+    public function editAction()
+    {
+        $errorModel = new \app\common\model\Error();
+        if(!empty($_POST['data'])){
+            $childruleDataModel = new \app\common\model\Childruledata();
+            $result = $childruleDataModel->updateRule($_POST['data']);
+        }else{
+            $result = array(
+                'code' => 20005,
+                'msg' => $errorModel::ERRORCODE[20005],
+                'data' => array()
+            );
+        }
+        return $result;
+    }
+
+    /**
+     * 删除操作
+     * @param id 规则的id int
+     *
+     */
+    public function delAction()
+    {
+        $errorModel = new \app\common\model\Error();
+        if(!empty($_POST['id'])){
+            $childruleDataModel = new \app\common\model\Childruledata();
+            $result = $childruleDataModel->delRule($_POST['id']);
+        }else{
+            $result = array(
+                'code' => 20005,
+                'msg' => $errorModel::ERRORCODE[20005],
+                'data' => array()
+            );
+        }
+        return $result;
+    }
 }

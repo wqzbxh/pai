@@ -122,25 +122,32 @@
     </div>
 
 
-    <div class="layui-form-item tpisshow">
+    <div class="layui-form-item urlisshow">
         <label class="layui-form-label">URl 为</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_uri]" lay-verify="title" autocomplete="off" placeholder="请输入URl" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_uri]" id="urlid"  autocomplete="off" placeholder="请输入URl" class="layui-input inputWidth">
         </div>
     </div>
 
+
+    <div class="layui-form-item tpisshow">
+        <label class="layui-form-label">URl 开始</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[childrule_uri_start]"  autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
+        </div>
+    </div>
 
     <div class="layui-form-item tpisshow">
         <label class="layui-form-label">URl 包含</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_inuri]" lay-verify="title" autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_inuri]"  autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
         </div>
     </div>
 
-    <div class="layui-form-item tpisshow">
+    <div class="layui-form-item">
         <label class="layui-form-label">URl 排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_exuri]" lay-verify="title" autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_exuri]"  autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
         </div>
     </div>
 
@@ -193,6 +200,13 @@
             // layer.alert(JSON.stringify(data.field), {
             //     title: '最终的提交信息'
             // })
+            var childruleSate =  $("input[name='data[childrule_match_type]']:checked").val();
+            if(childruleSate == 0){
+                $('.tpisshow').find("input").val("");
+
+            }else{
+                $('.urlisshow').find("input").val("");
+            }
             layui.use('jquery',function(){
                 var $=layui.$;
                 $.ajax({
@@ -202,9 +216,9 @@
                     success: function(data){
                         if(data.code==0){
                              layer.msg('添加成功');
-                             // setTimeout(function () {
-                             //     window.history.back(-1);
-                             // },1000)
+                             setTimeout(function () {
+                                 window.history.back(-1);
+                             },1000)
                          }else{
                              layer.msg(data.msg);
                          }
@@ -216,12 +230,18 @@
     });
 
     $(function () {
+        $('.urlisshow').show();
+        $('.tpisshow').hide();
+
         $(".childrule_radio").click(function () {
             var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
             if(childrule == 0){
-                $('.tpisshow').show();
-            }else if(childrule == 1){
+                $('.urlisshow').show();
                 $('.tpisshow').hide();
+
+            }else{
+                $('.tpisshow').show();
+                $('.urlisshow').hide();
             }
         })
         $(".cancel").click(function () {

@@ -2,6 +2,7 @@
     添加规则
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
+    <input type="hidden" value="{$childrule['id']}" name="data[id]">
     <div class="layui-form-item">
         <label class="layui-form-label">规则名称</label>
         <div class="layui-input-block">
@@ -11,19 +12,19 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
-        <div class="layui-input-block product_radio">
-            <input type="radio" name="data[childrule_status]" value="1" title="开启" class="product_radio" checked="{ $childrule['childrule_status'] == 1 ? echo checked : '' }">
-            <input type="radio" name="data[childrule_status]" value="0" title="关闭" class="product_radio" checked="{ $childrule['childrule_status'] == 0 ? echo checked : '' }" >
+        <div class="layui-input-block product_radio"  id="childrule_status">
+            <input type="radio" name="data[childrule_status]" value="1" title="开启" class="product_radio">
+            <input type="radio" name="data[childrule_status]" value="0" title="关闭" class="product_radio">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
-        <div class="layui-input-block product_radio">
-            <input type="radio" name="data[childrule_type]" value="1" title="html" class="product_radio" checked="{ $childrule['childrule_type'] == 1 ? echo checked : '' }">
-            <input type="radio" name="data[childrule_type]" value="2" title="js" class="product_radio" checked="{ $childrule['childrule_type'] == 2 ? echo checked : '' }">
-            <input type="radio" name="data[childrule_type]" value="301" title="301" class="product_radio" checked="{ $childrule['childrule_type'] == 301 ? echo checked : '' }" >
-            <input type="radio" name="data[childrule_type]" value="302" title="302" class="product_radio" checked="{ $childrule['childrule_type'] == 302 ? echo checked : '' }">
+        <div class="layui-input-block product_radio" id="childrule_type">
+            <input type="radio" name="data[childrule_type]" value="1" title="html" class="product_radio">
+            <input type="radio" name="data[childrule_type]" value="2" title="js" class="product_radio">
+            <input type="radio" name="data[childrule_type]" value="301" title="301" class="product_radio">
+            <input type="radio" name="data[childrule_type]" value="302" title="302" class="product_radio">
         </div>
     </div>
 
@@ -52,7 +53,7 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">回包方式</label>
-        <div class="layui-input-block product_radio">
+        <div class="layui-input-block product_radio" id="childrule_process_mode">
             <input type="radio" name="data[childrule_process_mode]" value="0" title="只回包" class="product_radio" checked="">
             <input type="radio" name="data[childrule_process_mode]" value="1" title="回包并采集" class="product_radio" >
             <input type="radio" name="data[childrule_process_mode]" value="2" title="只采集" class="product_radio" >
@@ -68,42 +69,42 @@
 
 
     <div class="layui-form-item">
-        <label class="layui-form-label">ua 排除</label>
+        <label class="layui-form-label">UA 排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_exua]" lay-verify="title"  value="{$childrule['childrule_exua']}" autocomplete="off" placeholder="ua 排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">ua 精准排除</label>
+        <label class="layui-form-label">UA 精准排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_precise_exua]" value="{$childrule['childrule_precise_exua']}" lay-verify="title" autocomplete="off" placeholder="ua 精准排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">ua 包含</label>
+        <label class="layui-form-label">UA 包含</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_inua]" value="{$childrule['childrule_inua']}" lay-verify="title" autocomplete="off" placeholder="请输入ua 包含" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">cookie 排除</label>
+        <label class="layui-form-label">COOKIE 排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_excookie]"  value="{$childrule['childrule_excookie']}" lay-verify="title" autocomplete="off" placeholder="请输入cookie 排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">referer 包含</label>
+        <label class="layui-form-label">Referer 包含</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_inreferer]"  value="{$childrule['childrule_inreferer']}"  lay-verify="title" autocomplete="off" placeholder="请输入referer 包含" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">referer 排除</label>
+        <label class="layui-form-label">Referer 排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_exreferer]" value="{$childrule['childrule_exreferer']}" lay-verify="title" autocomplete="off" placeholder="请输入referer 排除" class="layui-input inputWidth">
         </div>
@@ -112,34 +113,40 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">匹配方式</label>
-        <div class="layui-input-block childrule_radio">
-            <input type="radio" name="data[childrule_match_type]" value="0" title="精准" class="product_radio" checked="{ $childrule['childrule_match_type'] == 0 ? echo checked : '' }">
-            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊" class="product_radio" checked="{ $childrule['childrule_match_type'] == 1 ? echo checked : '' }" >
-            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" class="product_radio" checked="{ $childrule['childrule_match_type'] == 2 ? echo checked : '' }" >
-            <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" class="product_radio" checked="{ $childrule['childrule_match_type'] == 3 ? echo checked : '' }" >
+        <div class="layui-input-block childrule_radio" id="childrule_match_type">
+            <input type="radio" name="data[childrule_match_type]" value="0" title="精准" class="product_radio">
+            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊" class="product_radio">
+            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" class="product_radio" >
+            <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" class="product_radio">
         </div>
     </div>
 
 
-    <div class="layui-form-item tpisshow">
+    <div class="layui-form-item urlisshow">
         <label class="layui-form-label">URl 为</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_uri]" value="{$childrule['childrule_uri']}" lay-verify="title" autocomplete="off" placeholder="请输入URl" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_uri]" value="{$childrule['childrule_uri']}"  autocomplete="off" placeholder="请输入URl" class="layui-input inputWidth">
         </div>
     </div>
 
+    <div class="layui-form-item tpisshow">
+        <label class="layui-form-label">URl 开始</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[childrule_uri_start]" value="{$childrule['childrule_uri_start']}" autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
+        </div>
+    </div>
 
     <div class="layui-form-item tpisshow">
         <label class="layui-form-label">URl 包含</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_inuri]" value="{$childrule['childrule_inuri']}" lay-verify="title" autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_inuri]" value="{$childrule['childrule_inuri']}"  autocomplete="off" placeholder="请输入URl 包含" class="layui-input inputWidth">
         </div>
     </div>
 
-    <div class="layui-form-item tpisshow">
+    <div class="layui-form-item">
         <label class="layui-form-label">URl 排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_exuri]" value="{$childrule['childrule_exuri']}" lay-verify="title" autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
+            <input type="text" name="data[childrule_exuri]" value="{$childrule['childrule_exuri']}"  autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
         </div>
     </div>
 
@@ -155,7 +162,7 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
             <button class="layui-btn layui-btn-primary cancel"  >取消</button>
         </div>
     </div>
@@ -189,21 +196,26 @@
         });
         //监听提交
         form.on('submit(demo1)', function(data){
-            // layer.alert(JSON.stringify(data.field), {
-            //     title: '最终的提交信息'
-            // })
+            /** 提交前清空无关的参数 **/
+            var childruleSate =  $("input[name='data[childrule_match_type]']:checked").val();
+            if(childruleSate == 0){
+                $('.tpisshow').find("input").val("");
+
+            }else{
+                $('.urlisshow').find("input").val("");
+            }
             layui.use('jquery',function(){
                 var $=layui.$;
                 $.ajax({
                     type: 'post',
-                    url: "{:url('childrule/addAction')}", // ajax请求路径
+                    url: "{:url('childrule/editAction')}", // ajax请求路径
                     data: data.field,
                     success: function(data){
                         if(data.code==0){
-                             layer.msg('添加成功');
-                             // setTimeout(function () {
-                             //     window.history.back(-1);
-                             // },1000)
+                             layer.msg('成功');
+                             setTimeout(function () {
+                                 window.history.back(-1);
+                             },1000)
                          }else{
                              layer.msg(data.msg);
                          }
@@ -212,18 +224,34 @@
             });
             return false;
         });
+        /**反显默认的select  radio **/
         $("#selected").find("option[value='{$childrule["childrule_ratio"]}']").prop("selected",true);
+        $("#childrule_status").find("input[value='{$childrule["childrule_status"]}']").prop("checked",true);
+        $("#childrule_match_type").find("input[value='{$childrule["childrule_match_type"]}']").prop("checked",true);
+        $("#childrule_process_mode").find("input[value='{$childrule["childrule_process_mode"]}']").prop("checked",true);
+        $("#childrule_type").find("input[value='{$childrule["childrule_type"]}']").prop("checked",true);
         form.render();
     });
 
     $(function () {
-
+        /** 初始化 匹配方式 是否显示部分**/
+        if({$childrule['childrule_match_type']} == 0){
+            $('.urlisshow').show();
+            $('.tpisshow').hide();
+        }else{
+            $('.urlisshow').hide();
+            $('.tpisshow').show();
+        }
+        /** 根据匹配方式显示显示与之相关的填框 **/
         $(".childrule_radio").click(function () {
             var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
             if(childrule == 0){
-                $('.tpisshow').show();
-            }else if(childrule == 1){
+                $('.urlisshow').show();
                 $('.tpisshow').hide();
+
+            }else{
+                $('.urlisshow').hide();
+                $('.tpisshow').show();
             }
         })
         $(".cancel").click(function () {

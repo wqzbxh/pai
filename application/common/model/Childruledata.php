@@ -170,8 +170,8 @@ class Childruledata extends Model
                 );
             }else{
                 $returnArray = array(
-                    'code' => 20008,
-                    'msg' => $errorModel::ERRORCODE[20008],
+                    'code' => 20009,
+                    'msg' => $errorModel::ERRORCODE[20009],
                     'data' => $result,
                 );
             }
@@ -184,4 +184,6 @@ class Childruledata extends Model
         }
         return $returnArray;
     }
+
+
 }
