@@ -68,18 +68,18 @@ class Productdata extends Model
         }
 
         if($serviceid != 0 ) {
-            $criteria['s.serverid'] = (int)$serviceid;
+            $criteria['s.serverid'] = $serviceid;
         }
+
         $result = self::alias('p')
-                    ->join('serverproductdata s','p.id = s.product_id',"LEFT" )
+                    ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
                     ->field(self::jionField)
-                    ->where($criteria)
                     ->limit($offset,$limit)
                     ->select()
                     ->toArray();
 
 
-        $count = self::where($criteria)->count();
+        $count = self::count();
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,

@@ -3,7 +3,7 @@
 </blockquote>
 
 <form action="" class="layui-form">
-<table class="layui-table " lay-data="{width: 454, height:667, url:'{:url('product/getProductBindingList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+<table class="layui-table " lay-data="{width: 454, height:667, url:'{:url('product/getProductBindingList')}?serverid={$serverDefault}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
     <!--<div class="layui-btn-group demoTable">-->
         <!--<div class="layui-inline">-->
             <!--<input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">-->
@@ -76,7 +76,12 @@
 <script>
 
     layui.use(["table","form"], function(){
-        var form = layui.form,table = layui.table;
+
+
+    })
+    layui.use(["table","form"], function(){
+        var table = layui.table;
+        var form = layui.form;
         form.on('select(selectChage)', function(data){
             console.log(data.elem); //得到select原始DOM对象
             console.log(data.value); //得到被选中的值
@@ -91,13 +96,6 @@
                 }
             });
         });
-
-    })
-    layui.use('table', function(){
-
-
-
-        var table = layui.table;
         //监听表格复选框选择
         table.on('checkbox(demo)', function(obj){
             console.log(obj.id)

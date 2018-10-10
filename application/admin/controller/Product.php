@@ -154,8 +154,11 @@ class Product extends Controller
 //        获取服务器列表
         $result = $serverDataModel->getServerList('',0,1000,0);
 //        获取产品列表（分清与服务器绑定状态）getProductBindingList
-        $this->assign('serverList',$result['data']);
-        return $this->fetch('binding');
+        if($result['code'] == 0){
+            $this->assign('serverList',$result['data']);
+            $this->assign('serverDefault',$result['data'][0]['id']);
+            return $this->fetch('binding');
+        }
     }
 
     public function getProductBindingList()
@@ -175,8 +178,10 @@ class Product extends Controller
         }else{
             $serverid = 0;
         }
+//        var_dump($serverid);exit;
         $productDataModel = new \app\common\model\Productdata();
         $result = $productDataModel->getProductBindingList(9,9,'',0,$offset,$limit,$serverid);
+
         if($result['code'] == 0) {
             return $result;
         }
