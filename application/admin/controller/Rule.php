@@ -29,15 +29,16 @@ class Rule extends Controller
         }else{
             return false;
         }
-        if(isset($_GET["page"])){
-            $offset = ($_GET["page"] -1) * 15;
-        }else{
-            $offset = 0;
-        }
+
         if(isset($_GET["limit"])){
             $limit = $_GET["limit"];
         }else{
             $limit = 15;
+        }
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * $limit;
+        }else{
+            $offset = 0;
         }
 
         $result = $childruleDataModel->getRuleList('',$offset,$limit,$productid);

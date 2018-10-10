@@ -9,3 +9,21 @@
     width: 300px !important;
 }
 
+
+/* 颜色*/
+.ccc{
+    color: #cccccc;
+}
+
+.c009688{
+    color: #009688;
+}
+.c666{
+    color: red;
+}
+
+/*下划线*/
+.xhx{
+    text-decoration:underline;
+    cursor: pointer;
+}

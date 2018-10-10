@@ -23,15 +23,16 @@ class Product extends Controller
     public function getProduct()
     {
         $productDataModel = new \app\common\model\Productdata();
-        if(isset($_GET["page"])){
-            $offset = ($_GET["page"] -1) * 15;
-        }else{
-            $offset = 0;
-        }
+
         if(isset($_GET["limit"])){
             $limit = $_GET["limit"];
         }else{
             $limit = 15;
+        }
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * $limit;
+        }else{
+            $offset = 0;
         }
 
         $result = $productDataModel->getProductList(9,9,'',0,$offset,$limit);
@@ -140,4 +141,45 @@ class Product extends Controller
         }
         return $result;
     }
+
+
+    /**
+     * 产品邦定页面
+     **/
+    public function binding()
+    {
+
+        $serverDataModel = new \app\common\model\Serverdata();
+        $productDataModel = new \app\common\model\Productdata();
+//        获取服务器列表
+        $result = $serverDataModel->getServerList('',0,1000,0);
+//        获取产品列表（分清与服务器绑定状态）getProductBindingList
+        $this->assign('serverList',$result['data']);
+        return $this->fetch('binding');
+    }
+
+    public function getProductBindingList()
+    {
+        if(isset($_GET["limit"])){
+            $limit = $_GET["limit"];
+        }else{
+            $limit = 15;
+        }
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * $limit;
+        }else{
+            $offset = 0;
+        }
+        if(isset($_GET["serverid"])){
+            $serverid = $_GET["serverid"];
+        }else{
+            $serverid = 0;
+        }
+        $productDataModel = new \app\common\model\Productdata();
+        $result = $productDataModel->getProductBindingList(9,9,'',0,$offset,$limit,$serverid);
+        if($result['code'] == 0) {
+            return $result;
+        }
+    }
+
 }

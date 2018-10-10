@@ -1,0 +1,114 @@
+
+
+<div class="layui-btn-group demoTable">
+    <div class="layui-inline">
+        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+    <a href="{:url('server/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加服务器</button></a>
+</div>
+
+<table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{field:'id', width:70}">ID</th>
+        <th lay-data="{field:'servername', width:180}">服务器名称</th>
+        <th lay-data="{field:'serverstatus', width:100,templet: '#serverstatus'}">状态</th>
+        <th lay-data="{field:'inputcard', width:180}">入口网卡</th>
+        <th lay-data="{field:'outcard', width:180}">回包网卡</th>
+        <th lay-data="{field:'macaddress', width:180}">网关MAC地址</th>
+        <th lay-data="{fixed: 'right', width:280, align:'center', toolbar: '#barDemo'}">操作项</th>
+    </tr>
+    </thead>
+</table>
+
+
+<script type="text/html" id="titleTpl">
+    {{#  if(d.product_type ==0){ }}
+    通匹
+    {{#  } else if(d.product_type ==1){ }}
+    基本
+    {{#  } }}
+</script>
+
+<script type="text/html" id="serverstatus">
+    {{#  if(d.serverstatus ==0){ }}
+    <span class="">未运行</span>
+    {{#  } else if(d.serverstatus ==1){ }}
+
+    <span class=""> 运行中</span>
+
+    {{#  } }}
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">开启</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">停止</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs daikaifang"  >流量</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs">产品</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+</script>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                window.location.href="{:url('server/index')}?id="+data.id;
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('rule/delAction')}", // ajax请求路径
+                            data: obj.data,
+                            success: function(data){
+                                if(data.code==0){
+                                    layer.msg('删除成功！');
+                                    obj.del();
+                                    layer.close(index);
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    });
+                });
+            } else if(obj.event === 'edit'){
+                window.location.href="{:url('server/edit')}?id="+data.id;
+            }
+        });
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

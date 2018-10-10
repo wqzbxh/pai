@@ -14,6 +14,7 @@ class Productdata extends Model
     //模糊查询字段
     public $fuzzy_query = 'product_name';
 
+    const jionField = "p.*,s.id as spid,s.status,s.serverid";
     /**
      * 查询产品方法
      * @param $match_type 通匹类型：0为APK，1为EXE，默认值为0  9为全部
@@ -53,7 +54,48 @@ class Productdata extends Model
         return $returnArray;
     }
 
+    public function getProductBindingList($match_type = 9 ,$product_type = 9 ,$product_name = '',$type = 0,$offset,$limit,$serviceid)
+    {
 
+        $criteria = array();
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        if($match_type != 9 ){
+            $criteria['match_type'] = $match_type;
+        }
+        if($product_type != 9 ){
+            $criteria['product_type'] = $product_type;
+        }
+
+        if($serviceid != 0 ) {
+            $criteria['s.serverid'] = (int)$serviceid;
+        }
+        $result = self::alias('p')
+                    ->join('serverproductdata s','p.id = s.product_id',"LEFT" )
+                    ->field(self::jionField)
+                    ->where($criteria)
+                    ->limit($offset,$limit)
+                    ->select()
+                    ->toArray();
+
+
+        $count = self::where($criteria)->count();
+        if(!empty($result)){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' =>$count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 10001,
+                'msg' => $errorModel::ERRORCODE[10001],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
     /**
      * 添加数据
      * @param data 添加数组参数

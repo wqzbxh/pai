@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    　　<meta charset="utf-8"/>
+    　　<title>
+    　　　　{block name="title"}
+    　　　     　ThinkPHP_5 index页
+    　　　　{/block}
+    　　</title>
+</head>
+<body>
+　　<div class="wrap">
+    　　　　<div class="header">
+    　　　　　　<!-- 模板引入 -->
+    　　　　　　{include file="common/nav" /}
+    　　　　</div>
+
+    　　　　<div class="main">
+    　　　　　　<div class="sidebar">
+
+    　　　　　　</div>
+
+    　　　　　　<div class="body">
+    　　　　　　　　{block name="body"}
+
+    　　　　　　　　{/block}
+    　　　　　　</div>
+    　　　　</div>
+
+    　　　　<div class="footer">
+    　　　　　　{block name="footer"}
+    　　　　　　footer块【公共继承】
+    　　　　　　{/block}
+    　　　　</div>
+    　　</div>
+</body>
+</html>

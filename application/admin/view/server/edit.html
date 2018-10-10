@@ -1,0 +1,118 @@
+<style>
+    .margin-left10{
+        margin-left: 10px !important;
+    }
+</style>
+<blockquote class="layui-elem-quote layui-text">
+    修改服务器
+</blockquote>
+<form class="layui-form" action="{:url('server/addAction')}" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">服务器名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[servername]"  value="{$server['servername']}" lay-verify="title" autocomplete="off" placeholder="请输入服务器名称" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">入口网卡</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[inputcard]"  value="{$server['inputcard']}" lay-verify="title" autocomplete="off" placeholder="请输入入口网卡" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">出口网卡</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[outcard]"  value="{$server['outcard']}" lay-verify="title" autocomplete="off" placeholder="请输入出口网卡" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">网关MAC地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[macaddress]"  value="{$server['macaddress']}" lay-verify="title" autocomplete="off" placeholder="请输入网关MAC地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">采集中心地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[datacenter]"  value="{$server['datacenter']}" lay-verify="title" autocomplete="off" placeholder="请输入采集中心地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">IP地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[serverip]"  value="{$server['serverip']}"  lay-verify="title" autocomplete="off" placeholder="请输入IP地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
+            <button class="layui-btn layui-btn-primary cancel"  >取消</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 1){
+                    return '提示处不能为空！';
+                }
+            }
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layui.use('jquery',function(){
+                var $=layui.$;
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('server/addAction')}", // ajax请求路径
+                    data: data.field,
+                    success: function(data){
+                        if(data.code==0){
+                             layer.msg('成功添加服务器配置！');
+                             setTimeout(function () {
+                                 window.history.back(-1);
+                             },1000)
+                         }else{
+                             layer.msg(data.msg);
+                         }
+                    }
+                });
+            });
+            return false;
+        });
+    });
+
+    $(function () {
+        $('#tpisshow').hide();
+        $(".product_radio").click(function () {
+            var product =  $("input[name='product_type']:checked").val();
+            if(product == 0){
+                $('#tpisshow').show();
+            }else if(product == 1){
+                $('#tpisshow').hide();
+            }
+        })
+
+        $(function () {
+            $(".cancel").click(function () {
+                window.history.back(-1);
+            })
+        })
+    })
+</script>

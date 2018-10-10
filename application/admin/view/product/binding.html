@@ -1,0 +1,195 @@
+<blockquote class="layui-elem-quote layui-text">
+    产品绑定&nbsp&nbsp&nbsp&nbsp&nbsp <span class="back xhx">返回上一页</span>
+</blockquote>
+
+<form action="" class="layui-form">
+<table class="layui-table " lay-data="{width: 454, height:667, url:'{:url('product/getProductBindingList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+    <!--<div class="layui-btn-group demoTable">-->
+        <!--<div class="layui-inline">-->
+            <!--<input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">-->
+        <!--</div>-->
+        <!--<button class="layui-btn" data-type="reload">搜索</button>-->
+        <!--<a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>-->
+    <!--</div>-->
+
+    <div class="layui-form-item" id="tpisshow">
+
+        <div class="layui-btn-group demoTable layui-inline">
+            <div class="layui-inline">
+                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+        </div>
+
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <select name="" lay-verify="required" lay-search="" lay-filter="selectChage" class="selectWidth" id="selected">
+                    {volist name="serverList" id="vo"}
+                        <option value="{$vo.id}">{$vo.servername}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline" style="">
+            <div class="layui-input-block product_radio"  id="childrule_status">
+                <input type="radio" name="data[childrule_status]" value="1" title="开启" class="product_radio" >
+                <input type="radio" name="data[childrule_status]" value="0" title="关闭" class="product_radio">
+            </div>
+        </div>
+
+    </div>
+
+
+    <thead>
+    <tr>
+        <th lay-data="{field:'id', width:115, sort: true, fixed: true}">ID</th>
+        <th lay-data="{field:'product_name', width:220,templet: '#product_names'}">产品名称</th>
+        <th lay-data="{field:'status', width:115,templet: '#status'}">操作项</th>
+    </tr>
+    </thead>
+</table>
+</form>
+
+<script type="text/html" id="status">
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">关闭</a>
+    {{#  } else if(d.status == null){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">开启</a>
+    {{#  } }}
+</script>
+
+
+<script type="text/html" id="product_names">
+    <a class="xhx" lay-event="sonLink">{{d.product_name}}</a>
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(["table","form"], function(){
+        var form = layui.form,table = layui.table;
+        form.on('select(selectChage)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:data.value,
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+
+    })
+    layui.use('table', function(){
+
+
+
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj.id)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            var serverid = $("#selected").find("option:selected").val();
+
+            if(obj.event === 'detail'){
+                window.location.href="{:url('Rule/index')}?id="+data.id;
+            } else if(obj.event === 'sonLink'){
+                layer.alert('跳转规则页面');
+            } else if(obj.event === 'statusOn'){
+                layer.alert('已关闭');
+                layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('serverproduct/changeStatus')}", // ajax请求路径
+                        data:{
+                            "serverid" : serverid,
+                            "productid" : data.id,
+                            "status" : data.status,
+                            "spid" : data.spid
+                        },
+                        success: function(data){
+                            if(data.code==0){
+                                // layer.msg('成功');
+                                if(data.code==0){
+                                    table.reload('idTest',{
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        }
+                                    });
+                                    layer.alert('已关闭');
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+            } else if(obj.event === 'statusOff'){
+                console.log(obj)
+
+
+                layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('serverproduct/changeStatus')}", // ajax请求路径
+                        data:{
+                            "serverid" : serverid,
+                            "productid" : data.id,
+                            "status" : data.status,
+                            "spid" : data.spid
+                        },
+                        success: function(data){
+                            if(data.code==0){
+                                table.reload('idTest',{
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                                layer.alert('已开启');
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    $(function () {
+        $(".back").click(function () {
+            window.history.back(-1);
+        })
+    })
+
+
+
+
+</script>
