@@ -80,8 +80,8 @@
 <div class="login">
     <h1 style="margin-bottom: 40px;">分发运营管理平台</h1>
     <form method="post"  class="layui-form">
-        <input type="text" name="u" lay-verify="title"  placeholder="用户名"  class="layui-input"  />
-        <input type="password" name="p" lay-verify="title"  placeholder="密码"  class="layui-input" />
+        <input type="text" name="access" lay-verify="title"  placeholder="用户名"  class="layui-input"  />
+        <input type="password" name="passwd" lay-verify="title"  placeholder="密码"  class="layui-input" />
         <button type="submit"lay-submit="" lay-filter="demo1" class="btn btn-primary btn-block btn-large">登录</button>
     </form>
 </div>
@@ -111,24 +111,24 @@
             //     title: '最终的提交信息'
             // })
             console.log(data);
-            // layui.use('jquery',function(){
-            //     var $=layui.$;
-            //     $.ajax({
-            //         type: 'post',
-            //         url: "{:url('product/addAction')}", // ajax请求路径
-            //         data: data.field,
-            //         success: function(data){
-            //             if(data.code==0){
-            //                 layer.msg('添加成功');
-            //                 setTimeout(function () {
-            //                     window.history.back(-1);
-            //                 },1000)
-            //             }else{
-            //                 layer.msg(data.msg);
-            //             }
-            //         }
-            //     });
-            // });
+            layui.use('jquery',function(){
+                var $=layui.$;
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('Admin/login/loginAction')}",// ajax请求路径
+                    data: data.field,
+                    success: function(data){
+                        if(data.code==0){
+                            layer.msg('登录成功');
+                            setTimeout(function () {
+                                window.location.href="{:url('Admin/index/index')}"
+                            },1000)
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+            });
             return false;
         });
     });
