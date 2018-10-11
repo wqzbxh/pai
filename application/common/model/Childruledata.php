@@ -16,7 +16,7 @@ class Childruledata extends Model
 
     const jionField = "r.*,p.product_type";
 
-
+    const binDingField = "r.*,s.id as spid,s.status,s.serverid,s.product_id";
     /**
      * 查询产品方法
      * @param $match_type 通匹类型：0为APK，1为EXE，默认值为0  9为全部
@@ -58,6 +58,39 @@ class Childruledata extends Model
         return $returnArray;
     }
 
+
+    public function getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id)
+    {
+
+        $returnArray = array();
+        $criteria = array();
+        $errorModel = new \app\common\model\Error();
+        $criteria['r.ruleid'] = $rule_id;
+        $criteria['r.is_del'] = 0;
+        $result = self::alias('r')
+            ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+            ->field(self::binDingField)
+            ->where($criteria)
+            ->limit($offset,$limit)
+            ->select()
+            ->toArray();
+        $count = self::count();
+        if(!empty($result)){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' =>$count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 10001,
+                'msg' => $errorModel::ERRORCODE[10001],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
 
     /**
      * 添加数据
@@ -115,6 +148,7 @@ class Childruledata extends Model
             'data' => array(),
             );
         }
+
         return $returnArray;
     }
 
@@ -161,7 +195,7 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($id)){
-            $result = self::where('id', $id)->update(['is_del' => 1]);
+            $result = self::where('id', $id)->delete();
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,
@@ -184,6 +218,8 @@ class Childruledata extends Model
         }
         return $returnArray;
     }
+
+
 
 
 }

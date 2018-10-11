@@ -1,10 +1,12 @@
 <?php
 namespace app\index\controller;
 
-class Index
+use think\Controller;
+
+class Index extends Controller
 {
     public function index()
     {
-        return "<H1>分发后台初始化前台</H1>";
+        return $this->fetch('login');
     }
 }

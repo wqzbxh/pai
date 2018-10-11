@@ -2,17 +2,17 @@
     修改规则
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
-    <input type="hidden" name="data[id]" value="{$childrule['id']}">
+    <input type="hidden" name="data[id]" value="{$rule['id']}">
     <div class="layui-form-item">
         <label class="layui-form-label">规则名称</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_name]" lay-verify="title" autocomplete="off" value="{$childrule['rule_name']}" placeholder="请输入规则名称" class="layui-input inputWidth">
+            <input type="text" name="data[rule_name]" lay-verify="title" autocomplete="off" value="{$rule['rule_name']}" placeholder="请输入规则名称" class="layui-input inputWidth">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-block product_radio">
-            {switch name="$childrule['rule_status']"}
+            {switch name="$rule['rule_status']"}
             {case value="1"}
                 <input type="radio" name="data[rule_status]" value="1" title="开启" class="product_radio" checked>
                 <input type="radio" name="data[rule_status]" value="0" title="关闭" class="product_radio" >
@@ -28,42 +28,42 @@
     <div class="layui-form-item">
         <label class="layui-form-label">域名</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_host]" lay-verify="title" autocomplete="off" value="{$childrule['rule_host']}" placeholder="请输入域名" class="layui-input inputWidth">
+            <input type="text" name="data[rule_host]" lay-verify="title" autocomplete="off" value="{$rule['rule_host']}" placeholder="请输入域名" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">HOST排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_exhost]" lay-verify="title" autocomplete="off" value="{$childrule['rule_exhost']}" placeholder="请输入HOST排除" class="layui-input inputWidth">
+            <input type="text" name="data[rule_exhost]" lay-verify="title" autocomplete="off" value="{$rule['rule_exhost']}" placeholder="请输入HOST排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">URI排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_exuri]" lay-verify="title" autocomplete="off" value="{$childrule['rule_exuri']}" placeholder="请输入URI排除" class="layui-input inputWidth">
+            <input type="text" name="data[rule_exuri]" lay-verify="title" autocomplete="off" value="{$rule['rule_exuri']}" placeholder="请输入URI排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">UA排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_exua]" lay-verify="title" autocomplete="off" value="{$childrule['rule_exua']}" value="{$childrule['rule_name']}" placeholder="请输入UA排除" class="layui-input inputWidth">
+            <input type="text" name="data[rule_exua]" lay-verify="title" autocomplete="off" value="{$rule['rule_exua']}"  placeholder="请输入UA排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">UA精准排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_precise_exua]" lay-verify="title" autocomplete="off" value="{$childrule['rule_precise_exua']}" placeholder="请输入UA精准排除" class="layui-input inputWidth">
+            <input type="text" name="data[rule_precise_exua]" lay-verify="title" autocomplete="off" value="{$rule['rule_precise_exua']}" placeholder="请输入UA精准排除" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">COOKIE排除</label>
         <div class="layui-input-block">
-            <input type="text" name="data[rule_excookie]" lay-verify="title" autocomplete="off" value="{$childrule['rule_excookie']}" placeholder="请输入COOKIE排除" class="layui-input inputWidth">
+            <input type="text" name="data[rule_excookie]" lay-verify="title" autocomplete="off" value="{$rule['rule_excookie']}" placeholder="请输入COOKIE排除" class="layui-input inputWidth">
         </div>
     </div>
     <div class="layui-form-item">

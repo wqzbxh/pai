@@ -1,0 +1,250 @@
+<blockquote class="layui-elem-quote layui-text">
+    子规则绑定&nbsp&nbsp&nbsp&nbsp&nbsp <span class="back xhx">返回上一页</span>
+</blockquote>
+
+<form action="" class="layui-form">
+<table class="layui-table " lay-data="{width: 454, height:667, url:'{:url('childrule/getChildruleBindingList')}?serverid={$serverid}&&rule_id={$rule_id}&&product_id={$product_id}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+        <div class="layui-form-item" id="tpisshow">
+            <input type="hidden" value="{$serverid}" name="serverid" id="serverid">
+            <input type="hidden" value="{$product_id}" name="product_id" id="product_id">
+            <input type="hidden" value="{$rule_id}" name="rule_id" id="rule_id">
+        <div class="layui-btn-group demoTable layui-inline">
+            <div class="layui-inline">
+                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+        </div>
+
+
+        <div class="layui-inline" style="">
+            <div class="layui-input-block product_radio"  id="childrule_status">
+                <input type="radio" name="data[childrule_status]" value="1" title="开启" class="product_radio" >
+                <input type="radio" name="data[childrule_status]" value="0" title="关闭" class="product_radio">
+            </div>
+        </div>
+
+    </div>
+
+
+    <thead>
+    <tr>
+        <th lay-data="{field:'id', width:115, sort: true, fixed: true}">子规则ID</th>
+        <th lay-data="{field:'childrule_name', width:220,templet: '#childrule_name'}">规则名称</th>
+        <th lay-data="{field:'status', width:115,templet: '#status'}">操作项</th>
+    </tr>
+    </thead>
+</table>
+</form>
+
+<script type="text/html" id="status">
+    {{#  if(d.status == 1){ }}
+    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">关闭</a>
+    {{#  } else if(d.status == null){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">开启</a>
+    {{#  } }}
+</script>
+
+
+<script type="text/html" id="childrule_name">
+    <a class="xhx" lay-event="sonLink">{{d.childrule_name}}</a>
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(["table","form"], function(){
+
+
+    })
+    layui.use(["table","form"], function(){
+        var table = layui.table;
+        var form = layui.form;
+        form.on('select(selectChage)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:data.value,
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj.id)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            var serverid = $("input[name='serverid']").val();
+            var product_id = $("input[name='product_id']").val();
+            var rule_id = $("input[name='rule_id']").val();
+
+
+            if(obj.event === 'detail'){
+                window.location.href="{:url('Rule/index')}?id="+data.id;
+            } else if(obj.event === 'sonLink'){
+                //填写子规则绑定模板渠道号编写
+                if(data.spid == null){
+                    layer.alert('开启后才能进行填写！');
+                }else{
+                    var spid = data.spid
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('serverchildrule/getServerchildOne')}", // ajax请求路径
+                            data:{
+                                "spid" : data.spid
+                            },
+                            success: function(data){
+                                if(data.code==0){
+                                    if(data.code==0){
+                                        //弹出页面填写
+                                        layer.open({
+                                            type: 1 //Page层类型
+                                            ,btn:["确定","取消"]
+                                            ,title:'子规则填写'
+                                            ,skin: 'layui-layer-prompt'
+                                            ,content: "<div class=''><input type='text' name='childrule_push_content' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,yes: function(index, layero){
+                                                //按钮【按钮一】的回调
+                                                var childrule_push_content= $(layero).find("input[name='childrule_push_content']").val();
+                                                var childrule_exuri = $(layero).find("textarea").val()
+
+                                                console.log();
+                                                //
+                                                layui.use('jquery',function(){
+                                                    var $=layui.$;
+                                                    $.ajax({
+                                                        type: 'post',
+                                                        url: "{:url('serverchildrule/updateServerChildRule')}", // ajax请求路径
+                                                        data:{
+                                                            "childrule_push_content" : childrule_push_content,
+                                                            "childrule_exuri" : childrule_exuri,
+                                                            "spid" : spid
+                                                        },
+                                                        success: function(data){
+                                                            if(data.code==0){
+                                                                if(data.code==0){
+                                                                    layer.alert('修改成功');
+                                                                    layer.close(index);
+                                                                }else{
+                                                                    layer.msg(data.msg);
+                                                                }
+                                                            }else{
+                                                                layer.msg(data.msg);
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        });
+                                    }else{
+                                        layer.msg(data.msg);
+                                    }
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    });
+
+                }
+            } else if(obj.event === 'statusOn'){
+                layer.alert('已关闭');
+                layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('serverchildrule/changeStatus')}", // ajax请求路径
+                        data:{
+                            "serverid" : serverid,
+                            "child_rule_id" : data.id, //ruleid
+                            "product_id" : product_id,
+                            "status" : data.status,
+                            'rule_id' :rule_id,
+                            "spid" : data.spid
+                        },
+                        success: function(data){
+                            if(data.code==0){
+                                // layer.msg('成功');
+                                if(data.code==0){
+                                    table.reload('idTest',{
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        }
+                                    });
+                                    layer.alert('已关闭');
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+            } else if(obj.event === 'statusOff'){
+                console.log(obj)
+                console.log(serverid);
+                layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('serverchildrule/changeStatus')}", // ajax请求路径
+                        data:{
+                            "serverid" : serverid,
+                            "child_rule_id" : data.id, //ruleid
+                            "product_id" : product_id,
+                            "status" : data.status,
+                            'rule_id' :rule_id,
+                            "spid" : data.spid
+                        },
+                        success: function(data){
+                            if(data.code==0){
+                                table.reload('idTest',{
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                                layer.alert('已开启');
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    $(function () {
+        $(".back").click(function () {
+            window.history.back(-1);
+        })
+    })
+
+
+
+
+</script>

@@ -15,8 +15,11 @@ class Ruledata extends Model
     public $fuzzy_query = '';
 
     const jionField = "r.*,p.product_type";
+
+
+    const binDingField = "r.*,s.id as spid,s.status,s.serverid,s.product_id";
     /**
-     * 查询产品方法
+     * 查询规则方法
      * @param $match_type 通匹类型：0为APK，1为EXE，默认值为0  9为全部
      * @param $product_type 产品类型：0为通匹，1为基本，默认值为1 9为全部
      * @param $type 是否开启模糊查询 1 是  0 否
@@ -61,6 +64,49 @@ class Ruledata extends Model
         return $returnArray;
     }
 
+    /**
+     * @param $offset
+     * @param $limit
+     * @param $serviceid
+     * @param $id
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+
+    public function getRuleBindingList($offset,$limit,$serviceid,$id)
+    {
+
+        $returnArray = array();
+        $criteria = array();
+        $errorModel = new \app\common\model\Error();
+        $criteria['r.productid'] = $id;
+        $criteria['r.is_del'] = 0;
+        $result = self::alias('r')
+            ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
+            ->field(self::binDingField)
+            ->where($criteria)
+            ->limit($offset,$limit)
+            ->select()
+            ->toArray();
+        $count = self::count();
+        if(!empty($result)){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' =>$count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 10001,
+                'msg' => $errorModel::ERRORCODE[10001],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
 
     /**
      * 添加数据
@@ -164,7 +210,7 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($id)){
-            $result = self::where('id', $id)->update(['is_del' => 1]);
+            $result = self::where('id', $id)->delete();
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,
@@ -187,4 +233,6 @@ class Ruledata extends Model
         }
         return $returnArray;
     }
+
+
 }

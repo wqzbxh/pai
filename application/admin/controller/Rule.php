@@ -23,7 +23,7 @@ class Rule extends Controller
      */
     public function getRule()
     {
-        $childruleDataModel = new \app\common\model\Ruledata();
+        $ruleDataDataModel = new \app\common\model\Ruledata();
         if(isset($_GET["productid"])){
             $productid = $_GET["productid"];
         }else{
@@ -41,7 +41,7 @@ class Rule extends Controller
             $offset = 0;
         }
 
-        $result = $childruleDataModel->getRuleList('',$offset,$limit,$productid);
+        $result = $ruleDataDataModel->getRuleList('',$offset,$limit,$productid);
         if($result['code'] == 0) {
             return $result;
         }
@@ -68,8 +68,8 @@ class Rule extends Controller
         if(!empty($_POST['data'])){
             $data = $_POST['data'];
             $data['createtime'] = time();
-            $childruleDataModel = new \app\common\model\Ruledata();
-            $result = $childruleDataModel->addRule($data);
+            $ruleDataDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataDataModel->addRule($data);
         }else{
             $errorModel = new \app\common\model\Error();
             $result = array(
@@ -90,8 +90,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_GET['id'])){
-            $childruleDataModel = new \app\common\model\Ruledata();
-            $result = $childruleDataModel->getRuleOne($_GET['id']);
+            $ruleDataDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataDataModel->getRuleOne($_GET['id']);
             $this->assign('rule',$result['data'][0]);
             return $this->fetch('edit');
         }else{
@@ -111,8 +111,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['data'])){
-            $childruleDataModel = new \app\common\model\Ruledata();
-            $result = $childruleDataModel->updateRule($_POST['data']);
+            $ruleDataDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataDataModel->updateRule($_POST['data']);
         }else{
             $result = array(
                 'code' => 20005,
@@ -133,8 +133,8 @@ class Rule extends Controller
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['id'])){
-            $childruleDataModel = new \app\common\model\Ruledata();
-            $result = $childruleDataModel->delRule($_POST['id']);
+            $ruleDataDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataDataModel->delRule($_POST['id']);
         }else{
             $result = array(
                 'code' => 20005,
@@ -144,4 +144,73 @@ class Rule extends Controller
         }
         return $result;
     }
+
+
+    /**
+     * 邦定服务器产品规则页面
+     * @param serverid 服务器id
+     * @id 产品的ID
+     **/
+    public function binding()
+    {
+        if(!empty($_GET['serverid']) && !empty($_GET['id'])){
+            $this->assign('id',$_GET['id']);
+            $this->assign('serverid',$_GET['serverid']);
+            return $this->fetch('binding');
+        }
+    }
+
+    /**
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+
+    public function getRuleBindingList()
+    {
+
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(isset($_GET["limit"])){
+            $limit = $_GET["limit"];
+        }else{
+            $limit = 15;
+        }
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * $limit;
+        }else{
+            $offset = 0;
+        }
+        if(isset($_GET["serverid"])){
+            $serverid = $_GET["serverid"];
+        }else{
+            $returnArray = array(
+                'code' => 50005,
+                'msg' => $errorModel::ERRORCODE[50005],
+                'data' => array()
+            );
+        }
+
+        if(!empty($_GET["id"])){
+            $id = $_GET["id"];
+        }else{
+            $returnArray = array(
+                'code' => 50004,
+                'msg' => $errorModel::ERRORCODE[50004],
+                'data' => array()
+            );
+        }
+        if(empty($returnArray)){
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id);
+            if($result['code'] == 0) {
+                return $result;
+            }
+        }else{
+            return $returnArray;
+        }
+
+    }
+
 }

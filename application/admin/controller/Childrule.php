@@ -148,4 +148,76 @@ class Childrule extends Controller
         }
         return $result;
     }
+
+
+    /**
+     * 邦定服务器产品规则页面
+     * @param serverid 服务器id
+     * @id 产品的ID
+     **/
+    public function binding()
+    {
+        if(!empty($_GET['serverid']) && !empty($_GET['rule_id']) && !empty($_GET['product_id'])){
+            $this->assign('rule_id',$_GET['rule_id']);
+            $this->assign('serverid',$_GET['serverid']);
+            $this->assign('product_id',$_GET['product_id']);
+            return $this->fetch('binding');
+        }
+    }
+
+    public function getChildruleBindingList()
+    {
+
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(isset($_GET["limit"])){
+            $limit = $_GET["limit"];
+        }else{
+            $limit = 15;
+        }
+        if(isset($_GET["page"])){
+            $offset = ($_GET["page"] -1) * $limit;
+        }else{
+            $offset = 0;
+        }
+        if(isset($_GET["serverid"])){
+            $serverid = $_GET["serverid"];
+        }else{
+            $returnArray = array(
+                'code' => 50005,
+                'msg' => $errorModel::ERRORCODE[50005],
+                'data' => array()
+            );
+        }
+
+        if(!empty($_GET["rule_id"])){
+            $rule_id = $_GET["rule_id"];
+        }else{
+            $returnArray = array(
+                'code' => 50009,
+                'msg' => $errorModel::ERRORCODE[50009],
+                'data' => array()
+            );
+        }
+        if(!empty($_GET["product_id"])){
+            $product_id = $_GET["product_id"];
+        }else{
+            $returnArray = array(
+                'code' => 50004,
+                'msg' => $errorModel::ERRORCODE[50004],
+                'data' => array()
+            );
+        }
+
+        if(empty($returnArray)){
+            $childRuleDataModel = new \app\common\model\Childruledata();
+            $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id);
+            if($result['code'] == 0) {
+                return $result;
+            }
+        }else{
+            return $returnArray;
+        }
+
+    }
 }

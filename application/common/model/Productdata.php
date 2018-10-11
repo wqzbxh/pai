@@ -54,32 +54,46 @@ class Productdata extends Model
         return $returnArray;
     }
 
-    public function getProductBindingList($match_type = 9 ,$product_type = 9 ,$product_name = '',$type = 0,$offset,$limit,$serviceid)
+    /**
+     * @param int $match_type
+     * @param int $product_type
+     * @param string $product_name
+     * @param int $type
+     * @param $offset
+     * @param $limit
+     * @param $serviceid
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getProductBindingList($match_type = 9 ,$product_type = 9 ,$product_name = '',$type = 0,$offset,$limit,$serviceid,$status)
     {
 
         $criteria = array();
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
-        if($match_type != 9 ){
-            $criteria['match_type'] = $match_type;
-        }
-        if($product_type != 9 ){
-            $criteria['product_type'] = $product_type;
+
+
+
+        if($status != 9 && $status != 0) {
+            $criteria['s.status'] = $status;
+        }else if($status == 0 && $status != 1 ){
+            $criteria['s.status'] = null;
         }
 
-        if($serviceid != 0 ) {
-            $criteria['s.serverid'] = $serviceid;
-        }
 
         $result = self::alias('p')
                     ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
                     ->field(self::jionField)
                     ->limit($offset,$limit)
+                    ->where($criteria)
                     ->select()
                     ->toArray();
 
 
-        $count = self::count();
+        $count = self::alias('p')->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )->field(self::jionField)->limit($offset,$limit)->where($criteria)->count();
+
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,
@@ -199,7 +213,7 @@ class Productdata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($id)){
-            $result = self::where('id', $id)->update(['is_del' => 1]);
+            $result = self::where('id', $id)->delete();
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,

@@ -161,6 +161,10 @@ class Product extends Controller
         }
     }
 
+    /**
+     * @return array获取绑定列表
+     *
+     */
     public function getProductBindingList()
     {
         if(isset($_GET["limit"])){
@@ -178,13 +182,17 @@ class Product extends Controller
         }else{
             $serverid = 0;
         }
-//        var_dump($serverid);exit;
-        $productDataModel = new \app\common\model\Productdata();
-        $result = $productDataModel->getProductBindingList(9,9,'',0,$offset,$limit,$serverid);
-
-        if($result['code'] == 0) {
-            return $result;
+        if(isset($_GET["status"])){
+            $status = $_GET["status"];
+        }else{
+            $status = 9;
         }
+
+
+        $productDataModel = new \app\common\model\Productdata();
+        $result = $productDataModel->getProductBindingList(9,9,'',0,$offset,$limit,$serverid,$status);
+//        var_dump($result);
+        return $result;
     }
 
 }

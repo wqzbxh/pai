@@ -4,6 +4,7 @@
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <div class="layui-form-item">
         <label class="layui-form-label">规则名称</label>
+        <input type="hidden" value="{$productid}" name="data[productid]">
         <div class="layui-input-block">
             <input type="text" name="data[rule_name]" lay-verify="title" autocomplete="off" placeholder="请输入规则名称" class="layui-input inputWidth">
         </div>

@@ -3,7 +3,7 @@ namespace app\common\controller;
 
 use think\Controller;
 
-class Product extends Controller
+class Common extends Controller
 {
 
 }
