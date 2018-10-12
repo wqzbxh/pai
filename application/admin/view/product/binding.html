@@ -196,11 +196,15 @@
     });
 
     $(function () {
+        var e=document.getElementById("refreshed");
+        if(e.value=="no")e.value="yes";
+        else{e.value="no";location.reload();}
+
         $(".back").click(function () {
             window.history.back(-1);
+            $("#selected").options[0].selected = true;
         })
     })
-
 
 
 

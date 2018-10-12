@@ -192,6 +192,9 @@
     });
 
     $(function () {
+        var e=document.getElementById("refreshed");
+        if(e.value=="no")e.value="yes";
+        else{e.value="no";location.reload();}
         $(".back").click(function () {
             window.location.href="{:url('product/binding')}"
         })
@@ -200,4 +203,22 @@
 
 
 
+</script>
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        $(document).ready(function(e) {
+            var counter = 0;
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                    window.history.pushState('forward', null, '#');
+                    window.history.forward(1);
+                    alert("不可回退");
+                    location.replace(document.referrer);//刷新
+                });
+            }
+
+            // window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+            // window.history.forward(1);
+        });
+    });
 </script>
