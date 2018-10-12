@@ -4,8 +4,16 @@ namespace app\admin\controller;
 use think\Controller;
 
 
-class Product extends Controller
-{
+class Product extends  Common{
+
+    /**
+     * 继承父类自动加载
+     */
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
     /**
      * @return mixed
      * 渲染策略模式主题下产品管理首页

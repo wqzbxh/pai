@@ -9,7 +9,17 @@ namespace app\admin\controller;
 
 use think\Controller;
 
-class Serverruledata extends Controller{
+class Serverruledata extends  Common{
+
+    /**
+     * 继承父类自动加载
+     */
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
+
     /**
      * 更改规则服务器产品绑定状态
      *

@@ -9,8 +9,16 @@ namespace app\admin\controller;
 
 use think\Controller;
 
-class Childrule extends Controller
-{
+class Childrule extends  Common{
+
+    /**
+     * 继承父类自动加载
+     */
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
     /**
      * @return mixed
      * 渲染子规则页面

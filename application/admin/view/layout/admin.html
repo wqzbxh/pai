@@ -90,6 +90,12 @@
             $('.quit').click(function () {
                 $.post("{:url('login/exitAction')}",function(data){
                     console.log(data)
+                    if(data == 0){
+                        layer.msg('2秒后退出！');
+                        setTimeout(function () {
+                            window.location.href="{:url('index/index/login')}";
+                        },2000)
+                    }
                 });
             })
         })
