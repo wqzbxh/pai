@@ -6,8 +6,9 @@
 <blockquote class="layui-elem-quote layui-text">
     修改服务器
 </blockquote>
-<form class="layui-form" action="{:url('server/addAction')}" method="post">
+<form class="layui-form" action="{:url('server/editAction')}" method="post">
     <div class="layui-form-item">
+        <input type="hidden" value="{$server['id']}" name="data[id]" >
         <label class="layui-form-label">服务器名称</label>
         <div class="layui-input-block">
             <input type="text" name="data[servername]"  value="{$server['servername']}" lay-verify="title" autocomplete="off" placeholder="请输入服务器名称" class="layui-input inputWidth">
@@ -80,11 +81,11 @@
                 var $=layui.$;
                 $.ajax({
                     type: 'post',
-                    url: "{:url('server/addAction')}", // ajax请求路径
+                    url: "{:url('server/editAction')}", // ajax请求路径
                     data: data.field,
                     success: function(data){
                         if(data.code==0){
-                             layer.msg('成功添加服务器配置！');
+                             layer.msg('成功修改服务器配置！');
                              setTimeout(function () {
                                  window.history.back(-1);
                              },1000)

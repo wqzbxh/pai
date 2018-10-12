@@ -32,6 +32,7 @@ Class Serverruledata extends Model{
             $result = self::insert($data);
 
             $ServerchildruleDataModel = new \app\common\model\Serverchildruledata();
+            $errorModel = new \app\common\model\Error();
 //          删除所有该服务器下该产品该规则下的所有的子规则绑定记录，目的清除完
             $delResult = $ServerchildruleDataModel->delListRule($serverid,$productid,$ruleid);
 //          添加该规则下所有自规则绑定
@@ -49,8 +50,22 @@ Class Serverruledata extends Model{
                     $i ++;
                 }
                 $listResult = $ServerchildruleDataModel->addListRule($serverChildRuleDatas);
-                $errorModel = new \app\common\model\Error();
+
                 if($listResult['code'] == 0 && $result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 50006,
+                        'msg' => $errorModel::ERRORCODE[50006],
+                        'data' => $result
+                    );
+                }
+            }else{
+                if($result == 1){
                     $returnArray = array(
                         'code' => 0,
                         'msg' => $errorModel::ERRORCODE[0],

@@ -18,8 +18,9 @@
 
         <div class="layui-inline" style="">
             <div class="layui-input-block product_radio"  id="childrule_status">
-                <input type="radio" name="data[childrule_status]" value="1" title="开启" class="product_radio" >
-                <input type="radio" name="data[childrule_status]" value="0" title="关闭" class="product_radio">
+                <input type="radio" name="data[status]" value="1" lay-filter="status" title="绑定" class="product_radio" >
+                <input type="radio" name="data[status]" value="0" lay-filter="status" title="解绑" class="product_radio">
+                <input type="radio" name="data[status]" value="9" title="全部"  lay-filter="status" class="product_radio">
             </div>
         </div>
 
@@ -38,9 +39,9 @@
 
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
-    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">关闭</a>
+    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">解绑</a>
     {{#  } else if(d.status == null){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">开启</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">绑定</a>
     {{#  } }}
 </script>
 
@@ -85,6 +86,29 @@
         table.on('checkbox(demo)', function(obj){
             console.log(obj.id)
         });
+
+        /**
+         * 过滤监听
+         */
+        form.on('radio(status)', function(data){
+            // alert(data.value)
+            var serverid = $("input[name='serverid']").val();
+            var product_id = $("input[name='product_id']").val();
+            var rule_id = $("input[name='rule_id']").val();
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:serverid,
+                    status:data.value,
+                    product_id : product_id,
+                    rule_id:rule_id
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        })
+
         //监听工具条
         table.on('tool(demo)', function(obj){
             var data = obj.data;
@@ -164,7 +188,7 @@
 
                 }
             } else if(obj.event === 'statusOn'){
-                layer.alert('已关闭');
+                layer.alert('已解绑');
                 layui.use('jquery',function(){
                     var $=layui.$;
                     $.ajax({
@@ -187,7 +211,7 @@
                                             curr: 1 //重新从第 1 页开始
                                         }
                                     });
-                                    layer.alert('已关闭');
+                                    layer.alert('已解绑');
                                 }else{
                                     layer.msg(data.msg);
                                 }
@@ -220,7 +244,7 @@
                                         curr: 1 //重新从第 1 页开始
                                     }
                                 });
-                                layer.alert('已开启');
+                                layer.alert('已绑定');
                             }else{
                                 layer.msg(data.msg);
                             }

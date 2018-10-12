@@ -33,9 +33,9 @@
 
         <div class="layui-inline" style="">
             <div class="layui-input-block product_radio"  id="childrule_status">
-                <input type="radio" name="data[status]" value="1" title="开启"  lay-filter="status" class="product_radio" >
-                <input type="radio" name="data[status]" value="0" title="关闭"  lay-filter="status" class="product_radio">
-                <input type="radio" name="data[status]" value="9" title="取消过滤"  lay-filter="status" class="product_radio">
+                <input type="radio" name="data[status]" value="1" title="绑定"  lay-filter="status" class="product_radio" >
+                <input type="radio" name="data[status]" value="0" title="解绑"  lay-filter="status" class="product_radio">
+                <input type="radio" name="data[status]" value="9" title="全部"  lay-filter="status" class="product_radio">
             </div>
         </div>
 
@@ -54,9 +54,9 @@
 
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
-    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">关闭</a>
+    <a class="layui-btn  layui-btn-xs " lay-event="statusOn">解绑</a>
     {{#  } else if(d.status == null){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">开启</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs " lay-event="statusOff">绑定</a>
     {{#  } }}
 </script>
 
@@ -125,7 +125,7 @@
             } else if(obj.event === 'sonLink'){
                 window.location.href="{:url('rule/binding')}?id="+data.id+"& serverid="+serverid;
             } else if(obj.event === 'statusOn'){
-                layer.alert('已关闭');
+                layer.alert('已解绑');
                 layui.use('jquery',function(){
                     var $=layui.$;
                     $.ajax({
@@ -142,13 +142,14 @@
                                 // layer.msg('成功');
                                 if(data.code==0){
                                     table.reload('idTest',{
-                                        page: {
-                                            curr: 1 //重新从第 1 页开始
-                                        }
+
                                     });
-                                    layer.alert('已关闭');
+                                    layer.alert('已解绑');
                                 }else{
                                     layer.msg(data.msg);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },1000)
                                 }
                             }else{
                                 layer.msg(data.msg);
@@ -174,11 +175,9 @@
                         success: function(data){
                             if(data.code==0){
                                 table.reload('idTest',{
-                                    page: {
-                                        curr: 1 //重新从第 1 页开始
-                                    }
+
                                 });
-                                layer.alert('已开启');
+                                layer.alert('已绑定');
                             }else{
                                 layer.msg(data.msg);
                             }

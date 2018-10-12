@@ -75,7 +75,7 @@ class Ruledata extends Model
      * @throws \think\exception\DbException
      */
 
-    public function getRuleBindingList($offset,$limit,$serviceid,$id)
+    public function getRuleBindingList($offset,$limit,$serviceid,$id,$status)
     {
 
         $returnArray = array();
@@ -83,6 +83,13 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $criteria['r.productid'] = $id;
         $criteria['r.is_del'] = 0;
+
+        if($status != 9 && $status != 0) {
+            $criteria['s.status'] = $status;
+        }else if($status == 0 && $status != 1 ){
+            $criteria['s.status'] = null;
+        }
+
         $result = self::alias('r')
             ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
             ->field(self::binDingField)
@@ -90,7 +97,7 @@ class Ruledata extends Model
             ->limit($offset,$limit)
             ->select()
             ->toArray();
-        $count = self::count();
+        $count = self::alias('r')->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )->field(self::binDingField)->where($criteria)->count();
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,
@@ -117,19 +124,28 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $result = self::insert($data);
-            if($result == 1){
+            $checkResult = self::checkRule($data['rule_name']);
+            if($checkResult > 0){
                 $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-            }else{
-                $returnArray = array(
-                    'code' => 20001,
-                    'msg' => $errorModel::ERRORCODE[20001],
+                    'code' => 30005,
+                    'msg' => $errorModel::ERRORCODE[30005],
                     'data' => array()
                 );
+            }else{
+                $result = self::insert($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20001,
+                        'msg' => $errorModel::ERRORCODE[20001],
+                        'data' => array()
+                    );
+                }
             }
         }else{
             $returnArray = array(
@@ -141,6 +157,29 @@ class Ruledata extends Model
         return $returnArray;
     }
 
+
+    /**
+     * @param $data
+     */
+    public function checkRule($name,$id = 0)
+    {
+        if($id == 0){
+//        对新增数据进行名称查重 返回0/1
+            $result = self::where(array('rule_name'=>$name))->count();
+        }else{
+//            对修改数据进行查重
+            $result = self::where(array('rule_name'=>$name))->select()->toArray();
+
+            if($result){
+                if($result[0]['id'] == $id){
+                    $result = 0 ;
+                }else{
+                    $result = 1;
+                }
+            }
+        }
+        return $result;
+    }
 
     /**
      * 获取单个产品信息
@@ -177,20 +216,29 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-           $result = self::where('id', $data['id'])->update($data);
-           if($result == 1){
-               $returnArray = array(
-                   'code' => 0,
-                   'msg' => $errorModel::ERRORCODE[0],
-                   'data' => $result,
-               );
-           }else{
-               $returnArray = array(
-                   'code' => 20008,
-                   'msg' => $errorModel::ERRORCODE[20008],
-                   'data' => $result,
-               );
-           }
+            $checkResult = self::checkRule($data['rule_name'],$data['id']);
+            if($checkResult > 0){
+                $returnArray = array(
+                    'code' => 30005,
+                    'msg' => $errorModel::ERRORCODE[30005],
+                    'data' => array()
+                );
+            }else{
+                $result = self::where('id', $data['id'])->update($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result,
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20008,
+                        'msg' => $errorModel::ERRORCODE[20008],
+                        'data' => $result,
+                    );
+                }
+            }
         }else{
             $returnArray = array(
                 'code' => 20006,

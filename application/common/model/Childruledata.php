@@ -59,7 +59,7 @@ class Childruledata extends Model
     }
 
 
-    public function getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id)
+    public function getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status)
     {
 
         $returnArray = array();
@@ -67,6 +67,11 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $criteria['r.ruleid'] = $rule_id;
         $criteria['r.is_del'] = 0;
+        if($status != 9 && $status != 0) {
+            $criteria['s.status'] = $status;
+        }else if($status == 0 && $status != 1 ){
+            $criteria['s.status'] = null;
+        }
         $result = self::alias('r')
             ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
             ->field(self::binDingField)
@@ -74,7 +79,10 @@ class Childruledata extends Model
             ->limit($offset,$limit)
             ->select()
             ->toArray();
-        $count = self::count();
+        $count = self::alias('r')
+            ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+            ->field(self::binDingField)
+            ->where($criteria)->count();
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,
@@ -101,19 +109,28 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $result = self::insert($data);
-            if($result == 1){
+            $checkResult = self::checkChildRule($data['childrule_name']);
+            if($checkResult > 0){
                 $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-            }else{
-                $returnArray = array(
-                    'code' => 30002,
-                    'msg' => $errorModel::ERRORCODE[30002],
+                    'code' => 30006,
+                    'msg' => $errorModel::ERRORCODE[30006],
                     'data' => array()
                 );
+            }else{
+                $result = self::insert($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 30002,
+                        'msg' => $errorModel::ERRORCODE[30002],
+                        'data' => array()
+                    );
+                }
             }
         }else{
             $returnArray = array(
@@ -125,6 +142,31 @@ class Childruledata extends Model
         return $returnArray;
     }
 
+
+    /**校验名称
+     * @param $name 名称
+     * @param int $id
+     */
+    public function checkChildRule($name,$id = 0)
+    {
+
+        if($id == 0){
+//        对新增数据进行名称查重 返回0/1
+            $result = self::where(array('childrule_name'=>$name))->count();
+        }else{
+//            对修改数据进行查重
+            $result = self::where(array('childrule_name'=>$name))->select()->toArray();
+
+            if($result){
+                if($result[0]['id'] == $id){
+                    $result = 0 ;
+                }else{
+                    $result = 1;
+                }
+            }
+        }
+        return $result;
+    }
 
     /**
      * 获取单个产品信息
@@ -162,20 +204,29 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-           $result = self::where('id', $data['id'])->update($data);
-           if($result == 1){
-               $returnArray = array(
-                   'code' => 0,
-                   'msg' => $errorModel::ERRORCODE[0],
-                   'data' => $result,
-               );
-           }else{
-               $returnArray = array(
-                   'code' => 20008,
-                   'msg' => $errorModel::ERRORCODE[20008],
-                   'data' => $result,
-               );
-           }
+            $checkResult = self::checkChildRule($data['childrule_name'],$data['id']);
+            if($checkResult > 0){
+                $returnArray = array(
+                    'code' => 30006,
+                    'msg' => $errorModel::ERRORCODE[30006],
+                    'data' => array()
+                );
+            }else{
+                $result = self::where('id', $data['id'])->update($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result,
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20008,
+                        'msg' => $errorModel::ERRORCODE[20008],
+                        'data' => $result,
+                    );
+                }
+            }
         }else{
             $returnArray = array(
                 'code' => 20006,

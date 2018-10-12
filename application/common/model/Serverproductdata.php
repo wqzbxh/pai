@@ -22,23 +22,32 @@ Class Serverproductdata extends Model{
         $data['serverid'] = $serverid;
         $data['status'] = $status;
         $data['createtime'] = time();
-
-        $result = self::insert($data);
+        $checkStatusResult = self::checkStatus($serverid,$productid,$status);
         $errorModel = new \app\common\model\Error();
-        if($result == 1){
+        if($checkStatusResult > 0){
             $returnArray = array(
-                'code' => 0,
-                'msg' => $errorModel::ERRORCODE[0],
-                'data' => $result
+                'code' => 50017,
+                'msg' => $errorModel::ERRORCODE[50017],
+                'data' => array()
             );
-
         }else{
-            $returnArray = array(
-                'code' => 50001,
-                'msg' => $errorModel::ERRORCODE[50001],
-                'data' => $result
-            );
+            $result = self::insert($data);
+            if($result == 1){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result
+                );
+
+            }else{
+                $returnArray = array(
+                    'code' => 50001,
+                    'msg' => $errorModel::ERRORCODE[50001],
+                    'data' => $result
+                );
+            }
         }
+
         return $returnArray;
     }
 
@@ -75,5 +84,22 @@ Class Serverproductdata extends Model{
             );
         }
         return $returnArray;
+    }
+
+    /**
+     * 检验是否有添加绑定的数据
+     * @param $serverid 服务器id
+     * @param $product_id 产品的id
+     * @param $status 绑定的状态
+     * 返回查到的条数int型
+     */
+    public function checkStatus($serverid,$product_id,$status)
+    {
+        $where = array();
+        $where['serverid'] = $serverid;
+        $where['product_id'] = $product_id;
+        $where['status'] = 1;
+        $result = self::where($where)->count();
+        return $result;
     }
 }

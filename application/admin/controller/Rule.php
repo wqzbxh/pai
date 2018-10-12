@@ -90,6 +90,7 @@ class Rule extends  Common{
     }
 
 
+
     /**
      * 修改产品操作
      * @param id 产品的id int
@@ -209,16 +210,23 @@ class Rule extends  Common{
                 'data' => array()
             );
         }
+
+        if(isset($_GET["status"])){
+            $status = $_GET["status"];
+        }else{
+            $status = 9;
+        }
+
         if(empty($returnArray)){
             $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id);
+            $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id,$status);
             if($result['code'] == 0) {
                 return $result;
             }
         }else{
             return $returnArray;
         }
-
     }
+
 
 }

@@ -25,6 +25,7 @@ Class Common extends Controller{
           $this->redirect('index/index/login');
       }else{
 //          验证权限
+          
       }
     }
 }

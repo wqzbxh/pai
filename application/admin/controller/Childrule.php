@@ -217,9 +217,15 @@ class Childrule extends  Common{
             );
         }
 
+        if(isset($_GET["status"])){
+            $status = $_GET["status"];
+        }else{
+            $status = 9;
+        }
+
         if(empty($returnArray)){
             $childRuleDataModel = new \app\common\model\Childruledata();
-            $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id);
+            $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status);
             if($result['code'] == 0) {
                 return $result;
             }

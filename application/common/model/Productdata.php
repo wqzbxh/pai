@@ -74,15 +74,11 @@ class Productdata extends Model
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
 
-
-
         if($status != 9 && $status != 0) {
             $criteria['s.status'] = $status;
         }else if($status == 0 && $status != 1 ){
             $criteria['s.status'] = null;
         }
-
-
         $result = self::alias('p')
                     ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
                     ->field(self::jionField)
@@ -119,19 +115,29 @@ class Productdata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $result = self::insert($data);
-            if($result == 1){
+
+            $checkResult = self::checkProduct($data['product_name']);
+            if($checkResult > 0){
                 $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-            }else{
-                $returnArray = array(
-                    'code' => 20001,
-                    'msg' => $errorModel::ERRORCODE[20001],
+                    'code' => 20010,
+                    'msg' => $errorModel::ERRORCODE[20010],
                     'data' => array()
                 );
+            }else{
+                $result = self::insert($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20001,
+                        'msg' => $errorModel::ERRORCODE[20001],
+                        'data' => array()
+                    );
+                }
             }
         }else{
             $returnArray = array(
@@ -179,20 +185,29 @@ class Productdata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-           $result = self::where('id', $data['id'])->update($data);
-           if($result == 1){
-               $returnArray = array(
-                   'code' => 0,
-                   'msg' => $errorModel::ERRORCODE[0],
-                   'data' => $result,
-               );
-           }else{
-               $returnArray = array(
-                   'code' => 20008,
-                   'msg' => $errorModel::ERRORCODE[20008],
-                   'data' => $result,
-               );
-           }
+            $checkResult = self::checkProduct($data['product_name'],$data['id']);
+            if($checkResult > 0){
+                $returnArray = array(
+                    'code' => 20010,
+                    'msg' => $errorModel::ERRORCODE[20010],
+                    'data' => array()
+                );
+            }else{
+                $result = self::where('id', $data['id'])->update($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result,
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20008,
+                        'msg' => $errorModel::ERRORCODE[20008],
+                        'data' => $result,
+                    );
+                }
+            }
         }else{
             $returnArray = array(
                 'code' => 20006,
@@ -235,5 +250,28 @@ class Productdata extends Model
             );
         }
         return $returnArray;
+    }
+
+    /**
+     * 校验有没有该产品
+     * @param $data
+     */
+    public function checkProduct($name,$id = 0)
+    {
+        if($id == 0){
+//        对新增数据进行名称查重 返回0/1
+            $result = self::where(array('product_name'=>$name))->count();
+        }else{
+//            对修改数据进行查重
+            $result = self::where(array('product_name'=>$name))->select()->toArray();
+            if($result){
+                if($result[0]['id'] == $id){
+                    $result = 0 ;
+                }else{
+                    $result = 1;
+                }
+            }
+        }
+        return $result;
     }
 }

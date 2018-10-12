@@ -1,10 +1,12 @@
 
 
+
 <div class="layui-btn-group demoTable">
     <div class="layui-inline">
         <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
     </div>
     <button class="layui-btn" data-type="reload">搜索</button>
+
     <a href="{:url('server/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加服务器</button></a>
 </div>
 
@@ -43,10 +45,10 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">开启</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">停止</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs daikaifang"  >流量</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs">产品</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">停止</a>
+    <a class="layui-btn layui-btn-warm layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-primary layui-btn-xs daikaifang"  >流量</a>
+    <a class="layui-btn layui-btn-xs">产品</a>
     <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 
