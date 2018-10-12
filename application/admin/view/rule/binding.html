@@ -192,9 +192,6 @@
     });
 
     $(function () {
-        var e=document.getElementById("refreshed");
-        if(e.value=="no")e.value="yes";
-        else{e.value="no";location.reload();}
         $(".back").click(function () {
             window.location.href="{:url('product/binding')}"
         })

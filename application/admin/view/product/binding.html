@@ -1,3 +1,4 @@
+
 <blockquote class="layui-elem-quote layui-text">
     产品绑定&nbsp&nbsp&nbsp&nbsp&nbsp <span class="back xhx">返回上一页</span>
 </blockquote>
@@ -23,7 +24,7 @@
 
         <div class="layui-inline">
             <div class="layui-input-inline">
-                <select name="" lay-verify="required" lay-search="" lay-filter="selectChage" class="selectWidth" id="selected">
+                <select name="" lay-verify="required" lay-search=""  autocomplete="off" lay-filter="selectChage" class="selectWidth" id="selected">
                     {volist name="serverList" id="vo"}
                         <option value="{$vo.id}">{$vo.servername}</option>
                     {/volist}
@@ -196,9 +197,7 @@
     });
 
     $(function () {
-        var e=document.getElementById("refreshed");
-        if(e.value=="no")e.value="yes";
-        else{e.value="no";location.reload();}
+
 
         $(".back").click(function () {
             window.history.back(-1);
@@ -207,5 +206,12 @@
     })
 
 
-
+    window.onload = function(){
+        if(window.name!="hasLoad"){
+            location.reload();
+            window.name = "hasLoad";
+        }else{
+            window.name="";
+        }
+    }
 </script>
