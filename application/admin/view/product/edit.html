@@ -47,6 +47,7 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
+            <a class="layui-btn layui-btn-primary cancel"  lay-filter="cancel"  >取消</a>
         </div>
     </div>
 </form>
@@ -108,6 +109,13 @@
             }else if(product == 1){
                 $('#tpisshow').hide();
             }
+        })
+
+        // 取消
+        $(function () {
+            $(".cancel").click(function () {
+                window.location.href="{:url('product/index')}"
+            })
         })
     })
 </script>

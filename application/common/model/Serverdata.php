@@ -20,20 +20,30 @@ Class Serverdata extends Model{
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $result = self::insert($data);
-            if($result == 1){
+            $checkResult = self::checkServer($data['servername']);
+            if($checkResult > 0){
                 $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-            }else{
-                $returnArray = array(
-                    'code' => 40002,
-                    'msg' => $errorModel::ERRORCODE[40002],
+                    'code' => 40005,
+                    'msg' => $errorModel::ERRORCODE[40005],
                     'data' => array()
                 );
+            }else{
+                $result = self::insert($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 40002,
+                        'msg' => $errorModel::ERRORCODE[40002],
+                        'data' => array()
+                    );
+                }
             }
+
         }else{
             $returnArray = array(
                 'code' => 10002,
@@ -46,6 +56,28 @@ Class Serverdata extends Model{
 
 
 
+    /**校验重复的名称
+     * @param $data
+     */
+    public function checkServer($name,$id = 0)
+    {
+        if($id == 0){
+//        对新增数据进行名称查重 返回0/1
+            $result = self::where(array('servername'=>$name))->count();
+        }else{
+//            对修改数据进行查重
+            $result = self::where(array('servername'=>$name))->select()->toArray();
+
+            if($result){
+                if($result[0]['id'] == $id){
+                    $result = 0 ;
+                }else{
+                    $result = 1;
+                }
+            }
+        }
+        return $result;
+    }
 
     /**
      * 查询产品方法
@@ -124,7 +156,55 @@ Class Serverdata extends Model{
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-            $result = self::where('id', $data['id'])->update($data);
+            $checkResult = self::checkServer($data['servername'],$data['id']);
+            if($checkResult > 0){
+                $returnArray = array(
+                    'code' => 40005,
+                    'msg' => $errorModel::ERRORCODE[40005],
+                    'data' => array()
+                );
+            }else{
+                $result = self::where('id', $data['id'])->update($data);
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result,
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 20008,
+                        'msg' => $errorModel::ERRORCODE[20008],
+                        'data' => $result,
+                    );
+                }
+            }
+        }else{
+            $returnArray = array(
+                'code' => 20006,
+                'msg' => $errorModel::ERRORCODE[20006],
+                'data' => array(),
+            );
+        }
+        return $returnArray;
+    }
+
+    /**
+     *
+     */
+
+
+    /**
+     * 删除产品操作
+     * @param id 产品的自增ID
+     * Tue Oct 09 2018 15:10:18 GMT+0800 (中国标准时间)
+     */
+    public function delServerData($id)
+    {
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(!empty($id)){
+            $result = self::where('id', $id)->delete();
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,
@@ -133,15 +213,15 @@ Class Serverdata extends Model{
                 );
             }else{
                 $returnArray = array(
-                    'code' => 20008,
-                    'msg' => $errorModel::ERRORCODE[20008],
+                    'code' => 40004,
+                    'msg' => $errorModel::ERRORCODE[40004],
                     'data' => $result,
                 );
             }
         }else{
             $returnArray = array(
-                'code' => 20006,
-                'msg' => $errorModel::ERRORCODE[20006],
+                'code' => 40003,
+                'msg' => $errorModel::ERRORCODE[40003],
                 'data' => array(),
             );
         }

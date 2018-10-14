@@ -6,7 +6,7 @@
 <blockquote class="layui-elem-quote layui-text">
     修改服务器
 </blockquote>
-<form class="layui-form" action="{:url('server/editAction')}" method="post">
+<form class="layui-form" action="" method="post">
     <div class="layui-form-item">
         <input type="hidden" value="{$server['id']}" name="data[id]" >
         <label class="layui-form-label">服务器名称</label>
@@ -18,42 +18,42 @@
     <div class="layui-form-item">
         <label class="layui-form-label">入口网卡</label>
         <div class="layui-input-block">
-            <input type="text" name="data[inputcard]"  value="{$server['inputcard']}" lay-verify="title" autocomplete="off" placeholder="请输入入口网卡" class="layui-input inputWidth">
+            <input type="text" name="data[inputcard]"  value="{$server['inputcard']}" autocomplete="off" placeholder="请输入入口网卡" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">出口网卡</label>
         <div class="layui-input-block">
-            <input type="text" name="data[outcard]"  value="{$server['outcard']}" lay-verify="title" autocomplete="off" placeholder="请输入出口网卡" class="layui-input inputWidth">
+            <input type="text" name="data[outcard]"  value="{$server['outcard']}"  autocomplete="off" placeholder="请输入出口网卡" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">网关MAC地址</label>
         <div class="layui-input-block">
-            <input type="text" name="data[macaddress]"  value="{$server['macaddress']}" lay-verify="title" autocomplete="off" placeholder="请输入网关MAC地址" class="layui-input inputWidth">
+            <input type="text" name="data[macaddress]"  value="{$server['macaddress']}"  autocomplete="off" placeholder="请输入网关MAC地址" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">采集中心地址</label>
         <div class="layui-input-block">
-            <input type="text" name="data[datacenter]"  value="{$server['datacenter']}" lay-verify="title" autocomplete="off" placeholder="请输入采集中心地址" class="layui-input inputWidth">
+            <input type="text" name="data[datacenter]"  value="{$server['datacenter']}" autocomplete="off" placeholder="请输入采集中心地址" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">IP地址</label>
         <div class="layui-input-block">
-            <input type="text" name="data[serverip]"  value="{$server['serverip']}"  lay-verify="title" autocomplete="off" placeholder="请输入IP地址" class="layui-input inputWidth">
+            <input type="text" name="data[serverip]"  value="{$server['serverip']}"  autocomplete="off" placeholder="请输入IP地址" class="layui-input inputWidth">
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
-            <button class="layui-btn layui-btn-primary cancel"  >取消</button>
+            <a class="layui-btn layui-btn-primary cancel"  lay-filter="cancel"  >取消</a>
         </div>
     </div>
 </form>
@@ -112,7 +112,7 @@
 
         $(function () {
             $(".cancel").click(function () {
-                window.history.back(-1);
+                window.location.href="{:url('server/index')}"
             })
         })
     })

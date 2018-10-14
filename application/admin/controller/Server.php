@@ -63,6 +63,9 @@ Class Server extends Common{
 
 
 
+
+
+
     /**
      * 获取子规则列表
      * @param page 页码
@@ -123,6 +126,27 @@ Class Server extends Common{
         if(!empty($_POST['data'])){
             $serverDataModel = new \app\common\model\Serverdata();
             $result = $serverDataModel->updateServer($_POST['data']);
+        }else{
+            $result = array(
+                'code' => 20005,
+                'msg' => $errorModel::ERRORCODE[20005],
+                'data' => array()
+            );
+        }
+        return $result;
+    }
+
+    /**
+     * 删除操作
+     * @param id 产品的id int
+     *
+     */
+    public function delAction()
+    {
+        $errorModel = new \app\common\model\Error();
+        if(!empty($_POST['id'])){
+            $serverDataModel = new \app\common\model\Serverdata();
+            $result = $serverDataModel->delServerData($_POST['id']);
         }else{
             $result = array(
                 'code' => 20005,

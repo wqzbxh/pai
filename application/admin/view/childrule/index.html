@@ -58,7 +58,7 @@
             if(obj.event === 'detail'){
                 window.location.href="{:url('product/edit')}?id="+data.id;
             } else if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('真的删除子规则', function(index){
                     layui.use('jquery',function(){
                         var $=layui.$;
                         $.ajax({

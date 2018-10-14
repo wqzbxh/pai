@@ -3,6 +3,8 @@
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <input type="hidden" value="{$childrule['id']}" name="data[id]">
+
+    <input type="hidden" name="data[ruleid]" value="{$childrule['ruleid']}">
     <div class="layui-form-item">
         <label class="layui-form-label">规则名称</label>
         <div class="layui-input-block">
@@ -163,7 +165,7 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
-            <button class="layui-btn layui-btn-primary cancel"  >取消</button>
+            <a class="layui-btn layui-btn-primary cancel"  >取消</a>
         </div>
     </div>
 </form>
@@ -255,7 +257,7 @@
             }
         })
         $(".cancel").click(function () {
-            window.history.back(-1);
+            window.location.href="{:url('childrule/index')}?id={$childrule['ruleid']}"
         })
     })
 </script>
