@@ -198,7 +198,7 @@ Class Serverdata extends Model{
 
     /**
      * 删除产品操作
-     * @param id 产品的自增ID
+     * @param id 服务器的自增ID
      * Tue Oct 09 2018 15:10:18 GMT+0800 (中国标准时间)
      */
     public function delServerData($id)
@@ -222,8 +222,10 @@ Class Serverdata extends Model{
 
 
             $ipwhiteModel = new \app\common\model\Ipwhitelist();
+            $ipwhiteModel->delRecode(array('serverid' => $id));
+
             $ipblackModel = new \app\common\model\Ipblacklist();
-            $serverChildruletModel->delListRule($id,0,0);
+            $ipblackModel->delRecode(array('serverid' => $id));
 
 
             if($result == 1){
