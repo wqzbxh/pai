@@ -156,4 +156,18 @@ Class Server extends Common{
         }
         return $result;
     }
+
+    /**
+     * 流量渲染
+     */
+    public function flow()
+    {
+        if(!empty($_GET['serverid'])){
+            $serverDataModel = new \app\common\model\Serverdata();
+            $result = $serverDataModel->getServerOne($_GET['serverid']);
+            $this->assign('server',$result['data'][0]);
+            $this->assign('serverid',$_GET['serverid']);
+            return $this->fetch('flow');
+        }
+    }
 }

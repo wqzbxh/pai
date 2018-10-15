@@ -1,5 +1,5 @@
 <blockquote class="layui-elem-quote layui-text">
-    添加产品
+    添加服务器
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <div class="layui-form-item">
@@ -80,9 +80,9 @@
                     success: function(data){
                         if(data.code==0){
                              layer.msg('成功添加服务器配置！');
-                             // setTimeout(function () {
-                             //     window.history.back(-1);
-                             // },1000)
+                             setTimeout(function () {
+                                 window.history.back(-1);
+                             },1000)
                          }else{
                              layer.msg(data.msg);
                          }

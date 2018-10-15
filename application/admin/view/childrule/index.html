@@ -3,7 +3,7 @@
         <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
     </div>
     <button class="layui-btn" data-type="reload">搜索</button>
-    <a href="{:url('childrule/add')}?ruleid={$ruleid}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加子规则</button></a>
+    <a href="{:url('childrule/add')}?ruleid={$ruleid} && productid={$productid}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加子规则</button></a>
 </div>
 
 <table class="layui-table" lay-data="{width: 1590, height:680, url:'{:url('childrule/getChildrule')}?ruleid={$ruleid}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">

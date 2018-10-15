@@ -74,6 +74,8 @@ Class Serverdata extends Model{
                 }else{
                     $result = 1;
                 }
+            }else{
+                $result = 0;
             }
         }
         return $result;
@@ -128,7 +130,7 @@ Class Serverdata extends Model{
     {
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
-        $result = self::where(array('id' => $id))->select()->toArray();
+        $result = self::where(array('id' => $id))->order('id desc')->select()->toArray();
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,
@@ -204,7 +206,19 @@ Class Serverdata extends Model{
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($id)){
+
             $result = self::where('id', $id)->delete();
+//            删除与之相关绑定的记录
+//            删除产品与服务器之间的绑定
+            $SreverProductdataModel = new \app\common\model\Serverproductdata();
+            $SreverProductdataModel->delBindingRecord(array('serverid' => $id));
+//             删除规则与服务器之间的绑定
+            $serverRuletModel = new \app\common\model\Serverruledata();
+            $serverRuletModel->unbundle(array('serverid' => $id));
+//              删除子规则与服务器之间的绑定
+            $serverChildruletModel = new \app\common\model\Serverchildruledata();
+            $serverChildruletModel->delListRule($id,0,0);
+
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,

@@ -1,18 +1,76 @@
 <blockquote class="layui-elem-quote layui-text">
-    服务器列表&nbsp&nbsp&nbsp&nbsp&nbsp
+    流量展示&nbsp>&nbsp{$server['servername']}&nbsp&nbsp&nbsp&nbsp
     <!--<span class="back xhx"></span>-->
 </blockquote>
-
-
-
 <div class="layui-btn-group demoTable">
     <div class="layui-inline">
         <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
     </div>
     <button class="layui-btn" data-type="reload">搜索</button>
 
-    <a href="{:url('server/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加服务器</button></a>
 </div>
+<script src="__static__js/echarts.js" charset="utf-8"></script>
+
+<div id="main" style="width: 1300px;height:400px;"></div>
+
+<script>
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['峰值流速','推送数']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: [ 'tiled']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'峰值流速',
+                type:'line',
+                stack: '总量',
+                data:[0, 289, 101, 134, 90, 230, 210, 234, 324, 564, 240, 254, 156,132, 101, 134, 90, 230, 210, 234, 324, 2124, 240, 274,]
+            },
+            {
+                name:'推送数',
+                type:'line',
+                stack: '总量',
+                data:[0, 162, 191, 234, 290, 330, 310,132, 101, 134, 90, 230, 210, 234, 324, 454, 240, 254,132, 101, 134, 90, 240, 298,]
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
 
 <table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
@@ -50,7 +108,7 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail">开启</a>
     <a class="layui-btn layui-btn-xs" lay-event="detail">停止</a>
-    <a class="layui-btn layui-btn-xs" lay-event="flow" >流量</a>
+    <a class="layui-btn layui-btn-xs daikaifang"  >流量</a>
     <a class="layui-btn layui-btn-xs">产品</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -68,9 +126,8 @@
         //监听工具条
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-
-            if(obj.event === 'flow'){
-                window.location.href="{:url('server/flow')}?serverid="+data.id;
+            if(obj.event === 'detail'){
+                window.location.href="{:url('server/index')}?id="+data.id;
             } else if(obj.event === 'del'){
                 layer.confirm('真的删除服务器吗', function(index){
                     layui.use('jquery',function(){

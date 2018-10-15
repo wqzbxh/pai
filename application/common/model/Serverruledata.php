@@ -98,7 +98,6 @@ Class Serverruledata extends Model{
      * 接触服务器与产品绑定
      * 思路直接删除记录即可
      */
-
     public function delBindingRecord($id,$serverid,$productid,$ruleid)
     {
         $returnArray = array();
@@ -129,6 +128,40 @@ Class Serverruledata extends Model{
             $returnArray = array(
                 'code' => 50008,
                 'msg' => $errorModel::ERRORCODE[50008],
+                'data' => array()
+            );
+        }
+        return $returnArray;
+    }
+
+    /**\
+     * 删除优化
+     * 根据条件删除
+     */
+    public function unbundle($data)
+    {
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        if(!empty($data)){
+            $result = self::where($data)->delete();
+            if($result == 1){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result
+                );
+
+            }else{
+                $returnArray = array(
+                    'code' => 50007,
+                    'msg' => $errorModel::ERRORCODE[50007],
+                    'data' => $result
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 50003,
+                'msg' => $errorModel::ERRORCODE[50003],
                 'data' => array()
             );
         }

@@ -163,6 +163,7 @@ class Ruledata extends Model
      */
     public function checkRule($name,$id = 0)
     {
+
         if($id == 0){
 //        对新增数据进行名称查重 返回0/1
             $result = self::where(array('rule_name'=>$name))->count();
@@ -176,6 +177,8 @@ class Ruledata extends Model
                 }else{
                     $result = 1;
                 }
+            }else{
+                $result = 0;
             }
         }
         return $result;
@@ -217,6 +220,7 @@ class Ruledata extends Model
         $returnArray = array();
         if(!empty($data['id'])){
             $checkResult = self::checkRule($data['rule_name'],$data['id']);
+
             if($checkResult > 0){
                 $returnArray = array(
                     'code' => 30005,
@@ -248,6 +252,8 @@ class Ruledata extends Model
         }
         return $returnArray;
     }
+
+
     /**
      * 删除产品操作
      * @param id 产品的自增ID
@@ -258,7 +264,22 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($id)){
+//           删除本身的规则
             $result = self::where('id', $id)->delete();
+
+//          删除规则下的子规则、
+            $childRuleDataModel = new \app\common\model\Childruledata();
+            $childRuleDataModel->conditionDel(array('ruleid' =>$id));
+
+//            删除本身绑定记录
+
+            $serverRuletModel = new \app\common\model\Serverruledata();
+            $serverRuletModel->unbundle(array('rule_id' => $id));
+
+//          删除子规则绑定的记录
+            $serverChildRuletModel = new \app\common\model\Serverchildruledata();
+            $serverChildRuletModel->delListRule(0,0,$id);
+
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,
@@ -282,5 +303,47 @@ class Ruledata extends Model
         return $returnArray;
     }
 
+
+    /**
+     * 根据条件批量删除
+     * $data条件的数组 data为产品的id或者服务器的id
+     */
+    public function conditionDel($data)
+    {
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(is_array($data)){
+            $result = self::where($data)->delete();
+            if($result>0){
+                $childRuleDataModel = new\app\common\model\Childruledata();
+                $childRuleDataResult = $childRuleDataModel->conditionDel($data);
+                if($childRuleDataResult['code'] == 0 || $childRuleDataResult['code'] == 30007){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $childRuleDataResult,
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result,
+                    );
+                }
+            }else{
+                $returnArray = array(
+                    'code' => 20011,
+                    'msg' => $errorModel::ERRORCODE[20011],
+                    'data' => $result,
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10002,
+                'msg' => $errorModel::ERRORCODE[10002],
+                'data' => array()
+            );
+        }
+    }
 
 }

@@ -61,7 +61,7 @@
             if(obj.event === 'detail'){
                 window.location.href="{:url('childrule/index')}?id="+data.id;
             } else if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('真的删除此规则吗？', function(index){
                     layui.use('jquery',function(){
                         var $=layui.$;
                         $.ajax({

@@ -163,6 +163,8 @@ class Childruledata extends Model
                 }else{
                     $result = 1;
                 }
+            }else{
+                $result = 0;
             }
         }
         return $result;
@@ -272,5 +274,37 @@ class Childruledata extends Model
 
 
 
+
+    /**
+     * 根据条件批量删除
+     * $data条件的数组
+     */
+    public function conditionDel($data)
+    {
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(is_array($data)){
+            $result = self::where($data)->delete();
+            if($result>0){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result,
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 30007,
+                    'msg' => $errorModel::ERRORCODE[30007],
+                    'data' => $result,
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10002,
+                'msg' => $errorModel::ERRORCODE[10002],
+                'data' => array()
+            );
+        }
+    }
 
 }

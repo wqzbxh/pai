@@ -85,13 +85,19 @@ Class Serverchildruledata extends Model{
      * @param $product_id 产品id
      * @param $rule_id  规则id
      */
-    public function delListRule($serverid,$product_id,$rule_id)
+    public function delListRule($serverid = 0 ,$product_id = 0 ,$rule_id = 0)
     {
         $where = array();
-        if(!empty($serverid) && !empty($product_id) && !empty($rule_id)){
+        if($serverid != 0){
             $where['serverid'] = $serverid;
+        }
+        if($product_id != 0){
             $where['product_id'] = $product_id;
+        }
+        if($rule_id != 0){
             $where['rule_id'] = $rule_id;
+        }
+        if(!empty($where)){
             $result = self::where($where)->delete();
 //            返回删除的行数
             return $result;

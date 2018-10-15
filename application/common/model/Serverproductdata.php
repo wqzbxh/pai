@@ -56,12 +56,13 @@ Class Serverproductdata extends Model{
      * 思路直接删除记录即可
      */
 
-    public function delBindingRecord($id)
+    public function delBindingRecord($data)
     {
+
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
-        if(empty($id) == false){
-            $result = self::where('id',$id)->delete();
+        if(!empty($data)){
+            $result = self::where($data)->delete();
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,

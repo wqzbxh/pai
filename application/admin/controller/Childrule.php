@@ -26,8 +26,16 @@ class Childrule extends  Common{
      */
     public function index()
     {
-        $this->assign('ruleid',$_GET['id']);
-        return $this->fetch('index');
+        if(!empty($_GET['id'])){
+            $ruleDataModel = new \app\common\model\Ruledata();
+            $result = $ruleDataModel->getRuleOne($_GET['id']);
+            if($result['code'] == 0 ){
+                $productid = $result['data'][0]['productid'];
+                $this->assign('productid',$productid);
+                $this->assign('ruleid',$_GET['id']);
+                return $this->fetch('index');
+            }
+        }
     }
 
     /**
@@ -37,6 +45,7 @@ class Childrule extends  Common{
     public function add()
     {
         $this->assign('ruleid',$_GET['ruleid']);
+        $this->assign('productid',$_GET['productid']);
         return $this->fetch('add');
     }
 
@@ -88,7 +97,7 @@ class Childrule extends  Common{
             $childruleid = $_GET["ruleid"];
         }
         $result = $childruleDataModel->getChildruleRuleList('',$offset,$limit,$childruleid);
-        if($result['code'] == 0) {
+        if($result) {
             return $result;
         }
     }

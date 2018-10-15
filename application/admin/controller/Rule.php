@@ -50,7 +50,7 @@ class Rule extends  Common{
         }
 
         $result = $ruleDataDataModel->getRuleList('',$offset,$limit,$productid);
-        if($result['code'] == 0) {
+        if($result) {
             return $result;
         }
     }
@@ -220,7 +220,7 @@ class Rule extends  Common{
         if(empty($returnArray)){
             $ruleDataModel = new \app\common\model\Ruledata();
             $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id,$status);
-            if($result['code'] == 0) {
+            if($result) {
                 return $result;
             }
         }else{

@@ -140,6 +140,27 @@ class Product extends  Common{
         if(!empty($_POST['id'])){
             $productDataModel = new \app\common\model\Productdata();
             $result = $productDataModel->delProduct($_POST['id']);
+            if($result['code'] == 0){
+                $ruleDataModel = new \app\common\model\Ruledata();
+                $ruleResultData = $ruleDataModel->conditionDel(array('productid' => $_POST['id']));
+                if($ruleResultData['code'] == 0 || $ruleResultData['code'] == 20011 ){
+
+                    $SreverProductdataModel = new \app\common\model\Serverproductdata();
+                    $serverRuletModel = new \app\common\model\Serverruledata();
+                    $serverChildruletModel = new \app\common\model\Serverchildruledata();
+                    $SreverProductdataModel->delBindingRecord(array('product_id' => $_POST['id']));
+
+                    $serverRuletModel->unbundle(array('product_id' => $_POST['id']));
+
+                    $serverChildruletModel->delListRule(0,$_POST['id'],0);
+
+                    $result = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => array()
+                    );
+                }
+            }
         }else{
             $result = array(
                 'code' => 20005,

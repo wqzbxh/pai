@@ -32,7 +32,9 @@ Class Serverproduct extends  Common{
             if(empty($_POST['status'])){
                 $result = $serverproductModel->addServerproductBindingRecord($_POST['productid'],$_POST['serverid'],1);
             }else if($_POST['status'] == 1 && !empty($_POST['spid'])){
-                $result = $serverproductModel->delBindingRecord($_POST['spid']);
+                $data = array();
+                $data['id']  = $_POST['spid'];
+                $result = $serverproductModel->delBindingRecord($data);
             }
         }else{
             $errorModel = new \app\common\model\Error();
