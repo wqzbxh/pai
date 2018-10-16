@@ -70,7 +70,7 @@
             var data = obj.data;
 
             if(obj.event === 'flow'){
-                window.location.href="{:url('server/flow')}?serverid="+data.id;
+                window.location.href="{:url('serverstatistics/flow')}?serverid="+data.id;
             } else if(obj.event === 'del'){
                 layer.confirm('真的删除服务器吗', function(index){
                     layui.use('jquery',function(){

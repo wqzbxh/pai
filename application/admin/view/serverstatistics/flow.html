@@ -78,15 +78,15 @@
 
 
 
-<table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('serverstatistics/getServerstatistics')}?serverid={$server['id']}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
     <tr>
         <th lay-data="{field:'id', width:70}">id</th>
-        <th lay-data="{field:'servername', width:180}">日期</th>
-        <th lay-data="{field:'serverstatus', width:100}">接受包数</th>
-        <th lay-data="{field:'inputcard', width:180,templet:'numberBag'}">处理包数</th>
-        <th lay-data="{field:'outcard', width:180}">峰值流速</th>
-        <th lay-data="{field:'macaddress', width:180,templet:'product_push_the_number'}">推送数</th>
+        <th lay-data="{field:'time', width:180,templet: '#Time'}">日期</th>
+        <th lay-data="{field:'totalpackets', width:140}">接受包数</th>
+        <th lay-data="{field:'procpackets', width:180}">处理包数</th>
+        <th lay-data="{field:'mbps', width:90,templet:'#numberBag'}">峰值流速</th>
+        <th lay-data="{field:'producthitcount', width:180,templet:'#product_push_the_number'}">推送数</th>
 
     </tr>
     </thead>
@@ -94,17 +94,23 @@
 
 
 <script type="text/html" id="numberBag">
-    <a href="{:url('server/vmax')}?id=1">12122</a>
-
+    <a class="xhx c009688"  lay-event="numberBag" >{{d.mbps}}</a>
 </script>
+
 <script type="text/html" id="product_push_the_number">
-    <a href="{:url('server/product_push_the_number')}">12122</a>
+    <a class="xhx c009688" href="{:url('server/product_push_the_number')}">{{d.producthitcount}}</a>
+</script>
+
+<script type="text/html" id="Time">
+    {{ time2date(d.time) }}
 </script>
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
+    var util;
     layui.use('table', function(){
         var table = layui.table;
+        util = layui.util;
         //监听表格复选框选择
         table.on('checkbox(demo)', function(obj){
             console.log(obj)
@@ -112,8 +118,9 @@
         //监听工具条
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            if(obj.event === 'detail'){
-                window.location.href="{:url('server/index')}?id="+data.id;
+            console.log(data);
+            if(obj.event === 'numberBag'){
+                window.location.href="{:url('flowspeedstatistics/vmax')}?id="+data.serverid+"&&time="+data.time;
             } else if(obj.event === 'del'){
                 layer.confirm('真的删除服务器吗', function(index){
                     layui.use('jquery',function(){
@@ -161,4 +168,9 @@
             active[type] ? active[type].call(this) : '';
         });
     });
+    function time2date(t){
+        var t1 = parseInt(t + '000');
+
+        return util.toDateString(t1,'yyyy年MM月dd日');
+    }
 </script>
