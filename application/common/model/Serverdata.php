@@ -218,12 +218,10 @@ Class Serverdata extends Model{
 //              删除子规则与服务器之间的绑定
             $serverChildruletModel = new \app\common\model\Serverchildruledata();
             $serverChildruletModel->delListRule($id,0,0);
-//              删除黑白名单
-
-
+//              删除白名单
             $ipwhiteModel = new \app\common\model\Ipwhitelist();
             $ipwhiteModel->delRecode(array('serverid' => $id));
-
+//              删除黑名单
             $ipblackModel = new \app\common\model\Ipblacklist();
             $ipblackModel->delRecode(array('serverid' => $id));
 

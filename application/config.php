@@ -9,6 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+$db_config_cards = require_once('database2.php');
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
@@ -254,4 +255,7 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    //配置第二个数据库
+    'db_config_cards' => $db_config_cards,
 ];

@@ -9,9 +9,9 @@
     <button class="layui-btn" data-type="reload">搜索</button>
 
 </div>
-<script src="__static__js/echarts.min.js" charset="utf-8"></script>
+<script src="__static__js/echarts.js" charset="utf-8"></script>
 
-<div id="main" style="width: 1350px;height:400px;"></div>
+<div id="main" style="width: 1300px;height:400px;"></div>
 
 <script>
 
@@ -20,7 +20,6 @@
 
     // 指定图表的配置项和数据
     var option = {
-        backgroundColor: '#FBFBFB',
         tooltip : {
             trigger: 'axis'
         },
@@ -40,8 +39,6 @@
         calculable : true,
         xAxis : [
             {
-                show:true,
-                name:'时间',
                 type : 'category',
                 boundaryGap : false,
                 data : ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00']
@@ -49,26 +46,21 @@
         ],
         yAxis : [
             {
-                type : 'value',
-                show:true,
-                name:'时间',
-                boundaryGap : false,
+                type : 'value'
             }
         ],
         series : [
             {
                 name:'峰值流速',
                 type:'line',
-                symbol:'none',
                 stack: '总量',
-                data:[0, 289, 101, 134, 90, 230, 210, 234, 324, 564, 240, 254, 156,132, 101, 134, 90, 230, 210, 234, 324, 2124, 240, 274,481]
+                data:[0, 289, 101, 134, 90, 230, 210, 234, 324, 564, 240, 254, 156,132, 101, 134, 90, 230, 210, 234, 324, 2124, 240, 274,]
             },
             {
                 name:'推送数',
-                symbol:'none',
                 type:'line',
                 stack: '总量',
-                data:[322, 162, 191, 234, 290, 330, 310,132, 101, 134, 90, 230, 210, 234, 324, 454, 240, 254,132, 101, 134, 90, 240, 988,112]
+                data:[0, 162, 191, 234, 290, 330, 310,132, 101, 134, 90, 230, 210, 234, 324, 454, 240, 254,132, 101, 134, 90, 240, 298,]
             }
         ]
     };
@@ -85,10 +77,8 @@
     <tr>
         <th lay-data="{field:'id', width:70}">id</th>
         <th lay-data="{field:'servername', width:180}">日期</th>
-        <th lay-data="{field:'serverstatus', width:100}">接受包数</th>
-        <th lay-data="{field:'inputcard', width:180,templet:'numberBag'}">处理包数</th>
-        <th lay-data="{field:'outcard', width:180}">峰值流速</th>
-        <th lay-data="{field:'macaddress', width:180,templet:'product_push_the_number'}">推送数</th>
+        <th lay-data="{field:'serverstatus', width:100}">规则名称</th>
+        <th lay-data="{field:'macaddress', width:180,templet:'product_push_the_number'}">产品推送数</th>
 
     </tr>
     </thead>
@@ -102,25 +92,6 @@
 <script type="text/html" id="product_push_the_number">
     <a href="{:url('server/vmax')}">12122</a>
 </script>
-<script type="text/html" id="serverstatus">
-    {{#  if(d.serverstatus ==0){ }}
-    <span class="">未运行</span>
-    {{#  } else if(d.serverstatus ==1){ }}
-
-    <span class=""> 运行中</span>
-
-    {{#  } }}
-</script>
-
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">开启</a>
-    <a class="layui-btn layui-btn-xs" lay-event="detail">停止</a>
-    <a class="layui-btn layui-btn-xs daikaifang"  >流量</a>
-    <a class="layui-btn layui-btn-xs">产品</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
-
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>

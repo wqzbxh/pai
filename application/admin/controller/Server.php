@@ -162,12 +162,55 @@ Class Server extends Common{
      */
     public function flow()
     {
+        $data = array(
+            ['data'=>'2018-10-16',500,489,12454,13564],
+            ['2018-10-16',500,489,12454,13564],
+            ['2018-10-16',500,489,12454,13564],
+        );
         if(!empty($_GET['serverid'])){
             $serverDataModel = new \app\common\model\Serverdata();
             $result = $serverDataModel->getServerOne($_GET['serverid']);
             $this->assign('server',$result['data'][0]);
             $this->assign('serverid',$_GET['serverid']);
+            $this->assign('data',$data);
             return $this->fetch('flow');
         }
+    }
+
+
+    /**
+     * @return mixed
+     *峰值流速页面渲染
+     */
+    public function vmax()
+    {
+        return $this->fetch('vmax');
+    }
+
+    /**
+     * @return mixed
+     *峰值流速页面渲染
+     */
+    public function preciseVmax()
+    {
+        return $this->fetch('precise_vmax');
+    }
+
+    /**
+     * @return mixed
+     * 推送数产品页面渲染
+     */
+    public  function product_push_the_number()
+    {
+        return $this->fetch('product_push_the_number');
+    }
+
+    /**
+     * @return mixed
+     * 推送数规则页面渲染
+     */
+    public  function rule_push_the_number()
+    {
+        return $this->fetch('rule_push_the_number');
     }
 }
