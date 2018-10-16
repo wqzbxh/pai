@@ -11,7 +11,7 @@ use think\Model;
 
 Class Flowspeedstatistics extends Model{
 
-    const EveryHourFlowField = 'SUM(mbps),htime';
+    const EveryHourFlowField = 'SUM(mbps) as mbps_all,htime';
     /**计算当天的每小时的时间和流量
      * @param $dateTimeResult 当天凌晨的时间戳
      * @param $nowDateTimeResult 今天凌晨的时间戳
@@ -43,11 +43,51 @@ Class Flowspeedstatistics extends Model{
             $returnArray = array(
                 'code' => 0,
                 'msg' => $errorModel::ERRORCODE[0],
-                'data' => array()
+                'data' => $returnResult
             );
         }else{
-
+              $returnArray = array(
+                  'code' => 70001,
+                  'msg' => $errorModel::ERRORCODE[70001],
+                  'data' => array()
+              );
         }
-        var_dump($returnResult);
+
+        return $returnArray;
+    }
+
+    /**
+     * @param $where 查询条件
+     */
+    public function getEveryHourFlowChild($where)
+    {
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        if(is_array($where)){
+            $result = self::where($where)
+                ->select()
+                ->toArray();
+            if($result){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 70001,
+                    'msg' => $errorModel::ERRORCODE[70001],
+                    'data' => array()
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10002,
+                'msg' => $errorModel::ERRORCODE[10002],
+                'data' => array()
+            );
+        }
+
+        return $returnArray;
     }
 }

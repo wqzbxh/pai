@@ -19,7 +19,14 @@ Class Flowspeedstatistics extends Common{
      */
     public function preciseVmax()
     {
-        return $this->fetch('precise_vmax');
+        if(!empty($_GET['id']) && !empty($_GET['time'])){
+            $serverid = $_GET['id'];
+            $time = $_GET['time'];
+            $this->assign('serverid',$serverid);
+            $this->assign('time',$time);
+            return $this->fetch('precise_vmax');
+        }
+
     }
 
 
@@ -33,22 +40,41 @@ Class Flowspeedstatistics extends Common{
         if(!empty($_GET['id']) && !empty($_GET['time'])){
             $serverid = $_GET['id'];
             $time = $_GET['time'];
-            // 获取当天的零点的时间戳
 
+            $this->assign('serverid',$serverid);
+            $this->assign('time',$time);
+            return $this->fetch('vmax');
+        }
+    }
+
+    public function getFlowspeedstatistics()
+    {
+
+        if(!empty($_GET['id']) && !empty($_GET['time'])){
+            $serverid = $_GET['id'];
+            $time = $_GET['time'];
+            // 获取当天的零点的时间戳
             $commonController = new \app\common\controller\Common();
             $flowspeedstatisticsModel = new \app\common\model\Flowspeedstatistics();
             $dateTimeResult = $commonController->zeroTimestamp($time);
             $nowDateTimeResult = $commonController->zeroTimestamp(time());
-
-            $flowspeedstatisticsModel->getEveryHourFlow($dateTimeResult,$nowDateTimeResult,$serverid);
-
-
-
+            $result = $flowspeedstatisticsModel->getEveryHourFlow($dateTimeResult,$nowDateTimeResult,$serverid);
+            return $result;
         }
-
-//        return $this->fetch('vmax');
 
     }
 
 
+    public function getFlowspeedstatisticsChild()
+    {
+
+        if(!empty($_GET['id']) && !empty($_GET['time'])){
+            $where = array();
+            $where['serverid'] = $_GET['id'];
+            $where['htime'] = $_GET['time'];
+            $flowspeedstatisticsModel = new \app\common\model\Flowspeedstatistics();
+            $result = $flowspeedstatisticsModel->getEveryHourFlowChild($where);
+            return $result;
+        }
+    }
 }

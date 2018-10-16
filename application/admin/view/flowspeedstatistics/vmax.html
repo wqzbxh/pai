@@ -16,90 +16,35 @@
 
 <script>
 
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
 
-    // 指定图表的配置项和数据
-    var option = {
-        backgroundColor: '#FBFBFB',
-        tooltip : {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['峰值流速','推送数']
-        },
-        toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                restore : {show: true},
-                saveAsImage : {show: true}
-            }
-        },
-        calculable : true,
-        xAxis : [
-            {
-                show:true,
-                name:'时间',
-                type : 'category',
-                boundaryGap : false,
-                data : ['2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15']
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value',
-                show:true,
-                name:'数值',
-                boundaryGap : false,
-            }
-        ],
-        series : [
-            {
-                name:'峰值流速',
-                type:'line',
-                symbol:'none',
-                data:[45, 289, 101, 134, 90, 1230, 210]
-            },
-            {
-                name:'推送数',
-                symbol:'none',
-                type:'line',
-                data:[151, 592, 191, 234, 290, 330, 310]
-            }
-        ]
-    };
-
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
 </script>
 
 
 
-<table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('flowspeedstatistics/getFlowspeedstatistics')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1300, height:1000, url:'{:url('flowspeedstatistics/getFlowspeedstatistics')}?id={$serverid}&&time={$time}', page:false,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
     <tr>
-        <th lay-data="{field:'id', width:70}">id</th>
-        <th lay-data="{field:'servername', width:280}">时间</th>
-        <th lay-data="{field:'outcard', width:280,templet:'preciseVmax'}">峰值流速</th>
 
+        <th lay-data="{field:'htime', width:280,templet:'#Time'}">时间</th>
+        <th lay-data="{field:'mbps_all', width:280,templet:'#preciseVmax'}">峰值流速</th>
     </tr>
     </thead>
 </table>
 
 
 <script type="text/html" id="preciseVmax">
-    <a href="{:url('server/vmax')}?id=1">12122</a>
+    <a  class="xhx c009688" href="{:url('flowspeedstatistics/preciseVmax')}?id={$serverid}&&time={{d.htime}}">{{d.mbps_all}}</a>
 </script>
 
+<script type="text/html" id="Time">
+    {{ time2date(d.htime) }}
+</script>
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     layui.use('table', function(){
         var table = layui.table;
+        util = layui.util;
         //监听表格复选框选择
         table.on('checkbox(demo)', function(obj){
             console.log(obj)
@@ -156,4 +101,93 @@
             active[type] ? active[type].call(this) : '';
         });
     });
+    function time2date(t){
+        var t1 = parseInt(t + '000');
+
+        return util.toDateString(t1,"HH:mm");
+    }
+
+
+    window.onload=function (){
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "{:url('flowspeedstatistics/getFlowspeedstatistics')}",
+                data: {id:{$serverid},time:{$time}},
+                dataType: "json",
+                success: function(result){
+                    console.log(result)
+                    if(result.code === 0){
+                        var xdata = [],sdata = [];
+                        // 基于准备好的dom，初始化echarts实例
+                        for (var i =0 ; i < result.data.length;i++){
+
+                            xdata.push(result.data[i]['mbps_all'])
+                            sdata.push(time2date(result.data[i]['htime']))
+                        }
+                        console.log(xdata);
+                        console.log(sdata);
+                        var myChart = echarts.init(document.getElementById('main'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            backgroundColor: '#FBFBFB',
+                            tooltip : {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data:['峰值流速','推送数']
+                            },
+                            toolbox: {
+                                show : true,
+                                feature : {
+                                    mark : {show: true},
+                                    dataView : {show: true, readOnly: false},
+                                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                                    restore : {show: true},
+                                    saveAsImage : {show: true}
+                                }
+                            },
+                            calculable : true,
+                            xAxis : [
+                                {
+                                    show:true,
+                                    name:'时间',
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : sdata
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value',
+                                    show:true,
+                                    name:'数值',
+                                    boundaryGap : false,
+                                }
+                            ],
+                            series : [
+                                {
+                                    name:'',
+                                    type:'line',
+                                    symbol:'none',
+                                    data:xdata
+                                }
+                            ]
+                        };
+
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            });
+
+
+
+
+        })
+    }
+    
+
 </script>
