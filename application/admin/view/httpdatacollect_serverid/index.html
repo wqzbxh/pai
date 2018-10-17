@@ -1,31 +1,28 @@
 <blockquote class="layui-elem-quote layui-text">
-    采集数据&nbsp&nbsp&nbsp&nbsp&nbsp
-    <!--<span class="back xhx"></span>-->
+    采集数据
 </blockquote>
 
-<table class="layui-table" lay-data="{width: 1500, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
-    <thead>
-    <a href="javascript:;"><button class="layui-btn margin-left10" style="margin-left: 10px;position: relative;right: 0;" >清空数据</button></a>
-    <tr>
-        <th lay-data="{field:'id', width:100}">服务器ID</th>
-        <th lay-data="{field:'servername', width:180}">HOST</th>
-        <th lay-data="{field:'servername', width:180}">URl</th>
-        <th lay-data="{field:'servername', width:180}">源IP</th>
-        <th lay-data="{field:'inputcard', width:180}">目的IP</th>
-        <th lay-data="{field:'outcard', width:180}">来源</th>
-        <th lay-data="{field:'macaddress', width:180}">UA</th>
-        <th lay-data="{field:'macaddress', width:180,templet:'#Time'}">时间</th>
-    </tr>
-    </thead>
-</table>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-
+<div class="layui-anim layui-anim-upbit">
+    <table class="layui-table" lay-data="{width: 1500, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+        <thead>
+        <span id="wipe_data" class="layui-btn" >清空数据</span>
+        <tr>
+            <th lay-data="{field:'id', width:100}">服务器ID</th>
+            <th lay-data="{field:'servername', width:180}">HOST</th>
+            <th lay-data="{field:'servername', width:180}">URl</th>
+            <th lay-data="{field:'servername', width:180}">源IP</th>
+            <th lay-data="{field:'inputcard', width:180}">目的IP</th>
+            <th lay-data="{field:'outcard', width:180}">来源</th>
+            <th lay-data="{field:'macaddress', width:180}">UA</th>
+            <th lay-data="{field:'macaddress', width:180,templet:'#Time'}">时间</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 <script type="text/html" id="Time">
     {{ time2date(d.htime) }}
 </script>
-
 <script>
-
     layui.use('table', function(){
         var table = layui.table;
         util = layui.util;
@@ -36,8 +33,8 @@
         //监听工具条
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-            if(obj.event === 'flow'){
-                window.location.href="{:url('serverstatistics/flow')}?serverid="+data.id;
+            if(obj.event === 'wipe_data'){
+                layer.alert('已清空')
             } else if(obj.event === 'del'){
                 layer.confirm('真的删除服务器吗', function(index){
                     layui.use('jquery',function(){
@@ -73,5 +70,11 @@
         var t1 = parseInt(t + '000');
         return util.toDateString(t1,"yyyy-MM-dd HH:mm:ss");
     }
+
+    $(function () {
+        $('#wipe_data').click(function () {
+            layer.alert('已清空！')
+        })
+    })
 
 </script>
