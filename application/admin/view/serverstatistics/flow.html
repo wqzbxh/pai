@@ -98,7 +98,7 @@
 </script>
 
 <script type="text/html" id="product_push_the_number">
-    <a class="xhx c009688" href="{:url('server/product_push_the_number')}">{{d.producthitcount}}</a>
+    <a class="xhx c009688" lay-event="product_push_the_number">{{d.producthitcount}}</a>
 </script>
 
 <script type="text/html" id="Time">
@@ -121,28 +121,8 @@
             console.log(data);
             if(obj.event === 'numberBag'){
                 window.location.href="{:url('flowspeedstatistics/vmax')}?id="+data.serverid+"&&time="+data.time;
-            } else if(obj.event === 'del'){
-                layer.confirm('真的删除服务器吗', function(index){
-                    layui.use('jquery',function(){
-                        var $=layui.$;
-                        $.ajax({
-                            type: 'post',
-                            url: "{:url('server/delAction')}", // ajax请求路径
-                            data: obj.data,
-                            success: function(data){
-                                if(data.code==0){
-                                    layer.msg('删除成功！');
-                                    obj.del();
-                                    layer.close(index);
-                                }else{
-                                    layer.msg(data.msg);
-                                }
-                            }
-                        });
-                    });
-                });
-            } else if(obj.event === 'edit'){
-                window.location.href="{:url('server/edit')}?id="+data.id;
+            } else if(obj.event === 'product_push_the_number'){
+                window.location.href="{:url('productstatistics/productPushTheNumber')}?serverid="+data.serverid+"&&time="+data.time;
             }
         });
 
