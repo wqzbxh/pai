@@ -112,8 +112,8 @@
                         // 基于准备好的dom，初始化echarts实例
                         for (var i =0 ; i < result.data.length;i++){
 
-                            xdata.push(result.data[i]['mbps'])
-                            sdata.push(time2date(result.data[i]['htime']))
+                            xdata.push(result.data[i]['producthitcount'])
+                            sdata.push(result.data[i]['product_name'])
                         }
                         console.log(xdata);
                         console.log(sdata);
@@ -138,14 +138,23 @@
                                     saveAsImage : {show: true}
                                 }
                             },
+                            grid: {
+                                y2: 140
+                            },
                             calculable : true,
+
                             xAxis : [
                                 {
                                     show:true,
                                     name:'时间',
+                                    nameRotate:50,
                                     type : 'category',
                                     boundaryGap : false,
-                                    data : sdata
+                                    data : sdata,
+                                    axisLabel:{
+                                        interval:0,//横轴信息全部显示
+                                        rotate:-30,//-30度角倾斜显示
+                                    }
                                 }
                             ],
                             yAxis : [
@@ -159,7 +168,7 @@
                             series : [
                                 {
                                     name:'',
-                                    type:'line',
+                                    type:'bar',
                                     symbol:'none',
                                     data:xdata
                                 }

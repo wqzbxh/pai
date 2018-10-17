@@ -16,13 +16,24 @@ Class Serverstatistics extends Model{
      * @param $where array 查询条件
      *
      */
-    public function getList($where,$offset,$limit)
+    public function getList($where,$offset,$limit,$startTime,$endTime)
     {
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
 
         if(is_array($where)){
-            $result = self::where($where)->limit($offset,$limit)->order('id desc')->select()->toArray();
+            if($startTime != 0 && $endTime != 0){
+                $endTime = strtotime($endTime);
+                $startTime = strtotime($startTime);
+                $result = self::where($where)
+                    ->where('time','<',$endTime)
+                    ->where('time','>',$startTime)
+                    ->order('id asc')
+                    ->select()
+                    ->toArray();
+            }else{
+                $result = self::where($where)->limit($offset,$limit)->order('id desc')->select()->toArray();
+            }
             $count =  self::where($where)->select()->count();
             if(!empty($result)){
                 $returnArray = array(

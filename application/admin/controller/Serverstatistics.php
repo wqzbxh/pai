@@ -47,18 +47,27 @@ Class Serverstatistics extends Common{
         }else{
             $limit = 15;
         }
+        if(isset($_GET["startTime"])){
+            $startTime = $_GET["startTime"];
+        }else{
+            $startTime = 0;
+        }
+        if(isset($_GET["endTime"])){
+            $endTime = $_GET["endTime"];
+        }else{
+            $endTime = 0;
+        }
         if(isset($_GET["page"])){
             $offset = ($_GET["page"] -1) * $limit;
         }else{
             $offset = 0;
         }
 
-
         if(!empty($_GET['serverid'])){
             $serverStatisticsModel = new \app\common\model\Serverstatistics();
             $where = array();
             $where['serverid'] = $_GET['serverid'];
-            $result = $serverStatisticsModel->getList($where,$offset,$limit);
+            $result = $serverStatisticsModel->getList($where,$offset,$limit,$startTime,$endTime);
         }else{
             $result = array(
                 'code' => 10002,

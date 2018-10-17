@@ -2,78 +2,20 @@
     流量展示&nbsp>&nbsp{$server['servername']}&nbsp&nbsp&nbsp&nbsp
     <!--<span class="back xhx"></span>-->
 </blockquote>
-<div class="layui-btn-group demoTable">
-    <div class="layui-inline">
-        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
+<div class="layui-inline">
+    <label class="layui-form-label">日期时间范围</label>
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="date_time_range"  name="date_time_range" placeholder="请选择时间范围" style="width: 350px">
     </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
-
 </div>
+
 <script src="__static__js/echarts.min.js" charset="utf-8"></script>
 
 <div id="main" style="width: 1350px;height:400px;"></div>
 
 <script>
 
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
 
-    // 指定图表的配置项和数据
-    var option = {
-        backgroundColor: '#FBFBFB',
-        tooltip : {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['峰值流速','推送数']
-        },
-        toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                restore : {show: true},
-                saveAsImage : {show: true}
-            }
-        },
-        calculable : true,
-        xAxis : [
-            {
-                show:true,
-                name:'时间',
-                type : 'category',
-                boundaryGap : false,
-                data : ['2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15','2018-10-15']
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value',
-                show:true,
-                name:'数值',
-                boundaryGap : false,
-            }
-        ],
-        series : [
-            {
-                name:'峰值流速',
-                type:'line',
-                symbol:'none',
-                data:[45, 289, 101, 134, 90, 1230, 210]
-            },
-            {
-                name:'推送数',
-                symbol:'none',
-                type:'line',
-                data:[151, 592, 191, 234, 290, 330, 310]
-            }
-        ]
-    };
-
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
 </script>
 
 
@@ -108,6 +50,105 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     var util;
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#date_time_range'
+            ,type: 'datetime'
+            ,range: true,
+            done: function(value, date, endDate){
+                var startTime = date.year+'-'+date.month+'-'+date.date+' '+date.hours+':'+date.minutes+':'+date.seconds
+                var endTime = endDate.year+'-'+endDate.month+'-'+endDate.date+' '+endDate.hours+':'+endDate.minutes+':'+endDate.seconds
+                $.ajax({
+                    type: "GET",
+                    url: "{:url('serverstatistics/getServerstatistics')}",
+                    data: {serverid:{$server['id']},startTime:startTime,endTime:endTime},
+                    dataType: "json",
+                    success: function(result){
+                         console.log(result)
+                        if(result.code === 0){
+                            var xdata = [],sdata = [],mbps = [];
+                            // 基于准备好的dom，初始化echarts实例
+                            for (var i =0 ; i < result.data.length;i++){
+
+                                xdata.push(result.data[i]['producthitcount'])
+                                sdata.push(time2date(result.data[i]['time']))
+                                mbps.push(result.data[i]['mbps'])
+                            }
+                            console.log(xdata);
+                            console.log(sdata);
+                            console.log(11111);
+                            console.log(mbps);
+                            // 基于准备好的dom，初始化echarts实例
+                            var myChart = echarts.init(document.getElementById('main'));
+
+                            // 指定图表的配置项和数据
+                            var option = {
+                                backgroundColor: '#FBFBFB',
+                                tooltip : {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data:['峰值流速','推送数']
+                                },
+                                toolbox: {
+                                    show : true,
+                                    feature : {
+                                        mark : {show: true},
+                                        dataView : {show: true, readOnly: false},
+                                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                                        restore : {show: true},
+                                        saveAsImage : {show: true}
+                                    }
+                                },
+                                calculable : true,
+                                xAxis : [
+                                    {
+                                        show:true,
+                                        name:'时间',
+                                        type : 'category',
+                                        boundaryGap : false,
+                                        data : sdata
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'log',
+                                        show:true,
+                                        name:'数值',
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'峰值流速',
+                                        type:'line',
+                                        symbol:'none',
+                                        data:mbps
+                                    },
+                                    {
+                                        name:'推送数',
+                                        symbol:'none',
+                                        type:'line',
+                                        data:xdata
+                                    }
+                                ]
+                            };
+
+
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+                        }
+                    }
+                });
+
+                // console.log(value); //得到日期生成的值，如：2017-08-18
+            console.log(date.year+'-'+date.month+'-'+date.date+' '+date.hours+':'+date.minutes+':'+date.seconds); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+        }
+        });
+    })
     layui.use('table', function(){
         var table = layui.table;
         util = layui.util;
@@ -126,23 +167,6 @@
             }
         });
 
-        var $ = layui.$, active = {
-            getCheckData: function(){ //获取选中数据
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-            }
-            ,getCheckLength: function(){ //获取选中数目
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.msg('选中了：'+ data.length + ' 个');
-            }
-            ,isAll: function(){ //验证是否全选
-                var checkStatus = table.checkStatus('idTest');
-                layer.msg(checkStatus.isAll ? '全选': '未全选')
-            }
-        };del
-
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
@@ -150,7 +174,106 @@
     });
     function time2date(t){
         var t1 = parseInt(t + '000');
-
         return util.toDateString(t1,'yyyy年MM月dd日');
     }
+
+    /**
+     * jquery辅助
+     */
+    $(function(){
+        $("#date_time_range").on("change",function(){
+            console.log(1111)
+        })
+    })
+
+
+    window.onload=function (){
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "{:url('serverstatistics/getServerstatistics')}",
+                data: {serverid:{$server['id']}},
+                dataType: "json",
+                success: function(result){
+                    console.log(result)
+                    if(result.code === 0){
+                        var xdata = [],sdata = [],mbps = [];
+                        // 基于准备好的dom，初始化echarts实例
+                        for (var i =0 ; i < result.data.length;i++){
+
+                            xdata.push(result.data[i]['producthitcount'])
+                            sdata.push(time2date(result.data[i]['time']))
+                            mbps.push(result.data[i]['mbps'])
+                        }
+                        console.log(xdata);
+                        console.log(sdata);
+                        console.log(11111);
+                        console.log(mbps);
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            backgroundColor: '#FBFBFB',
+                            tooltip : {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data:['峰值流速','推送数']
+                            },
+                            toolbox: {
+                                show : true,
+                                feature : {
+                                    mark : {show: true},
+                                    dataView : {show: true, readOnly: false},
+                                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                                    restore : {show: true},
+                                    saveAsImage : {show: true}
+                                }
+                            },
+                            calculable : true,
+                            xAxis : [
+                                {
+                                    show:true,
+                                    name:'时间',
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : sdata
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'log',
+                                    show:true,
+                                    name:'数值',
+                                }
+                            ],
+                            series : [
+                                {
+                                    name:'峰值流速',
+                                    type:'line',
+                                    symbol:'none',
+                                    data:mbps
+                                },
+                                {
+                                    name:'推送数',
+                                    symbol:'none',
+                                    type:'line',
+                                    data:xdata
+                                }
+                            ]
+                        };
+
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            });
+
+
+        })
+    }
+
+
 </script>

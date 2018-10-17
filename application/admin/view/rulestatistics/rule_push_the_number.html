@@ -101,24 +101,19 @@
         $(function () {
             $.ajax({
                 type: "GET",
-                url: "{:url('productstatistics/getProductstatistics')}",
-                data: {serverid:{$serverid},time:{$time}},
+                url: "{:url('rulestatistics/getRulestatistics')}",
+                data: {serverid:{$serverid},time:{$time},productid:{$productid}},
                 dataType: "json",
                 success: function(result){
-                    console.log(result)
                     if(result.code === 0){
                         var xdata = [],sdata = [];
-                        // 基于准备好的dom，初始化echarts实例
+                        // 基于准备好的dom，初始化echarts实例并赋值数据准备填充坐标
                         for (var i =0 ; i < result.data.length;i++){
-
-                            xdata.push(result.data[i]['mbps'])
-                            sdata.push(time2date(result.data[i]['htime']))
+                            xdata.push(result.data[i]['rulehitcount']);
+                            sdata.push(result.data[i]['rule_name']);
                         }
-                        console.log(xdata);
-                        console.log(sdata);
                         var myChart = echarts.init(document.getElementById('main'));
-
-                        // 指定图表的配置项和数据
+                        // 指定图表的配置项和数据，数据从上一步骤取出
                         var option = {
                             backgroundColor: '#FBFBFB',
                             tooltip : {
@@ -138,13 +133,20 @@
                                 }
                             },
                             calculable : true,
+                            grid: {
+                                y2: 140
+                            },
                             xAxis : [
                                 {
                                     show:true,
                                     name:'时间',
                                     type : 'category',
                                     boundaryGap : false,
-                                    data : sdata
+                                    data : sdata,
+                                    axisLabel:{
+                                        interval:0,//横轴信息全部显示
+                                        rotate:-30,//-30度角倾斜显示
+                                    }
                                 }
                             ],
                             yAxis : [
@@ -158,14 +160,12 @@
                             series : [
                                 {
                                     name:'',
-                                    type:'line',
+                                    type:'bar',
                                     symbol:'none',
                                     data:xdata
                                 }
                             ]
                         };
-
-
                         // 使用刚指定的配置项和数据显示图表。
                         myChart.setOption(option);
                     }

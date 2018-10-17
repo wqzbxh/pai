@@ -33,7 +33,6 @@ Class Productstatistics extends Model{
             ->order('pss.id DESC')
             ->select()
             ->toArray();
-        echo self::getLastSql();exit;
         $count = self::alias('pss')
             ->join('productdata p','pss.productid = p.id','LEFT')
             ->where($where)
