@@ -147,9 +147,9 @@ Class HttpdatacollectServerid extends Model{
         header('Content-Disposition: attachment;filename="' . $fileName . '"');
         header('Cache-Control: max-age=0');
 
-        $sqlLimit = 1000;
+        $sqlLimit = 100000;
         // 每隔$limit行，刷新一下输出buffer，不要太大，也不要太小
-        $limit = 1000;
+        $limit = 100000;
         // buffer计数器
         $cnt = 0;
         $fileNameArr = array();

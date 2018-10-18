@@ -10,6 +10,8 @@
 // +----------------------------------------------------------------------
 
 $db_config_cards = require_once('database2.php');
+
+$db_config_cards3 = require_once('database3.php');
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
@@ -258,4 +260,6 @@ return [
 
     //配置第二个数据库
     'db_config_cards' => $db_config_cards,
+    //配置第三个数据库
+    'db_config_cards3' => $db_config_cards3,
 ];

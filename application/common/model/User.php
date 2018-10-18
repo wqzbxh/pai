@@ -12,7 +12,7 @@ use think\Model;
 
 Class User extends Model{
 //    测试
-    protected $connection = 'db_config_cards';
+    protected $connection = 'db_config_cards3';
 
 
 }
