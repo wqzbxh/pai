@@ -22,14 +22,35 @@ Class HttpdatacollectServerid extends Model{
         //获取表名
        $result = self::query('show tables');
        if(!empty($result)){
+
+//得到的表名匹配主数据库中服务器
+
+           $serverDataModel = new \app\common\model\Serverdata();
+           $serverNumResult = $serverDataModel->field('id')->select()->toArray();
+           $j = 0;
+           $k = 0;
+           $branchWarehouseNum = array();
+           $serverNum = array();
+           foreach ($serverNumResult as $value){
+               $serverNum[$k] = (int)$value['id'];
+               $k++;
+           }
+           foreach ($result as $value){
+               $branchWarehouseNum[$j] = (int)substr($value['Tables_in_pai_test'],16);
+               $j++;
+           }
+
+
+           $lastNum = array_intersect($branchWarehouseNum,$serverNum);
 //          将表名转换为大写
            $ChineseTable = array();
            $commonController  = new \app\common\controller\Common();
-           foreach ($result as $value){
-             $num = (int)substr($value['Tables_in_pai_test'],16);
-             $commonResult = $commonController->numberToChinese($num);
-             $ChineseTable[$value['Tables_in_pai_test']] = '服务器'.$commonResult;
+           foreach ($lastNum as $value){
+             $key = 'httpdatacollect_'.$value;
+             $valueResult = $serverDataModel->field('servername')->where(array('id'=>$value))->find()->toArray();
+             $ChineseTable[$key] = $valueResult['servername'];
            }
+
            $returnArray = array(
                'code' => 0,
                'msg' => $errorModel::ERRORCODE[0],

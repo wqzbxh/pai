@@ -55,14 +55,14 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">回包方式</label>
-        <div class="layui-input-block product_radio" id="childrule_process_mode">
+        <div class="layui-input-block tacq_radio" id="childrule_process_mode">
             <input type="radio" name="data[childrule_process_mode]" value="0" title="只回包" class="product_radio" checked="">
             <input type="radio" name="data[childrule_process_mode]" value="1" title="回包并采集" class="product_radio" >
             <input type="radio" name="data[childrule_process_mode]" value="2" title="只采集" class="product_radio" >
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item tacq">
         <label class="layui-form-label">采集时间</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_collect_time]"  value="{$childrule['childrule_collect_time']}"  autocomplete="off" placeholder="请输入采集时间" class="layui-input inputWidth">
@@ -200,6 +200,12 @@
         form.on('submit(demo1)', function(data){
             /** 提交前清空无关的参数 **/
             var childruleSate =  $("input[name='data[childrule_match_type]']:checked").val();
+            var tacq_radio =  $("input[name='data[childrule_process_mode]']:checked").val();
+
+            if(tacq_radio == 0){
+                $('.tacq').find("input").val("");
+            }
+
             if(childruleSate == 0){
                 $('.tpisshow').find("input").val("");
 
@@ -244,6 +250,14 @@
             $('.urlisshow').hide();
             $('.tpisshow').show();
         }
+
+
+        if({$childrule['childrule_process_mode']} == 0){
+            $('.tacq').hide();
+        }else{
+            $('.tacq').show();
+        }
+
         /** 根据匹配方式显示显示与之相关的填框 **/
         $(".childrule_radio").click(function () {
             var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
@@ -254,6 +268,17 @@
             }else{
                 $('.urlisshow').hide();
                 $('.tpisshow').show();
+            }
+        })
+
+
+        $(".tacq_radio").click(function () {
+            var tacq_radio =  $("input[name='data[childrule_process_mode]']:checked").val();
+            if(tacq_radio == 0){
+                $('.tacq').hide();
+
+            }else{
+                $('.tacq').show();
             }
         })
         $(".cancel").click(function () {

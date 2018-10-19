@@ -14,12 +14,23 @@
 .ccc{
     color: #cccccc;
 }
+.fff{
+    color: #FFF;
+    border: 1px solid #1E9FFF;
+}
 
 .c009688{
     color: #009688;
 }
 .c666{
     color: red;
+}
+.E9FFF{
+    color: #1E9FFF;
+    border: 1px solid #1E9FFF;
+  }
+.overstriking{
+    font-weight: 700;
 }
 
 /*下划线*/

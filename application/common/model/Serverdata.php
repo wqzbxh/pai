@@ -224,7 +224,10 @@ Class Serverdata extends Model{
 //              删除黑名单
             $ipblackModel = new \app\common\model\Ipblacklist();
             $ipblackModel->delRecode(array('serverid' => $id));
-
+//              删除分库表
+            $tablename = 'httpdatacollect_'.$id;
+            $httpDatacollectkModel = new \app\common\model\HttpdatacollectServerid();
+            $tablename = $httpDatacollectkModel->delTable($tablename);
 
             if($result == 1){
                 $returnArray = array(

@@ -24,7 +24,7 @@ class Common extends Controller
      */
     public function numberToChinese($num)
     {
-        if (is_int($num) && $num < 100) {
+        if (is_int($num) && $num < 1000) {
             $char = array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九');
             $unit = ['', '十', '百', '千', '万'];
             $return = '';

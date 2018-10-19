@@ -264,12 +264,15 @@ class Productdata extends Model
         }else{
 //            对修改数据进行查重
             $result = self::where(array('product_name'=>$name))->select()->toArray();
+
             if($result){
                 if($result[0]['id'] == $id){
                     $result = 0 ;
                 }else{
                     $result = 1;
                 }
+            }else{
+                $result = 0 ;
             }
         }
         return $result;

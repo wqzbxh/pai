@@ -32,7 +32,7 @@
 
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-normal fff" lay-event="detail">规则</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -52,7 +52,7 @@
             if(obj.event === 'detail'){
                 window.location.href="{:url('Rule/index')}?id="+data.id;
             } else if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
                     layui.use('jquery',function(){
                         var $=layui.$;
                         $.ajax({

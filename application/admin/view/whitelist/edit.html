@@ -1,11 +1,11 @@
 <blockquote class="layui-elem-quote layui-text">
-    修改黑名单
+    修改白名单
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <input type="hidden" value="{$whiteListDetails['serverid']}" name="data[serverid]">
     <input type="hidden" value="{$whiteListDetails['id']}" name="data[id]">
     <div class="layui-form-item">
-        <label class="layui-form-label">黑名单类型</label>
+        <label class="layui-form-label">白名单类型</label>
         <div class="layui-input-block balcklist">
             <input type="radio" name="data[iptype]" value="0" title="账号" class="product_radio" >
             <input type="radio" name="data[iptype]" value="1" title="IP" class="product_radio" checked="">

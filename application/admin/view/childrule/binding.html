@@ -137,12 +137,18 @@
                                 if(data.code==0){
                                     if(data.code==0){
                                         //弹出页面填写
+                                        if(data.data.childrule_exuri == null){
+                                            data.data.childrule_exuri = '';
+                                        }
+                                        if(data.data.childrule_push_content == null){
+                                            data.data.childrule_push_content = '';
+                                        }
                                         layer.open({
                                             type: 1 //Page层类型
                                             ,btn:["确定","取消"]
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
-                                            ,content: "<div class=''><input type='text' name='childrule_push_content' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_push_content' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
                                                 var childrule_push_content= $(layero).find("input[name='childrule_push_content']").val();
@@ -211,7 +217,7 @@
                                             curr: 1 //重新从第 1 页开始
                                         }
                                     });
-                                    layer.alert('已解绑');
+                                    layer.alert('解绑成功！');
                                 }else{
                                     layer.msg(data.msg);
                                 }
@@ -244,7 +250,7 @@
                                         curr: 1 //重新从第 1 页开始
                                     }
                                 });
-                                layer.alert('已绑定');
+                                layer.alert('绑定成功！');
                             }else{
                                 layer.msg(data.msg);
                             }

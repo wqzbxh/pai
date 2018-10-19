@@ -161,7 +161,7 @@
 
 
             } else if(obj.event === 'del'){
-                layer.confirm('真的删除此黑名单吗？', function(index){
+                layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
                     layui.use('jquery',function(){
                         var $=layui.$;
                         $.ajax({

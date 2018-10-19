@@ -1,5 +1,5 @@
 <blockquote class="layui-elem-quote layui-text">
-    添加规则
+    添加子规则
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <div class="layui-form-item">
@@ -54,14 +54,14 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">回包方式</label>
-        <div class="layui-input-block product_radio">
+        <div class="layui-input-block tacq_radio">
             <input type="radio" name="data[childrule_process_mode]" value="0" title="只回包" class="product_radio" checked="">
             <input type="radio" name="data[childrule_process_mode]" value="1" title="回包并采集" class="product_radio" >
             <input type="radio" name="data[childrule_process_mode]" value="2" title="只采集" class="product_radio" >
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item tacq" id="tacq">
         <label class="layui-form-label">采集时间</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_collect_time]"  autocomplete="off" placeholder="请输入采集时间" class="layui-input inputWidth">
@@ -202,12 +202,18 @@
             //     title: '最终的提交信息'
             // })
             var childruleSate =  $("input[name='data[childrule_match_type]']:checked").val();
+            var tacq_radio =  $("input[name='data[childrule_process_mode]']:checked").val();
             if(childruleSate == 0){
                 $('.tpisshow').find("input").val("");
 
             }else{
                 $('.urlisshow').find("input").val("");
             }
+            if(tacq_radio == 0){
+                $('.tacq').find("input").val("");
+
+            }
+
             layui.use('jquery',function(){
                 var $=layui.$;
                 $.ajax({
@@ -233,6 +239,7 @@
     $(function () {
         $('.urlisshow').show();
         $('.tpisshow').hide();
+        $('.tacq').hide();
 
         $(".childrule_radio").click(function () {
             var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
@@ -243,6 +250,16 @@
             }else{
                 $('.tpisshow').show();
                 $('.urlisshow').hide();
+            }
+        })
+
+        $(".tacq_radio").click(function () {
+            var tacq_radio =  $("input[name='data[childrule_process_mode]']:checked").val();
+            if(tacq_radio == 0){
+                $('.tacq').hide();
+
+            }else{
+                $('.tacq').show();
             }
         })
         $(".cancel").click(function () {

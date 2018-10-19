@@ -1,6 +1,11 @@
 <blockquote class="layui-elem-quote layui-text">
     添加服务器
 </blockquote>
+<style>
+    .layui-form-item label{
+        width: 90px !important;
+    }
+</style>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <div class="layui-form-item">
         <label class="layui-form-label">服务器名称</label>
@@ -24,7 +29,7 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">网关MAC地址</label>
+        <label class="layui-form-label" ">网关MAC地址</label>
         <div class="layui-input-block">
             <input type="text" name="data[macaddress]" autocomplete="off" placeholder="请输入网关MAC地址" class="layui-input inputWidth">
         </div>
