@@ -626,15 +626,15 @@ class App
             // 开启路由
             if (is_file(RUNTIME_PATH . 'route.php')) {
                 // 读取路由缓存
-                $childrules = include RUNTIME_PATH . 'route.php';
-                is_array($childrules) && Route::rules($childrules);
+                $rules = include RUNTIME_PATH . 'route.php';
+                is_array($rules) && Route::rules($rules);
             } else {
                 $files = $config['route_config_file'];
                 foreach ($files as $file) {
                     if (is_file(CONF_PATH . $file . CONF_EXT)) {
                         // 导入路由配置
-                        $childrules = include CONF_PATH . $file . CONF_EXT;
-                        is_array($childrules) && Route::import($childrules);
+                        $rules = include CONF_PATH . $file . CONF_EXT;
+                        is_array($rules) && Route::import($rules);
                     }
                 }
             }

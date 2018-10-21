@@ -1588,8 +1588,8 @@ class Request
             if ($key instanceof \Closure) {
                 $key = call_user_func_array($key, [$this]);
             } elseif (true === $key) {
-                foreach ($except as $childrule) {
-                    if (0 === stripos($this->url(), $childrule)) {
+                foreach ($except as $rule) {
+                    if (0 === stripos($this->url(), $rule)) {
                         return;
                     }
                 }

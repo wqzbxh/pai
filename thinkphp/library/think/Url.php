@@ -63,16 +63,16 @@ class Url
         }
 
         if ($url) {
-            $childrule = Route::name(isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : ''));
-            if (is_null($childrule) && isset($info['query'])) {
-                $childrule = Route::name($url);
+            $rule = Route::name(isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : ''));
+            if (is_null($rule) && isset($info['query'])) {
+                $rule = Route::name($url);
                 // 解析地址里面参数 合并到vars
                 parse_str($info['query'], $params);
                 $vars = array_merge($params, $vars);
                 unset($info['query']);
             }
         }
-        if (!empty($childrule) && $match = self::getRuleUrl($childrule, $vars)) {
+        if (!empty($rule) && $match = self::getRuleUrl($rule, $vars)) {
             // 匹配路由命名标识
             $url = $match[0];
             // 替换可选分隔符
@@ -83,7 +83,7 @@ class Url
             if (!is_null($match[2])) {
                 $suffix = $match[2];
             }
-        } elseif (!empty($childrule) && isset($name)) {
+        } elseif (!empty($rule) && isset($name)) {
             throw new \InvalidArgumentException('route name not exists:' . $name);
         } else {
             // 检查别名路由
@@ -246,10 +246,10 @@ class Url
                 $route_domain = array_keys($domains);
                 foreach ($route_domain as $domain_prefix) {
                     if (0 === strpos($domain_prefix, '*.') && strpos($domain, ltrim($domain_prefix, '*.')) !== false) {
-                        foreach ($domains as $key => $childrule) {
-                            $childrule = is_array($childrule) ? $childrule[0] : $childrule;
-                            if (is_string($childrule) && false === strpos($key, '*') && 0 === strpos($url, $childrule)) {
-                                $url    = ltrim($url, $childrule);
+                        foreach ($domains as $key => $rule) {
+                            $rule = is_array($rule) ? $rule[0] : $rule;
+                            if (is_string($rule) && false === strpos($key, '*') && 0 === strpos($url, $rule)) {
+                                $url    = ltrim($url, $rule);
                                 $domain = $key;
                                 // 生成对应子域名
                                 if (!empty($rootDomain)) {
@@ -297,9 +297,9 @@ class Url
     }
 
     // 匹配路由地址
-    public static function getRuleUrl($childrule, &$vars = [])
+    public static function getRuleUrl($rule, &$vars = [])
     {
-        foreach ($childrule as $item) {
+        foreach ($rule as $item) {
             list($url, $pattern, $domain, $suffix) = $item;
             if (empty($pattern)) {
                 return [rtrim($url, '$'), $domain, $suffix];

@@ -47,10 +47,10 @@ class Route extends Command
                 }
             }
         }
-        $childrules = \think\Route::rules(true);
-        array_walk_recursive($childrules, [$this, 'buildClosure']);
+        $rules = \think\Route::rules(true);
+        array_walk_recursive($rules, [$this, 'buildClosure']);
         $content = '<?php ' . PHP_EOL . 'return ';
-        $content .= var_export($childrules, true) . ';';
+        $content .= var_export($rules, true) . ';';
         $content = str_replace(['\'[__start__', '__end__]\''], '', stripcslashes($content));
         return $content;
     }

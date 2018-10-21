@@ -1511,20 +1511,20 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     /**
      * 设置字段验证
      * @access public
-     * @param array|string|bool $childrule  验证规则 true表示自动读取验证器类
+     * @param array|string|bool $rule  验证规则 true表示自动读取验证器类
      * @param array             $msg   提示信息
      * @param bool              $batch 批量验证
      * @return $this
      */
-    public function validate($childrule = true, $msg = [], $batch = false)
+    public function validate($rule = true, $msg = [], $batch = false)
     {
-        if (is_array($childrule)) {
+        if (is_array($rule)) {
             $this->validate = [
-                'rule' => $childrule,
+                'rule' => $rule,
                 'msg'  => $msg,
             ];
         } else {
-            $this->validate = true === $childrule ? $this->name : $childrule;
+            $this->validate = true === $rule ? $this->name : $rule;
         }
         $this->batchValidate = $batch;
         return $this;
@@ -1546,13 +1546,13 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * 自动验证数据
      * @access protected
      * @param array $data  验证数据
-     * @param mixed $childrule  验证规则
+     * @param mixed $rule  验证规则
      * @param bool  $batch 批量验证
      * @return bool
      */
-    protected function validateData($data, $childrule = null, $batch = null)
+    protected function validateData($data, $rule = null, $batch = null)
     {
-        $info = is_null($childrule) ? $this->validate : $childrule;
+        $info = is_null($rule) ? $this->validate : $rule;
 
         if (!empty($info)) {
             if (is_array($info)) {
