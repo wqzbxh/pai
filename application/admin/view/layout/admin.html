@@ -77,33 +77,5 @@
     </div>
 
 </div>
-<script>
-    //JavaScript代码区域
-    layui.use('element', function(){
-        var element = layui.element;
-    });
-    layui.use('layer', function(){
-
-        $(function () {
-            $('.daikaifang').click(function () {
-                layer.msg('此功能待开放！');
-            })
-
-            $('.quit').click(function () {
-                $.post("{:url('login/exitAction')}",function(data){
-                    console.log(data)
-                    if(data == 0){
-                        layer.msg('2秒后退出！');
-                        setTimeout(function () {
-                            window.location.href="{:url('index/index/login')}";
-                        },2000)
-                    }
-                });
-            })
-        })
-
-    })
-</script>
-
 </body>
 </html>

@@ -150,6 +150,7 @@
                                 window.location.href="{:url('Admin/index/index')}"
                             },1000)
                         }else{
+                            $('#captcha_image').find('img').attr('src','/captcha?r='+Math.random());
                             layer.msg(data.msg);
                         }
                     }
