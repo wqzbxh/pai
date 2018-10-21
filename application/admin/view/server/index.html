@@ -1,10 +1,8 @@
+{include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
     服务器列表&nbsp&nbsp&nbsp&nbsp&nbsp
     <!--<span class="back xhx"></span>-->
 </blockquote>
-
-
-
 <div class="layui-btn-group demoTable">
     <div class="layui-inline">
         <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
@@ -111,7 +109,7 @@
                 var checkStatus = table.checkStatus('idTest');
                 layer.msg(checkStatus.isAll ? '全选': '未全选')
             }
-        };del
+        };
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');

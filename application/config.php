@@ -142,7 +142,7 @@ return [
         // 标签库标签结束标记
         'taglib_end'   => '}',
         //开启layout_on
-        'layout_on'     =>  true,
+        'layout_on'     =>  false,
         //目录位置
         'layout_name'   =>  'layout/admin',
         //布局替换变量
