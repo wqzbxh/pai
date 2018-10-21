@@ -18,7 +18,7 @@ class Captcha
     protected $config = [
         'seKey'    => 'ThinkPHP.CN',
         // 验证码加密密钥
-        'codeSet'  => 'qwertyuiopasdfghjklzxcvbnm123456789QWERTYUIOP~!@#$%^&(*)_+',
+        'codeSet'  => '123456',
         // 验证码字符集合
         'expire'   => 1800,
         // 验证码过期时间（s）

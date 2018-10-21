@@ -131,6 +131,14 @@ class Index extends  Common{
     }
 
 
+    /**
+     * 加载欢迎主页
+     */
+
+    public function main()
+    {
+        return $this-> view ->fetch('main');
+    }
     public function test()
     {
     var_dump(APP_PATH);
