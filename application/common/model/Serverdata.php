@@ -304,7 +304,6 @@ Class Serverdata extends Model{
             }
         }
 
-
         //源IP用户黑名单列表 + Radius用户黑名单列表
         $srcIPBlackList = $doc->createElement("SrcIPBlackList");
         $radiusBlackList = $doc->createElement("RadiusBlackList");
@@ -348,16 +347,23 @@ Class Serverdata extends Model{
                     $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
 
                     $ieLabelArray = array();
-                    $ieLabel = $doc ->createElement('IE');
                     $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
                     $ieLabelArray['UaFilter'] = self::compare($ruleAllDataValue['rule_exua'],$ruleAllDataValue['childrule_exua']);
                     $ieLabelArray['UaWholeFilter'] = self::compare($ruleAllDataValue['rule_precise_exua'],$ruleAllDataValue['childrule_precise_exua']);
                     $ieLabelArray['CookieFilter'] = self::compare($ruleAllDataValue['rule_excookie'],$ruleAllDataValue['childrule_excookie']);
+                    $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
+                    $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
+                    $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
+                    $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
+                    $ieLabelArray['CookieFilter'] = $ruleAllDataValue['childrule_match_type'];
 
-                    
-                    var_dump($ieLabelArray);exit;
+                    foreach ($ieLabelArray as $key => $value){
+                        $ieLabel = $doc ->createElement('IE');
+                        $ieLabel->setAttribute($key,$value);
+                        $ruleLabel->appendChild($ieLabel);
+                    }
 
-                    $ruleLabel->appendChild($ieLabel);
+
                     $hostLabel->appendChild($ruleLabel);
                     $generalRuleList->appendChild($hostLabel);
                 }elseif ($ruleAllDataValue['product_type'] == 0){//通匹类型

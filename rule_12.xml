@@ -26,13 +26,40 @@
   <HostRuleList/>
   <GeneralRuleList>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0">
+        <IE Exclude=""/>
+        <IE UaFilter="爱迪生"/>
+        <IE UaWholeFilter=""/>
+        <IE CookieFilter="0"/>
+        <IE ReferInclude=""/>
+        <IE CollectTime="2"/>
+        <IE ReferExclude=""/>
+        <IE ProcessMode="0"/>
+      </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0">
+        <IE Exclude=""/>
+        <IE UaFilter=""/>
+        <IE UaWholeFilter=""/>
+        <IE CookieFilter="0"/>
+        <IE ReferInclude=""/>
+        <IE CollectTime="0"/>
+        <IE ReferExclude=""/>
+        <IE ProcessMode="1"/>
+      </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="3">
+        <IE Exclude="ii"/>
+        <IE UaFilter="d"/>
+        <IE UaWholeFilter=""/>
+        <IE CookieFilter="3"/>
+        <IE ReferInclude=""/>
+        <IE CollectTime="0"/>
+        <IE ReferExclude=""/>
+        <IE ProcessMode="0"/>
+      </Rule>
     </HOST>
   </GeneralRuleList>
 </FlowRuleConvert>
