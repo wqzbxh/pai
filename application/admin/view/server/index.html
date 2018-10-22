@@ -46,7 +46,7 @@
 </script>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">开启</a>
+    <a class="layui-btn layui-btn-xs" lay-event="open">开启</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="detail">停止</a>
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -91,6 +91,20 @@
                 });
             } else if(obj.event === 'edit'){
                 window.location.href="{:url('server/edit')}?id="+data.id;
+            } else if(obj.event === 'open'){
+                layer.confirm('确定开启？', function(index){
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('server/generateRuleXml')}", // ajax请求路径
+                            data: obj.data,
+                            success: function(data){
+
+                            }
+                        });
+                    });
+                });
             }
         });
 

@@ -187,4 +187,44 @@ Class Ipwhitelist extends Model{
         }
         return $returnArray;
     }
+
+    /**
+     * @param $data获取名单的条件升级
+     */
+    public static function getListUpgrade($limit = 0,$offset = 0 ,$iptype = 9 ,$serveruserid = 0)
+    {
+        $criteria = array();
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        if($serveruserid != 0){
+            $criteria['serverid'] = $serveruserid;
+        }
+        if($iptype != 9){
+            $criteria['iptype'] = $iptype;
+        }
+        if($limit != 0 && $offset != 0){
+            $result = self::where($criteria)->limit($offset,$limit)->select()->toArray();
+        }else{
+            $result = self::where($criteria)->select()->toArray();
+        }
+        $count = self::where($criteria)
+            ->count();
+
+        if(!empty($result)){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' =>$count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 10001,
+                'msg' => $errorModel::ERRORCODE[10001],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
+
 }

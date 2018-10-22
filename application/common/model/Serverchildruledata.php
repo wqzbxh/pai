@@ -10,6 +10,8 @@ namespace app\common\model;
 use think\Model;
 
 Class Serverchildruledata extends Model{
+
+    const XMLFILED = "c.*,p.product_type,p.match_type,r.*,sr.status as serverrule_status";
     /*
     * 添加绑定记录到数据库
     */
@@ -182,5 +184,29 @@ Class Serverchildruledata extends Model{
 
         }
         return $returnArray;
+    }
+
+    public static function ruleXmlsData($serverid)
+    {
+
+        $where = array(
+            'scr.serverid' => $serverid,
+            'r.rule_status' => 1,
+            'sr.status' => 1,
+            'c.childrule_status' => 1
+        );
+        if(!empty($serverid)){
+//            查询所有绑定的产品的相关信息
+            $result = self::alias('scr')
+                ->join('productdata p','p.id = scr.product_id','LEFT')
+                ->join('ruledata r','r.id = scr.rule_id','LEFT')
+                ->join('childruledata c','c.id = scr.child_rule_id','LEFT')
+                ->join('serverruledata sr','sr.rule_id = scr.rule_id and sr.serverid = scr.serverid','LEFT')
+                ->where($where)
+                ->field(self::XMLFILED)
+                ->select()
+                ->toArray();
+            return $result;
+        }
     }
 }

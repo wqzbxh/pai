@@ -2,7 +2,7 @@
 <blockquote class="layui-elem-quote layui-text">
     添加白名单
 </blockquote>
-<form class="layui-form" action="{:url('product/addAction')}" method="post">
+<form class="layui-form layui-form-item" action="{:url('product/addAction')}" method="post">
     <input type="hidden" value="{$serverid}" name="data[serverid]">
     <div class="layui-form-item">
         <label class="layui-form-label">白名单类型</label>
@@ -17,17 +17,14 @@
             <input type="text" name="data[content]"  autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
         </div>
     </div>
-    <!--<div class="layui-form-item" id="tpisshow">-->
-        <!--<div class="layui-inline">-->
-            <!--<label class="layui-form-label">通匹类型</label>-->
-            <!--<div class="layui-input-inline">-->
-                <!--<select name="match_type" lay-verify="required" lay-search="">-->
-                    <!--<option value="0">APK</option>-->
-                    <!--<option value="1">EXE</option>-->
-                <!--</select>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="layui-form-item format">
+        <label class="layui-form-label">Format</label>
+        <div class="layui-input-block product_radio ">
+            <input type="radio" name="data[format]" value="1" title="IP地址" class="product_radio"  checked="">
+            <input type="radio" name="data[format]" value="2" title="IP前缀" class="product_radio">
+        </div>
+    </div>
+
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即添加</button>
@@ -85,8 +82,11 @@
             var product =  $("input[name='data[iptype]']:checked").val();
             if(product == 0){
                 $('.typename').text('宽带账号');
+                $('.format').hide();
+
             }else if(product == 1){
                 $('.typename').text('用户IP');
+                $('.format').show();
             }
         })
         // 取消

@@ -11,7 +11,8 @@ use think\Model;
 
 Class Serverproductdata extends Model{
 
-    /*
+
+     /*
      * 添加绑定记录到数据库
      */
     public function addServerproductBindingRecord($productid,$serverid,$status)
@@ -103,4 +104,6 @@ Class Serverproductdata extends Model{
         $result = self::where($where)->count();
         return $result;
     }
+
+
 }

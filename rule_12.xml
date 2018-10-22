@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<FlowRuleConvert version="1.0" reset="12" userid="1">
+  <NetworkCard>
+    <Device ReceveCard="eth3"/>
+    <Device SendCard="eth0"/>
+    <Device DataCenter="120.25.145.26"/>
+    <Device MAC="00-E0-4C-21-F5-54"/>
+  </NetworkCard>
+  <SrcIPWhiteList>
+    <IP address="192.16.8.12" format="1"/>
+    <IP address="192.168.1.752" format="1"/>
+    <IP address="192" format="2"/>
+  </SrcIPWhiteList>
+  <SrcIPBlackList>
+    <IP address="114.80.216.168" format="1"/>
+    <IP address="114" format="2"/>
+    <IP address="42.66.111.2" format="1"/>
+  </SrcIPBlackList>
+  <RadiusList>
+    <Radius Account="YYzhuslkd"/>
+  </RadiusList>
+  <RadiusBlackList>
+    <Radius Account="YY1949"/>
+    <Radius Account="GG5151"/>
+  </RadiusBlackList>
+  <HostRuleList/>
+  <GeneralRuleList>
+    <HOST domain="www.jd.com" HostFilter="sale.jd.com">
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+    </HOST>
+    <HOST domain="www.jd.com" HostFilter="sale.jd.com">
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+    </HOST>
+    <HOST domain="www.jd.com" HostFilter="sale.jd.com">
+      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="sale.jd.com" HostFilter="sale.jd.com" AutoExclude="sale.jd.com" UserPushTimePolicy="sale.jd.com"/>
+    </HOST>
+  </GeneralRuleList>
+</FlowRuleConvert>

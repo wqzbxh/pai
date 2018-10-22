@@ -7,7 +7,9 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\Error;
 use think\Controller;
+use app\common\model\Serverdata;
 
 Class Server extends Common{
 
@@ -178,4 +180,27 @@ Class Server extends Common{
     {
         return $this->fetch('rule_push_the_number');
     }
+
+
+    /**
+     * 对应生成XML文件
+     */
+
+    public function generateRuleXml()
+    {
+        $returnArray = array();
+        if($_POST){
+            Serverdata::RuleXml($_POST);
+        }else{
+           $returnArray = array(
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => array()
+            );
+        }
+
+    }
+
+
+
 }

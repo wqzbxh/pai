@@ -167,4 +167,5 @@ Class Serverruledata extends Model{
         }
         return $returnArray;
     }
+
 }
