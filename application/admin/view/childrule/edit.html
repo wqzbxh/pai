@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    添加规则
+    <a class="xhx AA094" href="{:url('product/index')}">产品管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('childrule/index')}?id={$ruleid}">子规则列表</a>&nbsp>&nbsp修改子规则
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <input type="hidden" value="{$childrule['id']}" name="data[id]">
@@ -49,6 +49,21 @@
                     <option value="2">2</option>
                     <option value="1">1</option>
                     <option value="0">0</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" id="tactics">
+        <div class="layui-inline">
+            <label class="layui-form-label">推送策略</label>
+            <div class="layui-input-inline">
+                <select name="data[userpushtimepolicy]"  class="selectWidth" id="userpushtimepolicy">
+                    <option value="0">————请选择————</option>
+                    {volist name="tactics" id="vo"}
+                    <option value="{$vo.seq}">{$vo.name}</option>
+                    {/volist}
                 </select>
             </div>
         </div>
@@ -146,10 +161,14 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item genmsui">
         <label class="layui-form-label">URl 排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_exuri]" value="{$childrule['childrule_exuri']}"  autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
+        </div>
+        <div class="layui-input-block gensui" id="autoexclude" >
+            <input type="radio" name="data[autoexclude]" value="0" title="关闭自动排除" checked class="autoexclude">
+            <input type="radio" name="data[autoexclude]" value="1" title="打开自动排除"  class="autoexclude">
         </div>
     </div>
 
@@ -235,10 +254,12 @@
         });
         /**反显默认的select  radio **/
         $("#selected").find("option[value='{$childrule["childrule_ratio"]}']").prop("selected",true);
+        $("#userpushtimepolicy").find("option[value='{$childrule["userpushtimepolicy"]}']").prop("selected",true);
         $("#childrule_status").find("input[value='{$childrule["childrule_status"]}']").prop("checked",true);
         $("#childrule_match_type").find("input[value='{$childrule["childrule_match_type"]}']").prop("checked",true);
         $("#childrule_process_mode").find("input[value='{$childrule["childrule_process_mode"]}']").prop("checked",true);
         $("#childrule_type").find("input[value='{$childrule["childrule_type"]}']").prop("checked",true);
+        $("#autoexclude").find("input[value='{$childrule["autoexclude"]}']").prop("checked",true);
         form.render();
     });
 

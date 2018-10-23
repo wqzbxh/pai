@@ -273,4 +273,40 @@ Class Pushpolicy extends Model{
         }
         return $result;
     }
+
+    /**
+     * 获取所有策略组
+     */
+    /**
+     * @param $criteria 查询条件
+     * @param string $filed
+     * @param $offset
+     * @param $limit
+     */
+    public static function getTactics($criteria,$filed = '*',$offset = 0,$limit = 0)
+    {
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        if($offset == 0 && $limit == 0){
+            $result = self::where($criteria)->field($filed)->select()->toArray();
+        }else{
+            $result = self::where($criteria)->field($filed)->limit($offset,$limit)->select()->toArray();
+        }
+        $count = self::where($criteria) ->count();
+        if(!empty($result)){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' =>$count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 10001,
+                'msg' => $errorModel::ERRORCODE[10001],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
 }

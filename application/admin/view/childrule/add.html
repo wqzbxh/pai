@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    添加子规则
+    <a class="xhx AA094" href="{:url('product/index')}">产品管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('childrule/index')}?id={$ruleid}">子规则列表</a>&nbsp>&nbsp添加子规则
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <div class="layui-form-item">
@@ -48,6 +48,21 @@
                     <option value="2">2</option>
                     <option value="1">1</option>
                     <option value="0">0</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" id="tactics">
+        <div class="layui-inline">
+            <label class="layui-form-label">推送策略</label>
+            <div class="layui-input-inline">
+                <select name="data[userpushtimepolicy]"  class="selectWidth">
+                    <option value="0">————请选择————</option>
+                    {volist name="tactics" id="vo"}
+                    <option value="{$vo.seq}">{$vo.name}</option>
+                    {/volist}
                 </select>
             </div>
         </div>
@@ -146,13 +161,19 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item genmsui">
         <label class="layui-form-label">URl 排除</label>
         <div class="layui-input-block">
             <input type="text" name="data[childrule_exuri]"  autocomplete="off" placeholder="请输入URl 排除" class="layui-input inputWidth">
         </div>
+        <div class="layui-input-block gensui" >
+            <input type="radio" name="data[autoexclude]" value="0" title="关闭自动排除" checked >
+            <input type="radio" name="data[autoexclude]" value="1" title="打开自动排除" >
+        </div>
     </div>
+    <style>
 
+    </style>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">推送报文</label>

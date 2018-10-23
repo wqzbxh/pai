@@ -1,10 +1,10 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    添加服务器
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp添加服务器
 </blockquote>
 <style>
     .layui-form-item label{
-        width: 90px !important;
+        width: 105px !important;
     }
 </style>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label" ">网关MAC地址</label>
+        <label class="layui-form-label">网关MAC地址</label>
         <div class="layui-input-block">
             <input type="text" name="data[macaddress]" autocomplete="off" placeholder="请输入网关MAC地址" class="layui-input inputWidth">
         </div>
@@ -43,12 +43,62 @@
         </div>
     </div>
 
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">回包源MAC地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[srcmacaddress]" autocomplete="off" placeholder="请输入回包源MAC地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">回包源IP地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[srcip]" autocomplete="off" placeholder="请输入回包源IP地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">回包目标IP地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[dstip]" autocomplete="off" placeholder="请输入目标IP地址" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">IPIP隧道回注</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="data[ipiptunnel]" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Host统计</label>
+        <div class="layui-input-block">
+            <input type="checkbox"  name="data[hostcollect]" lay-skin="switch" lay-filter="switchHost" lay-text="开启|关闭">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item switchHost" >
+        <label class="layui-form-label">Host统计方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="data[collecttype]" value="1" title="JS统计" class="product_radio" checked="">
+            <input type="radio" name="data[collecttype]" value="2" title="微信流量统计" class="product_radio" >
+            <input type="radio" name="data[collecttype]" value="3" title="未命中APK统计" class="product_radio" >
+        </div>
+    </div>
+
+
+
+
     <div class="layui-form-item">
         <label class="layui-form-label">IP地址</label>
         <div class="layui-input-block">
             <input type="text" name="data[serverip]" autocomplete="off" placeholder="请输入IP地址" class="layui-input inputWidth">
         </div>
     </div>
+
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -74,6 +124,28 @@
             ,content: function(value){
                 layedit.sync(editIndex);
             }
+        });
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            console.log(this.checked);
+            layer.msg('IPIP隧道回注：'+ (this.checked ? '开启' : '关闭'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：提交后生效', data.othis)
+        });
+        //监听switchHost指定开关
+        form.on('switch(switchHost)', function(data){
+            console.log(this.checked);
+            layer.msg('Host统计：'+ (this.checked ? '开启' : '关闭'), {
+                offset: '6px'
+            });
+            if(this.checked){
+                layer.tips('温馨提示：提交后生效', data.othis);
+                $('.switchHost').show();
+            }else{
+                $('.switchHost').hide();
+            }
+
         });
         //监听提交
         form.on('submit(demo1)', function(data){
@@ -101,6 +173,7 @@
 
     $(function () {
         $('#tpisshow').hide();
+        $('.switchHost').hide();
         $(".product_radio").click(function () {
             var product =  $("input[name='product_type']:checked").val();
             if(product == 0){

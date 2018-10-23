@@ -46,6 +46,8 @@ class Childrule extends  Common{
     {
         $this->assign('ruleid',$_GET['ruleid']);
         $this->assign('productid',$_GET['productid']);
+        $tactics = \app\common\model\Pushpolicy::getTactics('','seq,name',0,0);
+        $this->assign('tactics',$tactics['data']);
         return $this->fetch('add');
     }
 
@@ -113,6 +115,9 @@ class Childrule extends  Common{
         if(!empty($_GET['id'])){
             $childruleDataModel = new \app\common\model\Childruledata();
             $result = $childruleDataModel->getChildruleOne($_GET['id']);
+            $tactics = \app\common\model\Pushpolicy::getTactics('','seq,name',0,0);
+            $this->assign('tactics',$tactics['data']);
+            $this->assign('ruleid',$_GET['ruleid']);
             $this->assign('childrule',$result['data'][0]);
             return $this->fetch('edit');
         }else{

@@ -48,7 +48,20 @@ Class Server extends Common{
     {
         $data = array();
         if(!empty($_POST['data'])){
-            $data = $_POST['data'];
+            if(isset($_POST['data']['ipiptunnel']) && $_POST['data']['ipiptunnel'] == 'on'){
+                $data['ipiptunnel'] = 1;
+                unset($_POST['data']['ipiptunnel']);
+            }else{
+                $data['ipiptunnel'] = 0;
+            }
+            if(isset($_POST['data']['hostcollect']) && $_POST['data']['hostcollect'] == 'on'){
+                $data['hostcollect'] = 1;
+                unset($_POST['data']['hostcollect']);
+            }else{
+                $data['hostcollect'] = 0;
+            }
+            $data =array_merge($_POST['data'],$data) ;
+
             $data['createtime'] = time();
             $serverDataModel = new \app\common\model\Serverdata();
             $result = $serverDataModel->addServer($data);
@@ -125,9 +138,26 @@ Class Server extends Common{
     public function editAction()
     {
         $errorModel = new \app\common\model\Error();
+        $data = array();
         if(!empty($_POST['data'])){
+
+            if(isset($_POST['data']['ipiptunnel']) && $_POST['data']['ipiptunnel'] == 'on'){
+                $data['ipiptunnel'] = 1;
+                unset($_POST['data']['ipiptunnel']);
+            }else{
+                $data['ipiptunnel'] = 0;
+            }
+            if(isset($_POST['data']['hostcollect']) && $_POST['data']['hostcollect'] == 'on'){
+                $data['hostcollect'] = 1;
+                unset($_POST['data']['hostcollect']);
+            }else{
+                $data['hostcollect'] = 0;
+            }
+
+            $data =array_merge($_POST['data'],$data);
+
             $serverDataModel = new \app\common\model\Serverdata();
-            $result = $serverDataModel->updateServer($_POST['data']);
+            $result = $serverDataModel->updateServer($data);
         }else{
             $result = array(
                 'code' => 20005,
@@ -198,7 +228,6 @@ Class Server extends Common{
                 'data' => array()
             );
         }
-
     }
 
 

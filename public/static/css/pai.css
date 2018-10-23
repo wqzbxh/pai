@@ -20,7 +20,10 @@
 }
 
 .c009688{
-    color: #009688;
+    color: #009688 !important;
+}
+.AA094{
+    color: #1AA094 !important;
 }
 .c666{
     color: red;
@@ -37,4 +40,14 @@
 .xhx{
     text-decoration:underline;
     cursor: pointer;
+}
+
+
+.gensui{
+    position:relative;
+    top: -40px;
+    left: 320px;
+}
+.genmsui{
+    height: 38px;
 }

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <FlowRuleConvert version="1.0" reset="12" userid="1">
   <NetworkCard>
-    <Device ReceveCard="eth3"/>
-    <Device SendCard="eth0"/>
-    <Device DataCenter="120.25.145.26"/>
-    <Device MAC="00-E0-4C-21-F5-54"/>
+    <Device ReceveCard="eth3'"/>
+    <Device SendCard="eth&gt;"/>
+    <Device DataCenter="120.2&lt;.145.26"/>
+    <Device MAC="00-E0-4&amp;-21-F5-54"/>
   </NetworkCard>
+  <UserPushTimePolicy>
+    <Group Seq="2" LimitTime="11"/>
+    <Group Seq="1111" LimitTime="3"/>
+    <Group Seq="111" LimitTime="111"/>
+  </UserPushTimePolicy>
   <SrcIPWhiteList>
-    <IP address="192.16.8.12" format="1"/>
+    <IP address="&gt;&lt;&amp;'&quot;" format="1"/>
     <IP address="192.168.1.752" format="1"/>
     <IP address="192" format="2"/>
   </SrcIPWhiteList>
@@ -23,43 +28,103 @@
     <Radius Account="YY1949"/>
     <Radius Account="GG5151"/>
   </RadiusBlackList>
-  <HostRuleList/>
-  <GeneralRuleList>
+  <HostRuleList>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0">
-        <IE Exclude=""/>
-        <IE UaFilter="爱迪生"/>
-        <IE UaWholeFilter=""/>
-        <IE CookieFilter="0"/>
-        <IE ReferInclude=""/>
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android$爱迪生"/>
+        <IE UaWholeFilter="Huawei"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE ReferInclude="aidisheng"/>
         <IE CollectTime="2"/>
-        <IE ReferExclude=""/>
-        <IE ProcessMode="0"/>
+        <IE ReferExclude="aidisheng"/>
+        <IE UaInclude="wangzherongyao&#13;&#10;aidisheng"/>
       </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0">
-        <IE Exclude=""/>
-        <IE UaFilter=""/>
-        <IE UaWholeFilter=""/>
-        <IE CookieFilter="0"/>
-        <IE ReferInclude=""/>
-        <IE CollectTime="0"/>
-        <IE ReferExclude=""/>
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android"/>
+        <IE UaWholeFilter="Huawei"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE ReferInclude="wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao"/>
         <IE ProcessMode="1"/>
+        <IE UaInclude="wangzherongyao"/>
       </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="3">
-        <IE Exclude="ii"/>
-        <IE UaFilter="d"/>
-        <IE UaWholeFilter=""/>
-        <IE CookieFilter="3"/>
-        <IE ReferInclude=""/>
-        <IE CollectTime="0"/>
-        <IE ReferExclude=""/>
-        <IE ProcessMode="0"/>
+      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="1" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="www.baidu.com$ziguize"/>
+        <IE UaFilter="Android$ziguize"/>
+        <IE UaWholeFilter="Huawei$ziguize"/>
+        <IE CookieFilter="lll撒的$ziguize"/>
+        <IE ReferInclude="ziguize"/>
+        <IE ReferExclude="ziguize"/>
+        <IE Include="caption"/>
+        <IE UaInclude="ziguize"/>
       </Rule>
     </HOST>
+  </HostRuleList>
+  <GeneralRuleList>
+    <APK>
+      <Rule id="45" productid="47" ruleid="45" type="301" ratio="7" combine="0" HostFilter="王者荣耀" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="王者荣耀$wangzherongyao"/>
+        <IE UaFilter="王者荣耀$wangzherongyao"/>
+        <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
+        <IE CookieFilter="王者荣耀$wangzherongyao"/>
+        <IE ReferInclude="wangzherongyaowangzherongyao"/>
+        <IE CollectTime="1010"/>
+        <IE ReferExclude="wangzherongyaowangzherongyao"/>
+        <IE ProcessMode="1"/>
+        <IE UaInclude="wangzherongyaowangzherongyao"/>
+      </Rule>
+      <Rule id="45" productid="47" ruleid="45" type="301" ratio="7" combine="0" HostFilter="王者荣耀" AutoExclude="0" UserPushTimePolicy="1111">
+        <IE Exclude="王者荣耀$wangzherongyao"/>
+        <IE UaFilter="王者荣耀$wangzherongyao"/>
+        <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
+        <IE CookieFilter="王者荣耀$wangzherongyao"/>
+        <IE ReferInclude="wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao"/>
+        <IE UaInclude="wangzherongyao"/>
+      </Rule>
+    </APK>
+    <EXE>
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="HOSTpaipaipai"/>
+        <IE UaFilter="UApaipaipai"/>
+        <IE UaWholeFilter="UATpaipaipai"/>
+        <IE CookieFilter="COOKIETpaipaipai"/>
+        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+      </Rule>
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="HOSTpaipaipai"/>
+        <IE UaFilter="UApaipaipai"/>
+        <IE UaWholeFilter="UATpaipaipai"/>
+        <IE CookieFilter="COOKIETpaipaipai"/>
+        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+      </Rule>
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="HOSTpaipaipai"/>
+        <IE UaFilter="UApaipaipai"/>
+        <IE UaWholeFilter="UATpaipaipai"/>
+        <IE CookieFilter="COOKIETpaipaipai"/>
+        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE UaInclude="wangzherongyao"/>
+      </Rule>
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+        <IE Exclude="HOSTpaipaipai"/>
+        <IE UaFilter="UApaipaipai"/>
+        <IE UaWholeFilter="UATpaipaipai"/>
+        <IE CookieFilter="COOKIETpaipaipai"/>
+        <IE ReferInclude="wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
+      </Rule>
+    </EXE>
   </GeneralRuleList>
 </FlowRuleConvert>
