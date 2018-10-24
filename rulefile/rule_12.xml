@@ -7,7 +7,6 @@
     <Device MAC="00-E0-4&amp;-21-F5-54"/>
   </NetworkCard>
   <UserPushTimePolicy>
-    <Group Seq="2" LimitTime="11"/>
     <Group Seq="1111" LimitTime="3"/>
     <Group Seq="111" LimitTime="111"/>
   </UserPushTimePolicy>
@@ -30,7 +29,7 @@
   </RadiusBlackList>
   <HostRuleList>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0" UserPushTimePolicy="1111">
         <IE Exclude="www.baidu.com"/>
         <IE UaFilter="Android$爱迪生"/>
         <IE UaWholeFilter="Huawei"/>
@@ -42,7 +41,7 @@
       </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="44" productid="46" ruleid="44" type="1" ratio="10" combine="0" AutoExclude="0">
         <IE Exclude="www.baidu.com"/>
         <IE UaFilter="Android"/>
         <IE UaWholeFilter="Huawei"/>
@@ -54,7 +53,7 @@
       </Rule>
     </HOST>
     <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="1" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="44" productid="46" ruleid="44" type="302" ratio="10" combine="1" AutoExclude="0">
         <IE Exclude="www.baidu.com$ziguize"/>
         <IE UaFilter="Android$ziguize"/>
         <IE UaWholeFilter="Huawei$ziguize"/>
@@ -68,7 +67,7 @@
   </HostRuleList>
   <GeneralRuleList>
     <APK>
-      <Rule id="45" productid="47" ruleid="45" type="301" ratio="7" combine="0" HostFilter="王者荣耀" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="45" productid="47" ruleid="45" type="301" ratio="7" combine="0" HostFilter="王者荣耀" AutoExclude="0">
         <IE Exclude="王者荣耀$wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
@@ -90,7 +89,7 @@
       </Rule>
     </APK>
     <EXE>
-      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
@@ -98,7 +97,7 @@
         <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
@@ -107,7 +106,7 @@
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
@@ -116,7 +115,7 @@
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE UaInclude="wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0" UserPushTimePolicy="2">
+      <Rule id="42" productid="45" ruleid="42" type="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai" AutoExclude="0">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>

@@ -373,7 +373,10 @@ Class Serverdata extends Model{
                     $ruleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
                     $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                     $ruleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
-                    $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                    if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                        $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                    }
+
                     foreach ($ieLabelArray as $key => $value){
                         $ieLabel = $doc ->createElement('IE');
                         $ieLabel->setAttribute($key,$value);
@@ -393,7 +396,9 @@ Class Serverdata extends Model{
                     $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                     $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
                     $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
-                    $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                    if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                        $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                    }
                     if($ruleAllDataValue['match_type'] == 0){//APK类型 $iexe++;
                         if($iApk < 1){
                             $generalRuleList->appendChild($apkLabel);
@@ -430,7 +435,18 @@ Class Serverdata extends Model{
         $flowRuleConvert  -> appendChild($hostRuleList);
         $flowRuleConvert  -> appendChild($generalRuleList);
         $doc->appendChild($flowRuleConvert);
-        $doc->save("rule_".$serverid.".xml");
+        @self::executeShell($serverid);
+        $result = $doc->save("rulefile/rule_".$serverid.".xml");
+        if($result>0){
+            $where = array();
+            $where = array(
+                'id' => $serverid,
+                'serverstatus' => 1
+            );
+           @$updateResult = Serverdata::updateServer($where);
+           return $updateResult;
+        }
+
     }
 
     /**
@@ -454,4 +470,12 @@ Class Serverdata extends Model{
         return $result;
     }
 
+    public static function executeShell($serverid)
+    {
+        $shellCommand = './encryptionRule  $'.$serverid;
+        exec($shellCommand,$result);
+    }
+
 }
+
+

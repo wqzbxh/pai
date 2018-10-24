@@ -179,7 +179,7 @@ Class Pushpolicy extends Common{
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['id'])){
             $pushpolicyModel = new \app\common\model\Pushpolicy();
-            $result = $pushpolicyModel->delRecode(array('id'=>$_POST['id']));
+            $result = $pushpolicyModel->delRecode(array('id'=>$_POST['id'],'seq'=>$_POST['seq']));
             if($result){
                 return $result;
             }

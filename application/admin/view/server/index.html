@@ -79,7 +79,7 @@
                             data: obj.data,
                             success: function(data){
                                 if(data.code==0){
-                                    layer.msg('删除成功！');
+                                        layer.msg('删除成功！');
                                     obj.del();
                                     layer.close(index);
                                 }else{
@@ -100,7 +100,22 @@
                             url: "{:url('server/generateRuleXml')}", // ajax请求路径
                             data: obj.data,
                             success: function(data){
+                                if(data.code == 0){
+                                    layer.alert('已开启，是否刷新表格', {
+                                        skin: 'layui-layer-molv' //样式类名  自定义样式
+                                        ,closeBtn: 1    // 是否显示关闭按钮
+                                        ,anim: 1 //动画类型
+                                        ,btn: ['刷新','不刷新'] //按钮
+                                        ,icon: 6    // icon
+                                        ,yes:function(){
+                                            table.reload('idTest');
+                                        }
+                                        ,btn2:function(){
 
+                                        }});
+                                }else if(data.code == 20008){
+                                    layer.alert('您已经开启,无需重复开启');
+                                }
                             }
                         });
                     });

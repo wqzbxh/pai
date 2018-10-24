@@ -191,6 +191,7 @@ Class Pushpolicy extends Model{
         $errorModel = new \app\common\model\Error();
         if(is_array($where)){
             $result = self::where($where)->delete();
+            Childruledata::update(array('userpushtimepolicy'=>0),array('userpushtimepolicy'=>$where['seq']));
             if($result == 1){
                 $returnArray = array(
                     'code' => 0,
@@ -309,4 +310,5 @@ Class Pushpolicy extends Model{
         }
         return $returnArray;
     }
+
 }

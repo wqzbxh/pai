@@ -220,7 +220,10 @@ Class Server extends Common{
     {
         $returnArray = array();
         if($_POST){
-            Serverdata::RuleXml($_POST);
+           $result =  Serverdata::RuleXml($_POST);
+           if($result){
+               return $result;
+           }
         }else{
            $returnArray = array(
                 'code' => 10005,
@@ -233,3 +236,5 @@ Class Server extends Common{
 
 
 }
+
+
