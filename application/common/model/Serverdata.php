@@ -279,17 +279,23 @@ Class Serverdata extends Model{
         $NetworkCard = $doc->createElement('NetworkCard');
         $serverData['ReceveCard'] = $data['inputcard'];//数据接收网卡
         $serverData['SendCard'] = $data['outcard'];//数据接收网卡
-        $serverData['DataCenter'] = $data['datacenter'];//数据接收网卡
+        $serverData['IpIpTunnel'] = $data['ipiptunnel'];//数据接收网卡
+        $serverData['SrcMAC'] = $data['srcmacaddress'];//数据接收网卡
         $serverData['MAC'] = $data['macaddress'];//数据接收网卡
-
-
-        if($serverData != 10002){
+        $serverData['SrcIp'] = $data['srcip'];//数据接收网卡
+        $serverData['DstIp'] = $data['dstip'];//数据接收网卡
+        $serverData['DataCenter'] = $data['datacenter'];//数据接收网卡
+        $serverData['HostCollect'] = $data['hostcollect'];//数据接收网卡
+        $serverData['CollectType'] = $data['collecttype'];//数据接收网卡
+        $serverData = array_filter($serverData);
+        if(count($serverData) > 0){
             foreach ($serverData as $key => $value){
                 $networkResultLabel =$doc->createElement("Device");
                 $networkResultLabel->setAttribute($key,$value);
                 $NetworkCard->appendChild($networkResultLabel);
             }
         }
+
         /*策略组*/
         $pushpolicyData = Pushpolicy::getTactics('','seq,time',0,0);
         $userPushTimePolicyLabel = $doc->createElement("UserPushTimePolicy");
