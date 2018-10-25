@@ -7,6 +7,7 @@ class Index extends Controller
 {
     public function login()
     {
+        session('userInfo',null);
         return $this->fetch('login');
     }
 
