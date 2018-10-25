@@ -435,17 +435,10 @@ Class Serverdata extends Model{
         $flowRuleConvert  -> appendChild($hostRuleList);
         $flowRuleConvert  -> appendChild($generalRuleList);
         $doc->appendChild($flowRuleConvert);
-        @self::executeShell($serverid);
+        //保存文件到rulefile文件
         $result = $doc->save("rulefile/rule_".$serverid.".xml");
-        if($result>0){
-            $where = array();
-            $where = array(
-                'id' => $serverid,
-                'serverstatus' => 1
-            );
-           @$updateResult = Serverdata::updateServer($where);
-           return $updateResult;
-        }
+        //执行加密操作
+        @self::executeShell($serverid);
 
     }
 
@@ -470,10 +463,40 @@ Class Serverdata extends Model{
         return $result;
     }
 
+    /**
+     * 生成加密XML
+     * @param $serverid 服务器ID
+     * @return array[shellResult] 执行linux命令结果，成功 0，
+     *
+     */
+
     public static function executeShell($serverid)
     {
-        $shellCommand = './encryptionRule  $'.$serverid;
-        exec($shellCommand,$result);
+
+        $shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
+        system($shellCommand,$shellResult);
+        if($shellResult == 0){
+            $where = array();
+            $where = array(
+                'id' => $serverid,
+                'serverstatus' => 1
+            );
+            @$updateResult = Serverdata::updateServer($where);
+            $returnArray = array();
+            $returnArray = array(
+                'code' => 0,
+                'msg' => Error::ERRORCODE[40004],
+                'shellResult' => $shellResult,
+            );
+        }else{
+            $returnArray = array(
+                'code' => 12001,
+                'msg' => Error::ERRORCODE[12001],
+                'shellResult' => $shellResult,
+            );;
+        }
+
+        return $returnArray;
     }
 
 }
