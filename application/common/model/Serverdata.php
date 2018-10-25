@@ -285,8 +285,11 @@ Class Serverdata extends Model{
         $serverData['SrcIp'] = $data['srcip'];//数据接收网卡
         $serverData['DstIp'] = $data['dstip'];//数据接收网卡
         $serverData['DataCenter'] = $data['datacenter'];//数据接收网卡
-        $serverData['HostCollect'] = $data['hostcollect'];//数据接收网卡
-        $serverData['CollectType'] = $data['collecttype'];//数据接收网卡
+        if($data['hostcollect'] != 0){
+            $serverData['HostCollect'] = $data['hostcollect'];//开启Host统计（0否1是）
+            $serverData['CollectType'] = $data['collecttype'];//Host统计方式(1表示JS统计 / 2表示微信流量统计 / 3表示未命中APK统计)
+        }
+
         $serverData = array_filter($serverData);
         if(count($serverData) > 0){
             foreach ($serverData as $key => $value){
@@ -298,15 +301,19 @@ Class Serverdata extends Model{
 
         /*策略组*/
         $pushpolicyData = Pushpolicy::getTactics('','seq,time',0,0);
-        $userPushTimePolicyLabel = $doc->createElement("UserPushTimePolicy");
-        if(count($pushpolicyData['data']) > 0 ){
-            foreach ($pushpolicyData['data'] as $key=>$value){
-                $groupLabel =$doc->createElement("Group");
-                $groupLabel->setAttribute('Seq',$value['seq']);
-                $groupLabel->setAttribute('LimitTime',$value['time']);
-                $userPushTimePolicyLabel->appendChild($groupLabel);
+        if($pushpolicyData['code'] == 0){
+            $userPushTimePolicyLabel = $doc->createElement("UserPushTimePolicy");
+            if(count($pushpolicyData['data']) > 0 ){
+                foreach ($pushpolicyData['data'] as $key=>$value){
+                    $groupLabel =$doc->createElement("Group");
+                    $groupLabel->setAttribute('Seq',$value['seq']);
+                    $groupLabel->setAttribute('LimitTime',$value['time']);
+                    $userPushTimePolicyLabel->appendChild($groupLabel);
+                }
             }
+            $flowRuleConvert  -> appendChild($userPushTimePolicyLabel);
         }
+
 
         //源IP用户白名单列表 + Radius用户白名单列表
         $srcIPWhiteList = $doc->createElement("SrcIPWhiteList");
@@ -438,7 +445,6 @@ Class Serverdata extends Model{
         }
 
         $flowRuleConvert  -> appendChild($NetworkCard);
-        $flowRuleConvert  -> appendChild($userPushTimePolicyLabel);
         $flowRuleConvert  -> appendChild($srcIPWhiteList);
         $flowRuleConvert  -> appendChild($srcIPBlackList);
         $flowRuleConvert  -> appendChild($radiusList);
