@@ -182,6 +182,14 @@
     });
 
     $(function () {
+
+        var hostcollect =  $("input[name='data[hostcollect]']:checked").val();
+        console.log(hostcollect);
+        if(hostcollect == 'on'){
+            $('.switchHost').show();
+        }else{
+            $('.switchHost').hide();
+        }
         $('#tpisshow').hide();
         $("#selected").find("option[value='{$server["collecttype"]}']").prop("selected",true);
         $(".product_radio").click(function () {

@@ -101,7 +101,7 @@
                             data: obj.data,
                             success: function(data){
                                 if(data.code == 0){
-                                    layer.alert('已开启，是否刷新表格', {
+                                   var a = layer.alert('已开启，是否刷新表格', {
                                         skin: 'layui-layer-molv' //样式类名  自定义样式
                                         ,closeBtn: 1    // 是否显示关闭按钮
                                         ,anim: 1 //动画类型
@@ -109,12 +109,13 @@
                                         ,icon: 6    // icon
                                         ,yes:function(){
                                             table.reload('idTest');
+                                            layer.close(a);
                                         }
                                         ,btn2:function(){
 
                                         }});
-                                }else if(data.code == 20008){
-                                    layer.alert('您已经开启,无需重复开启');
+                                }else if(data.code == 12001){
+                                    layer.alert('开启失败，生成加密文件失败！');
                                 }
                             }
                         });

@@ -63,6 +63,7 @@ Class Server extends Common{
             $data =array_merge($_POST['data'],$data) ;
 
             $data['createtime'] = time();
+            $data['updatetime'] = time();
             $serverDataModel = new \app\common\model\Serverdata();
             $result = $serverDataModel->addServer($data);
         }else{
@@ -234,7 +235,15 @@ Class Server extends Common{
     }
 
 
-
+//    更新服务器状态
+    public function updateServerStatus()
+    {
+        $serverDataModel = new Serverdata();
+        $result = $serverDataModel->checkServerStatus();
+        if($result){
+            return $result;
+        }
+    }
 }
 
 
