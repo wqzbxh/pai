@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    产品统计&nbsp>&nbsp规则统计&nbsp&nbsp&nbsp&nbsp
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('productstatistics/productpushthenumber')}?serverid={$serverid}&&time={$time}">产品统计</a>&nbsp>&nbsp规则展示
     <!--<span class="back xhx"></span>-->
 </blockquote>
 <div class="layui-btn-group demoTable">
@@ -35,7 +35,7 @@
 
 
 <script type="text/html" id="preciseVmax">
-    <a  class="xhx c009688"  lay-event="rulePushTheNumber" >{{d.rulehitcount}}</a>
+    <a  class=""  lay-event="" >{{d.rulehitcount}}</a>
 </script>
 
 <script type="text/html" id="name">
