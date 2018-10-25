@@ -319,20 +319,34 @@ Class Serverdata extends Model{
         $srcIPWhiteList = $doc->createElement("SrcIPWhiteList");
         $radiusList = $doc->createElement("RadiusList");
         $srcIPWhiteListResult = Ipwhitelist::getListUpgrade(0,0,9,$serverid);
+
         if($srcIPWhiteListResult['code'] == 0 && count($srcIPWhiteListResult['data']) > 0){
+            $wr = 0;
+            $wl = 0;
             foreach ($srcIPWhiteListResult['data'] as $srcIPWhiteListvalue){
                 if($srcIPWhiteListvalue['iptype'] == 1){//源IP用户白名单列表
+                    $wl++;
                     $srcIPWhiteListLabel = $doc->createElement("IP");
                     $srcIPWhiteListLabel->setAttribute("address",$srcIPWhiteListvalue['content']);
                     $srcIPWhiteListLabel->setAttribute("format",$srcIPWhiteListvalue['format']);
                     $srcIPWhiteList->appendChild($srcIPWhiteListLabel);
                 }else if ($srcIPWhiteListvalue['iptype'] == 0){//Radius用户白名单列表
+                    $wr++;
                     $radiusListLabel = $doc->createElement("Radius");
                     $radiusListLabel->setAttribute("Account",$srcIPWhiteListvalue['content']);
                     $radiusList->appendChild($radiusListLabel);
                 }
             }
-        }
+            if($wl>0){
+                $flowRuleConvert  -> appendChild($srcIPWhiteList);
+            }
+            if($wr>0){
+                $flowRuleConvert  -> appendChild($radiusList);
+            }
+          }
+;
+
+
 
 
         //源IP用户黑名单列表 + Radius用户黑名单列表
@@ -341,17 +355,27 @@ Class Serverdata extends Model{
         $srcIPBlackListResult = Ipblacklist::getListUpgrade(0,0,9,$serverid);
 
         if($srcIPBlackListResult['code'] == 0 && count($srcIPBlackListResult['data']) > 0){
+            $br = 0;
+            $bl = 0;
             foreach ($srcIPBlackListResult['data'] as $srcIPWhiteListvalue){
                 if($srcIPWhiteListvalue['iptype'] == 1){//源IP用户白名单列表
+                    $bl++;
                     $srcIPBlackListLabel = $doc->createElement("IP");
                     $srcIPBlackListLabel->setAttribute("address",$srcIPWhiteListvalue['content']);
                     $srcIPBlackListLabel->setAttribute("format",$srcIPWhiteListvalue['format']);
                     $srcIPBlackList->appendChild($srcIPBlackListLabel);
                 }else if ($srcIPWhiteListvalue['iptype'] == 0){//Radius用户白名单列表
+                    $br++;
                     $radiusBlackLisLabel = $doc->createElement("Radius");
                     $radiusBlackLisLabel->setAttribute("Account",$srcIPWhiteListvalue['content']);
                     $radiusBlackList->appendChild($radiusBlackLisLabel);
                 }
+            }
+            if($bl>0){
+                $flowRuleConvert  -> appendChild($srcIPWhiteList);
+            }
+            if($br>0){
+                $flowRuleConvert  -> appendChild($radiusList);
             }
         }
 
@@ -362,6 +386,8 @@ Class Serverdata extends Model{
         $exeLabel = $doc->createElement('EXE');//创建EXE节点
         $ruleAllData = Serverchildruledata::ruleXmlsData($serverid);
         if(count($ruleAllData) > 0){
+            $hosti = 0;
+            $generali = 0;
             foreach ($ruleAllData as $ruleAllDataValue){
                 $ieLabelArray = array();
                 $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
@@ -376,6 +402,7 @@ Class Serverdata extends Model{
                 $ieLabelArray['UaInclude'] = $ruleAllDataValue['childrule_inua'];//ua包含
                 $ieLabelArray = array_filter($ieLabelArray);
                 if($ruleAllDataValue['product_type'] == 1){//基本类型
+                    $hosti++;
                     $hostLabel = $doc ->createElement('HOST');
                     if(!empty($ruleAllDataValue['rule_host'])){
                         $hostLabel->setAttribute("domain",$ruleAllDataValue['rule_host']);
@@ -403,6 +430,7 @@ Class Serverdata extends Model{
                     $hostLabel->appendChild($ruleLabel);
                     $hostRuleList->appendChild($hostLabel);
                 }elseif ($ruleAllDataValue['product_type'] == 0){//通匹类型
+                    $generali ++;
                     $iApk = 0 ;
                     $iExe = 0 ;
                     $apkRuleLabel = $doc->createElement('Rule');//创建Rule节点
@@ -442,15 +470,15 @@ Class Serverdata extends Model{
                     }
                 }
             }
+            if($hosti > 0){
+                $flowRuleConvert  -> appendChild($hostRuleList);
+            }
+            if($generali > 0){
+                $flowRuleConvert  -> appendChild($generalRuleList);
+            }
         }
 
         $flowRuleConvert  -> appendChild($NetworkCard);
-        $flowRuleConvert  -> appendChild($srcIPWhiteList);
-        $flowRuleConvert  -> appendChild($srcIPBlackList);
-        $flowRuleConvert  -> appendChild($radiusList);
-        $flowRuleConvert  -> appendChild($radiusBlackList);
-        $flowRuleConvert  -> appendChild($hostRuleList);
-        $flowRuleConvert  -> appendChild($generalRuleList);
         $doc->appendChild($flowRuleConvert);
         //保存文件到rulefile文件
         $result = $doc->save("rulefile/rule_".$serverid.".xml");
