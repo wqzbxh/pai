@@ -90,16 +90,6 @@
     </div>
 
 
-
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">IP地址</label>
-        <div class="layui-input-block">
-            <input type="text" name="data[serverip]" autocomplete="off" placeholder="请输入IP地址" class="layui-input inputWidth">
-        </div>
-    </div>
-
-
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即添加</button>
@@ -131,7 +121,6 @@
             layer.msg('IPIP隧道回注：'+ (this.checked ? '开启' : '关闭'), {
                 offset: '6px'
             });
-            layer.tips('温馨提示：提交后生效', data.othis)
         });
         //监听switchHost指定开关
         form.on('switch(switchHost)', function(data){
@@ -140,7 +129,6 @@
                 offset: '6px'
             });
             if(this.checked){
-                layer.tips('温馨提示：提交后生效', data.othis);
                 $('.switchHost').show();
             }else{
                 $('.switchHost').hide();

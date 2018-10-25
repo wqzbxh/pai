@@ -19,6 +19,7 @@ Class Server extends Common{
     public function _initialize()
     {
         parent::_initialize();
+        $this->userId = session('userInfo')['userflag'];
     }
 
 
@@ -61,7 +62,7 @@ Class Server extends Common{
                 $data['hostcollect'] = 0;
             }
             $data =array_merge($_POST['data'],$data) ;
-
+            $data['serveruserid'] = $this->userId;
             $data['createtime'] = time();
             $data['updatetime'] = time();
             $serverDataModel = new \app\common\model\Serverdata();
@@ -103,7 +104,7 @@ Class Server extends Common{
         }else{
             $offset = 0;
         }
-        $serveruserid = 0;
+        $serveruserid = $this->userId;
         $result = $serverDataModel->getServerList('',$offset,$limit,$serveruserid);
         if($result['code'] == 0) {
             return $result;

@@ -491,14 +491,6 @@ Class Serverdata extends Model{
         $shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
         system($shellCommand,$shellResult);
         if($shellResult == 0){
-            $where = array();
-            $where = array(
-                'updatetime' => time(),
-                'serverstatus' => 1
-            );
-
-            self::update($where,array('id'=>$serverid));
-            $returnArray = array();
             $returnArray = array(
                 'code' => 0,
                 'msg' => Error::ERRORCODE[0],
