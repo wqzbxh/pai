@@ -28,6 +28,8 @@ Class Flowspeedstatistics extends Common{
         if(!empty($_GET['id']) && !empty($_GET['time'])){
             $serverid = $_GET['id'];
             $time = $_GET['time'];
+            $fathertime = $_GET['fathertime'];
+            $this->assign('fathertime',$fathertime);
             $this->assign('serverid',$serverid);
             $this->assign('time',$time);
             return $this->fetch('precise_vmax');

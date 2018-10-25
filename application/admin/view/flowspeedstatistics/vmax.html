@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    流量展示
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp小时流量展示
     <!--<span class="back xhx"></span>-->
 </blockquote>
 <script src="__static__js/echarts.min.js" charset="utf-8"></script>
@@ -27,7 +27,7 @@
 
 
 <script type="text/html" id="preciseVmax">
-    <a  class="xhx c009688" href="{:url('flowspeedstatistics/preciseVmax')}?id={$serverid}&&time={{d.htime}}">{{d.mbps_all}}</a>
+    <a  class="xhx c009688" href="{:url('flowspeedstatistics/preciseVmax')}?id={$serverid}&&time={{d.htime}}&&fathertime={$time}">{{d.mbps_all}}</a>
 </script>
 
 <script type="text/html" id="Time">

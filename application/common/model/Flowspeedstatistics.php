@@ -35,7 +35,7 @@ Class Flowspeedstatistics extends Model{
         $returnResult = self::field(self::EveryHourFlowField)
             ->where(array('serverid'=> $serverid))
             ->where('htime','egt',$dateTimeResult)
-            ->where('htime','elt',$endTime)
+            ->where('htime','LT',$endTime)
             ->group('htime')
             ->select()
             ->toArray();
