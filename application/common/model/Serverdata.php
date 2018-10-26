@@ -297,6 +297,8 @@ Class Serverdata extends Model{
                 $networkResultLabel->setAttribute($key,$value);
                 $NetworkCard->appendChild($networkResultLabel);
             }
+
+            $flowRuleConvert  -> appendChild($NetworkCard);
         }
 
         /*策略组*/
@@ -411,7 +413,7 @@ Class Serverdata extends Model{
                         $hostLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
                     }
                     $ruleLabel = $doc ->createElement('Rule');
-                    $ruleLabel->setAttribute("id",$ruleAllDataValue['id']);
+                    $ruleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
                     $ruleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
                     $ruleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
                     $ruleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
@@ -434,7 +436,7 @@ Class Serverdata extends Model{
                     $iApk = 0 ;
                     $iExe = 0 ;
                     $apkRuleLabel = $doc->createElement('Rule');//创建Rule节点
-                    $apkRuleLabel->setAttribute("id",$ruleAllDataValue['id']);
+                    $apkRuleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
                     $apkRuleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
                     $apkRuleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
                     $apkRuleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
@@ -478,7 +480,6 @@ Class Serverdata extends Model{
             }
         }
 
-        $flowRuleConvert  -> appendChild($NetworkCard);
         $doc->appendChild($flowRuleConvert);
         //保存文件到rulefile文件
         $result = $doc->save("rulefile/rule_".$serverid.".xml");

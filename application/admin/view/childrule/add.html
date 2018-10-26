@@ -80,7 +80,7 @@
     <div class="layui-form-item tacq" id="tacq">
         <label class="layui-form-label">采集时间</label>
         <div class="layui-input-block">
-            <input type="text" name="data[childrule_collect_time]"  autocomplete="off" placeholder="请输入采集时间" class="layui-input inputWidth">
+            <input type="number" name="data[childrule_collect_time]" value="0"  lay-verify="childrule_collect_time"  autocomplete="off" placeholder="请输入采集时间" class="layui-input inputWidth">
         </div>
     </div>
 
@@ -213,6 +213,15 @@
                 if(value.length < 1){
                     return '提示处不能为空';
                 }
+            }
+            ,childrule_collect_time:function (value) {
+                var childrule_process_mode =  $("input[name='data[childrule_process_mode]']:checked").val();
+                if(childrule_process_mode == 1 || childrule_process_mode ==2){
+                    if(value < 1){
+                        return '该回包方式下采集时间必须大于0！';
+                    }
+                }
+
             }
             ,content: function(value){
                 layedit.sync(editIndex);
