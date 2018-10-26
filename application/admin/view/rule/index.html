@@ -13,12 +13,13 @@
 <table class="layui-table" lay-data="{width: 1590, height:680, url:'{:url('rule/getRule')}?productid={$productid}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
     <tr>
+        <th lay-data="{field:'id', width:180}">规则ID</th>
         <th lay-data="{field:'rule_name', width:180}">规则名称</th>
         <th lay-data="{field:'product_type', width:70,templet: '#titleTpl'}">类型</th>
         <th lay-data="{field:'rule_status', width:70,templet: '#rule_status'}">状态</th>
         <th lay-data="{field:'rule_host', width:180}">域名</th>
         <th lay-data="{field:'rule_exhost', width:180}">HOST排除</th>
-        <th lay-data="{field:'rule_exuri', width:180}">URL排除</th>
+        <th lay-data="{field:'rule_exuri', width:180}">URI排除</th>
         <th lay-data="{field:'rule_exua', width:180}">UA排除</th>
         <th lay-data="{field:'rule_precise_exua', width:180}">UA精准排除</th>
         <th lay-data="{field:'rule_excookie', width:180}">COOkIE排除</th>

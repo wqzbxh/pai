@@ -25,7 +25,7 @@ Class Common extends Controller{
           $this->redirect('index/index/login');
       }else{
 //          验证权限
-          
+          $this->userId = session('userInfo')['userflag'];
       }
     }
 }

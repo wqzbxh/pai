@@ -24,7 +24,7 @@
         {/switch}
 
         <div class="layui-input-block">
-            <input type="text" name="data[content]"  value="{$blacListDetails['content']}" autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
+            <input type="text" name="data[content]" lay-verify="blackContent"  value="{$blacListDetails['content']}" autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
         </div>
     </div>
     <div class="layui-form-item format">
@@ -61,9 +61,9 @@
             ,laydate = layui.laydate;
         //自定义验证规则
         form.verify({
-            title: function(value){
-                if(value.length < 3){
-                    return '名称至少得3个字符';
+            blackContent: function(value){
+                if(value.length < 1){
+                    return '内容不能为空！';
                 }
             }
             ,content: function(value){
@@ -87,7 +87,7 @@
                         if(data.code==0){
                              layer.msg('修改成功');
                              setTimeout(function () {
-                                 window.location.href="{:url('blacklist/index')}"
+                                 window.location.href="{:url('index/blackIndex')}"
                              },1000)
                          }else{
                              layer.msg(data.msg);
@@ -122,7 +122,7 @@
         // 取消
         $(function () {
             $(".cancel").click(function () {
-                window.location.href="{:url('blacklist/index')}"
+                window.location.href="{:url('index/blackIndex')}"
             })
         })
     })

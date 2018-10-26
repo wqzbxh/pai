@@ -24,13 +24,13 @@
         {/switch}
 
         <div class="layui-input-block">
-            <input type="text" name="data[content]"  value="{$whiteListDetails['content']}" autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
+            <input type="text" name="data[content]"  lay-verify="whitelistContents" value="{$whiteListDetails['content']}" autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
         </div>
     </div>
 
 
     <div class="layui-form-item format">
-        <label class="layui-form-label">Format</label>
+        <label class="layui-form-label">IP格式</label>
         <div class="layui-input-block product_radio ">
             <input type="radio" name="data[format]" value="1" title="IP地址" class="product_radio"  checked="">
             <input type="radio" name="data[format]" value="2" title="IP前缀" class="product_radio">
@@ -63,9 +63,9 @@
             ,laydate = layui.laydate;
         //自定义验证规则
         form.verify({
-            title: function(value){
-                if(value.length < 3){
-                    return '名称至少得3个字符';
+            whitelistContents: function(value){
+                if(value.length < 1){
+                    return '内容不能为空!';
                 }
             }
             ,content: function(value){
@@ -89,7 +89,7 @@
                         if(data.code==0){
                              layer.msg('修改成功');
                              setTimeout(function () {
-                                 window.location.href="{:url('whitelist/index')}"
+                                 window.location.href="{:url('index/whiteIndex')}"
                              },1000)
                          }else{
                              layer.msg(data.msg);
@@ -124,7 +124,7 @@
         // 取消
         $(function () {
             $(".cancel").click(function () {
-                window.location.href="{:url('whitelist/index')}"
+                window.location.href="{:url('index/whiteIndex')}"
             })
         })
     })
