@@ -232,6 +232,7 @@ Class Serverdata extends Model{
             $ipblackModel->delRecode(array('serverid' => $id));
 //              删除分库表
             $tablename = 'httpdatacollect_'.$id;
+
             $httpDatacollectkModel = new \app\common\model\HttpdatacollectServerid();
             $tablename = $httpDatacollectkModel->delTable($tablename);
 
@@ -346,11 +347,6 @@ Class Serverdata extends Model{
                 $flowRuleConvert  -> appendChild($radiusList);
             }
           }
-;
-
-
-
-
         //源IP用户黑名单列表 + Radius用户黑名单列表
         $srcIPBlackList = $doc->createElement("SrcIPBlackList");
         $radiusBlackList = $doc->createElement("RadiusBlackList");
@@ -387,102 +383,183 @@ Class Serverdata extends Model{
         $apkLabel = $doc->createElement('APK');//创建APK节点
         $exeLabel = $doc->createElement('EXE');//创建EXE节点
         $ruleAllData = Serverchildruledata::ruleXmlsData($serverid);
-        if(count($ruleAllData) > 0){
-            $hosti = 0;
-            $generali = 0;
-            foreach ($ruleAllData as $ruleAllDataValue){
-                $ieLabelArray = array();
-                $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
-                $ieLabelArray['UaFilter'] = self::compare($ruleAllDataValue['rule_exua'],$ruleAllDataValue['childrule_exua']);
-                $ieLabelArray['UaWholeFilter'] = self::compare($ruleAllDataValue['rule_precise_exua'],$ruleAllDataValue['childrule_precise_exua']);
-                $ieLabelArray['CookieFilter'] = self::compare($ruleAllDataValue['rule_excookie'],$ruleAllDataValue['childrule_excookie']);
-                $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
-                $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
-                $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
-                $ieLabelArray['Include'] = $ruleAllDataValue['childrule_inuri'];//来源排除字段
-                $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
-                $ieLabelArray['UaInclude'] = $ruleAllDataValue['childrule_inua'];//ua包含
-                $ieLabelArray = array_filter($ieLabelArray);
-                if($ruleAllDataValue['product_type'] == 1){//基本类型
-                    $hosti++;
-                    $hostLabel = $doc ->createElement('HOST');
-                    if(!empty($ruleAllDataValue['rule_host'])){
-                        $hostLabel->setAttribute("domain",$ruleAllDataValue['rule_host']);
-                    }
-                    if(!empty($ruleAllDataValue['rule_exhost'])){
-                        $hostLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
-                    }
-                    $ruleLabel = $doc ->createElement('Rule');
-                    $ruleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
-                    $ruleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
-                    $ruleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
-                    $ruleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
-                    $ruleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
-                    $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
-                    $ruleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
-                    if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
-                        $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
-                    }
+//        $ruleAllData = Serverruledata::ruleXmlsData($serverid);
+        $res = array(); //想要的结果
+        foreach ($ruleAllData as $k => $v) {
+            $res[$v['ruleid']][] = $v;
+        }
+        $hosti = 0;
+        $generali = 0;
+        foreach($res as $key=>$value){
 
-                    foreach ($ieLabelArray as $key => $value){
-                        $ieLabel = $doc ->createElement('IE');
-                        $ieLabel->setAttribute($key,$value);
-                        $ruleLabel->appendChild($ieLabel);
-                    }
-                    $hostLabel->appendChild($ruleLabel);
-                    $hostRuleList->appendChild($hostLabel);
-                }elseif ($ruleAllDataValue['product_type'] == 0){//通匹类型
-                    $generali ++;
-                    $iApk = 0 ;
-                    $iExe = 0 ;
-                    $apkRuleLabel = $doc->createElement('Rule');//创建Rule节点
-                    $apkRuleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
-                    $apkRuleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
-                    $apkRuleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
-                    $apkRuleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
-                    $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
-                    $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
-                    $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
-                    $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
-                    if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
-                        $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
-                    }
-                    if($ruleAllDataValue['match_type'] == 0){//APK类型 $iexe++;
-                        if($iApk < 1){
-                            $generalRuleList->appendChild($apkLabel);
-                            $iApk++;
+           if(is_array($value) && count($value) > 0){
+               if($value[0]['product_type'] == 1){//基本
+                   $hosti++;
+                   $hostLabel = $doc ->createElement('HOST');
+                   if(!empty($value[0]['rule_host'])){
+                       $hostLabel->setAttribute("domain",$value[0]['rule_host']);
+                   }
+                   if(!empty($value[0]['rule_exhost'])){
+                       $hostLabel->setAttribute("HostFilter",$value[0]['rule_exhost']);
+                   }
+                   foreach ($value as $ruleAllDataValue){
+                       $ieLabelArray = array();
+                       $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
+                       $ieLabelArray['Exclude'] = self::compare($ieLabelArray['Exclude'],$ruleAllDataValue['update_childrule_exuri']);
+                       $ieLabelArray['Exclude'] = self::compare($ieLabelArray['Exclude'],$ruleAllDataValue['update_childrule_exuri']);
+                       $ieLabelArray['UaFilter'] = self::compare($ruleAllDataValue['rule_exua'],$ruleAllDataValue['childrule_exua']);
+                       $ieLabelArray['UaWholeFilter'] = self::compare($ruleAllDataValue['rule_precise_exua'],$ruleAllDataValue['childrule_precise_exua']);
+                       $ieLabelArray['CookieFilter'] = self::compare($ruleAllDataValue['rule_excookie'],$ruleAllDataValue['childrule_excookie']);
+                       $ieLabelArray['UaInclude'] = $ruleAllDataValue['childrule_inua'];//
+                       if($ruleAllDataValue['childrule_match'] == 1){
+                           $ieLabelArray['Include'] = $ruleAllDataValue['childrule_uri'];//来源排除字段
+                       }else{
+                           $ieLabelArray['Include'] = $ruleAllDataValue['childrule_inuri'];//来源排除字段
+                       }
+
+                       $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
+                       $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
+                       $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
+                       $ieLabelArray = array_filter($ieLabelArray);
+                       $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
+                       if($ruleAllDataValue['childrule_process_mode'] != 0){
+                           $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
+                       }
+                        $ruleLabel = $doc ->createElement('Rule');
+                        $ruleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
+                        $ruleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
+                        $ruleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
+                        if($ruleAllDataValue['childrule_type'] == 1 || $ruleAllDataValue['childrule_type'] == 2){
+                           $ruleLabel->setAttribute("type","200");
+                            $ieLabelArray['Content'] = $ruleAllDataValue['childrule_type'];
+                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
+                                $ieLabelArray['RespContent'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
+                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
+                                $ieLabelArray['RespContent'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
+                            }
+                        }else{
+                           $ruleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
+                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
+                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
+                            }
                         }
+
+                        $ruleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
+                        $ruleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
+                        $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
+                       if($ruleAllDataValue['autoexclude'] != 0){
+                           $ruleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
+                       }
+                        if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                            $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                        }
+
                         foreach ($ieLabelArray as $key => $value){
                             $ieLabel = $doc ->createElement('IE');
                             $ieLabel->setAttribute($key,$value);
-                            $apkRuleLabel->appendChild($ieLabel);
+                            $ruleLabel->appendChild($ieLabel);
                         }
-                        $apkLabel->appendChild($apkRuleLabel);
-                    }elseif ($ruleAllDataValue['match_type'] == 1){//EXE
-                        if($iExe < 1){
-                            $generalRuleList->appendChild($exeLabel);
-                            $iExe++;
+                        $hostLabel->appendChild($ruleLabel);
+                        $hostRuleList->appendChild($hostLabel);
+                   }
+
+               }else if($value[0]['product_type'] == 0){//通匹
+                   $generali ++;
+                    foreach ($value as $ruleAllDataValue ){
+                        $iApk = 0 ;
+                        $iExe = 0 ;
+                        $ieLabelArray = array();
+                        $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
+                        $ieLabelArray['Exclude'] = self::compare($ieLabelArray['Exclude'],$ruleAllDataValue['update_childrule_exuri']);
+                        $ieLabelArray['UaFilter'] = self::compare($ruleAllDataValue['rule_exua'],$ruleAllDataValue['childrule_exua']);
+                        $ieLabelArray['UaWholeFilter'] = self::compare($ruleAllDataValue['rule_precise_exua'],$ruleAllDataValue['childrule_precise_exua']);
+                        $ieLabelArray['CookieFilter'] = self::compare($ruleAllDataValue['rule_excookie'],$ruleAllDataValue['childrule_excookie']);
+                        $ieLabelArray['UaInclude'] = $ruleAllDataValue['childrule_inua'];//ua包含
+                        if($ruleAllDataValue['childrule_match'] == 1){
+                            $ieLabelArray['Include'] = $ruleAllDataValue['childrule_uri'];//来源排除字段
+                        }else{
+                            $ieLabelArray['Include'] = $ruleAllDataValue['childrule_inuri'];//来源排除字段
                         }
-                        foreach ($ieLabelArray as $key => $value){
-                            $ieLabel = $doc ->createElement('IE');
-                            $ieLabel->setAttribute($key,$value);
-                            $apkRuleLabel->appendChild($ieLabel);
+
+                        $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
+                        $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
+                        $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
+                        $ieLabelArray = array_filter($ieLabelArray);
+                        $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
+                        $ieLabelArray = array_filter($ieLabelArray);
+                        $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
+                        if($ruleAllDataValue['childrule_process_mode'] != 0){
+                            $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
                         }
-                        $exeLabel->appendChild($apkRuleLabel);
+                        $apkRuleLabel = $doc->createElement('Rule');//创建Rule节点
+                        $apkRuleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
+                        $apkRuleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
+                        $apkRuleLabel->setAttribute("ruleid",$ruleAllDataValue['ruleid']);
+                        if($ruleAllDataValue['childrule_type'] == 1 || $ruleAllDataValue['childrule_type'] == 2){
+                            $apkRuleLabel->setAttribute("type","200");
+                            $ieLabelArray['Content'] = $ruleAllDataValue['childrule_type'];
+                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
+                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
+                            }
+                        }else{
+                            $apkRuleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
+                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
+                                $ieLabelArray['RespContent'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
+                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
+                                $ieLabelArray['RespContent'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
+                            }
+                        }
+                        $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
+                        $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
+                        $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
+                        if($ruleAllDataValue['autoexclude'] != 0){
+                            $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
+                        }
+                        if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                            $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                        }
+                        if($ruleAllDataValue['match_type'] == 0){//APK类型 $iexe++;
+                            if($iApk < 1){
+                                $generalRuleList->appendChild($apkLabel);
+                                $iApk++;
+                            }
+                            foreach ($ieLabelArray as $key => $value){
+                                $ieLabel = $doc ->createElement('IE');
+                                $ieLabel->setAttribute($key,$value);
+                                $apkRuleLabel->appendChild($ieLabel);
+                            }
+                            $apkLabel->appendChild($apkRuleLabel);
+                        }elseif ($ruleAllDataValue['match_type'] == 1){//EXE
+                            if($iExe < 1){
+                                $generalRuleList->appendChild($exeLabel);
+                                $iExe++;
+                            }
+                            foreach ($ieLabelArray as $key => $value){
+                                $ieLabel = $doc ->createElement('IE');
+                                $ieLabel->setAttribute($key,$value);
+                                $apkRuleLabel->appendChild($ieLabel);
+                            }
+                            $exeLabel->appendChild($apkRuleLabel);
+                        }
                     }
-                }
-            }
-            if($hosti > 0){
-                $flowRuleConvert  -> appendChild($hostRuleList);
-            }
-            if($generali > 0){
-                $flowRuleConvert  -> appendChild($generalRuleList);
-            }
+               }
+
+           }
+        }
+        if($hosti > 0){
+        $flowRuleConvert  -> appendChild($hostRuleList);
+    }
+        if($generali > 0){
+            $flowRuleConvert  -> appendChild($generalRuleList);
         }
 
         $doc->appendChild($flowRuleConvert);
         //保存文件到rulefile文件
-        $result = $doc->save("rulefile/rule_".$serverid.".xml");
+        $result = $doc->save("rulefile/rule_".$serverid.".xml");exit;
         //执行加密操作
         $shellResult = @self::executeShell($serverid);
         if($shellResult){

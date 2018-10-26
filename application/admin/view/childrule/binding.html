@@ -149,11 +149,11 @@
                                             ,btn:["确定","取消"]
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
-                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_push_content' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_exuri' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
-                                                var childrule_push_content= $(layero).find("input[name='childrule_push_content']").val();
-                                                var childrule_exuri = $(layero).find("textarea").val()
+                                                var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();
+                                                var childrule_push_content = $(layero).find("textarea").val()
 
                                                 console.log();
                                                 //

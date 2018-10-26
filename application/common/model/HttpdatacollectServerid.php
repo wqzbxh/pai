@@ -112,18 +112,28 @@ Class HttpdatacollectServerid extends Model{
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         if(!empty($tableName)){
-            try {
-                $sql = "drop table ".$tableName;
-                $result = self::execute($sql);
+            $sql = 'SHOW TABLES LIKE "'.$tableName.'"';
+            $checkTabel =self::query( $sql);
+            if(!empty($checkTabel)){
+                try {
+                    $sql = "drop table ".$tableName;
+                    $result = self::execute($sql);
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                } catch(Exception $e) {
+                    $returnArray = array(
+                        'code' => 90004,
+                        'msg' => $errorModel::ERRORCODE[90004],
+                        'data' => array()
+                    );
+                }
+            }else{
                 $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-            } catch(Exception $e) {
-                $returnArray = array(
-                    'code' => 90004,
-                    'msg' => $errorModel::ERRORCODE[90004],
+                    'code' => 90005,
+                    'msg' => $errorModel::ERRORCODE[90005],
                     'data' => array()
                 );
             }

@@ -40,8 +40,10 @@
         //自定义验证规则
         form.verify({
             time: function(value){
-                if(value.length < 1){
-                    return '策略时间必须存在！';
+                if(50 > value > 0){
+
+                }else{
+                    return '策略时间必须存在0-50之间';
                 }
             }
             , seq: function(value){

@@ -11,7 +11,7 @@ use think\Model;
 
 Class Serverchildruledata extends Model{
 
-    const XMLFILED = "c.*,c.id as childruleid,p.product_type,p.match_type,r.*,sr.status as serverrule_status";
+    const XMLFILED = "c.*,scr.*,c.id as childruleid,p.product_type,c.childrule_exuri as update_childrule_exuri,p.match_type,scr.childrule_push_content as update_childrule_push_content,r.*,sr.status as serverrule_status,c.childrule_push_content as model_childrule_push_content";
     /*
     * 添加绑定记录到数据库
     */
