@@ -384,7 +384,7 @@ Class Serverdata extends Model{
         $exeLabel = $doc->createElement('EXE');//创建EXE节点
         $ruleAllData = Serverchildruledata::ruleXmlsData($serverid);
 //        $ruleAllData = Serverruledata::ruleXmlsData($serverid);
-        $res = array(); //想要的结果
+        $res = array(); //
         foreach ($ruleAllData as $k => $v) {
             $res[$v['ruleid']][] = $v;
         }
@@ -513,6 +513,7 @@ Class Serverdata extends Model{
                                 $ieLabelArray['RespContent'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
                             }
                         }
+                        $apkRuleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
                         $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
                         $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                         $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
@@ -559,7 +560,7 @@ Class Serverdata extends Model{
 
         $doc->appendChild($flowRuleConvert);
         //保存文件到rulefile文件
-        $result = $doc->save("rulefile/rule_".$serverid.".xml");exit;
+        $result = $doc->save("rulefile/rule_".$serverid.".xml");
         //执行加密操作
         $shellResult = @self::executeShell($serverid);
         if($shellResult){
