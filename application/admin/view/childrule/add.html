@@ -131,8 +131,15 @@
     <div class="layui-form-item">
         <label class="layui-form-label">匹配方式</label>
         <div class="layui-input-block childrule_radio">
-            <input type="radio" name="data[childrule_match_type]" value="0" title="精准" checked="">
-            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊"  >
+            <input type="radio" name="data[childrule_match]" value="1" title="精准" checked="">
+            <input type="radio" name="data[childrule_match]" value="2" title="模糊"  >
+        </div>
+    </div>
+
+    <div class="layui-form-item tpisshow">
+        <label class="layui-form-label">组合关系</label>
+        <div class="layui-input-block">
+            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊和"  >
             <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" >
             <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" >
         </div>
@@ -273,8 +280,8 @@
         $('.tacq').hide();
 
         $(".childrule_radio").click(function () {
-            var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
-            if(childrule == 0){
+            var childrule =  $("input[name='data[childrule_match]']:checked").val();
+            if(childrule == 1){
                 $('.urlisshow').show();
                 $('.tpisshow').hide();
 

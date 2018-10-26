@@ -131,11 +131,19 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">匹配方式</label>
-        <div class="layui-input-block childrule_radio" id="childrule_match_type">
-            <input type="radio" name="data[childrule_match_type]" value="0" title="精准" class="product_radio">
-            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊" class="product_radio">
-            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" class="product_radio" >
-            <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" class="product_radio">
+        <div class="layui-input-block childrule_radio" id="childrule_match">
+            <input type="radio" name="data[childrule_match]" value="1" title="精准" class="product_radio">
+            <input type="radio" name="data[childrule_match]" value="2" title="模糊" class="product_radio">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item tpisshow">
+        <label class="layui-form-label">组合关系</label>
+        <div class="layui-input-block" id="childrule_match_type">
+            <input type="radio" name="data[childrule_match_type]" value="1" title="模糊和"  >
+            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" >
+            <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" >
         </div>
     </div>
 
@@ -266,6 +274,7 @@
         $("#userpushtimepolicy").find("option[value='{$childrule["userpushtimepolicy"]}']").prop("selected",true);
         $("#childrule_status").find("input[value='{$childrule["childrule_status"]}']").prop("checked",true);
         $("#childrule_match_type").find("input[value='{$childrule["childrule_match_type"]}']").prop("checked",true);
+        $("#childrule_match").find("input[value='{$childrule["childrule_match"]}']").prop("checked",true);
         $("#childrule_process_mode").find("input[value='{$childrule["childrule_process_mode"]}']").prop("checked",true);
         $("#childrule_type").find("input[value='{$childrule["childrule_type"]}']").prop("checked",true);
         $("#autoexclude").find("input[value='{$childrule["autoexclude"]}']").prop("checked",true);
@@ -291,8 +300,8 @@
 
         /** 根据匹配方式显示显示与之相关的填框 **/
         $(".childrule_radio").click(function () {
-            var childrule =  $("input[name='data[childrule_match_type]']:checked").val();
-            if(childrule == 0){
+            var childrule =  $("input[name='data[childrule_match]']:checked").val();
+            if(childrule == 1){
                 $('.urlisshow').show();
                 $('.tpisshow').hide();
 
