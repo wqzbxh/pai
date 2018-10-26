@@ -142,7 +142,7 @@
         <label class="layui-form-label">组合关系</label>
         <div class="layui-input-block" id="childrule_match_type">
             <input type="radio" name="data[childrule_match_type]" value="1" title="模糊和"  >
-            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" >
+            <input type="radio" name="data[childrule_match_type]" value="2" title="模糊或" checked >
             <input type="radio" name="data[childrule_match_type]" value="3" title="模糊顺序和" >
         </div>
     </div>
@@ -227,7 +227,6 @@
                         return '该回包方式下采集时间必须大于0！';
                     }
                 }
-
             }
             ,content: function(value){
                 layedit.sync(editIndex);

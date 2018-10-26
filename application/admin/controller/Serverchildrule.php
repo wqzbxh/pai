@@ -56,21 +56,13 @@ Class Serverchildrule extends  Common{
         $errorModel = new \app\common\model\Error();
         if($_POST['childrule_push_content']){
             $data['childrule_push_content'] = $_POST['childrule_push_content'];
-        }else{
-            $returnArray = array(
-                'code' => 50013,
-                'msg' => $errorModel::ERRORCODE[50013],
-                'data' => array()
-            );
         }
         if($_POST['childrule_exuri']){
             $data['childrule_exuri'] = $_POST['childrule_exuri'];
-        }else{
-            $returnArray = array(
-                'code' => 50014,
-                'msg' => $errorModel::ERRORCODE[50014],
-                'data' => array()
-            );
+        }
+
+        if($_POST['binding_childrule_host']){
+            $data['binding_childrule_host'] = $_POST['binding_childrule_host'];
         }
         if($_POST['spid']){
             $id = $_POST['spid'];

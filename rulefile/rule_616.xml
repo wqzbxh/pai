@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<FlowRuleConvert version="1.0" reset="616" userid="2">
+  <NetworkCard>
+    <Device ReceveCard="1"/>
+    <Device SendCard="1"/>
+    <Device IpIpTunnel="1"/>
+    <Device SrcMAC="1"/>
+    <Device MAC="1"/>
+    <Device SrcIp="1"/>
+    <Device DstIp="1"/>
+    <Device DataCenter="1"/>
+    <Device HostCollect="1"/>
+    <Device CollectType="1"/>
+  </NetworkCard>
+  <UserPushTimePolicy>
+    <Group Seq="3" LimitTime="1"/>
+    <Group Seq="2" LimitTime="30"/>
+    <Group Seq="1" LimitTime="15"/>
+  </UserPushTimePolicy>
+</FlowRuleConvert>

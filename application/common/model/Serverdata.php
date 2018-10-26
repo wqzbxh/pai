@@ -406,7 +406,6 @@ Class Serverdata extends Model{
                        $ieLabelArray = array();
                        $ieLabelArray['Exclude'] = self::compare($ruleAllDataValue['rule_exuri'],$ruleAllDataValue['childrule_exuri']);
                        $ieLabelArray['Exclude'] = self::compare($ieLabelArray['Exclude'],$ruleAllDataValue['update_childrule_exuri']);
-                       $ieLabelArray['Exclude'] = self::compare($ieLabelArray['Exclude'],$ruleAllDataValue['update_childrule_exuri']);
                        $ieLabelArray['UaFilter'] = self::compare($ruleAllDataValue['rule_exua'],$ruleAllDataValue['childrule_exua']);
                        $ieLabelArray['UaWholeFilter'] = self::compare($ruleAllDataValue['rule_precise_exua'],$ruleAllDataValue['childrule_precise_exua']);
                        $ieLabelArray['CookieFilter'] = self::compare($ruleAllDataValue['rule_excookie'],$ruleAllDataValue['childrule_excookie']);
@@ -415,9 +414,9 @@ Class Serverdata extends Model{
                            $ieLabelArray['Include'] = $ruleAllDataValue['childrule_uri'];//来源排除字段
                        }else{
                            $ieLabelArray['Include'] = $ruleAllDataValue['childrule_inuri'];//来源排除字段
+                           $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
                        }
 
-                       $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
                        $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                        $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
                        $ieLabelArray = array_filter($ieLabelArray);
@@ -481,9 +480,9 @@ Class Serverdata extends Model{
                             $ieLabelArray['Include'] = $ruleAllDataValue['childrule_uri'];//来源排除字段
                         }else{
                             $ieLabelArray['Include'] = $ruleAllDataValue['childrule_inuri'];//来源排除字段
+                            $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
                         }
 
-                        $ieLabelArray['UriPrefix'] = $ruleAllDataValue['childrule_uri_start'];//URI前缀匹配
                         $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                         $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
                         $ieLabelArray = array_filter($ieLabelArray);
@@ -501,21 +500,23 @@ Class Serverdata extends Model{
                             $apkRuleLabel->setAttribute("type","200");
                             $ieLabelArray['Content'] = $ruleAllDataValue['childrule_type'];
                             if(!empty($ruleAllDataValue['update_childrule_push_content'])){
-                                $ieLabelArray['DstHost'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
-                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
-                                $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
-                            }
-                        }else{
-                            $apkRuleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
-                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
                                 $ieLabelArray['RespContent'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
                             }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
                                 $ieLabelArray['RespContent'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
                             }
+                        }else{
+                            $apkRuleLabel->setAttribute("type",$ruleAllDataValue['childrule_type']);
+                            if(!empty($ruleAllDataValue['update_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['update_childrule_push_content'];//来源排除字段
+                            }elseif (!empty($ruleAllDataValue['model_childrule_push_content'])){
+                                $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
+                            }
                         }
                         $apkRuleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
+
                         $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
                         $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
+                        $ruleAllDataValue['rule_exhost'] =  self::compare($ruleAllDataValue['rule_exhost'],$ruleAllDataValue['binding_childrule_host']);
                         $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
                         if($ruleAllDataValue['autoexclude'] != 0){
                             $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);

@@ -144,15 +144,22 @@
                                         if(data.data.childrule_push_content == null){
                                             data.data.childrule_push_content = '';
                                         }
+                                        if(data.data.binding_childrule_host == null || data.data.binding_childrule_host == undefined ){
+                                            data.data.binding_childrule_host = '';
+                                        }
+                                        console.log(data.data)
                                         layer.open({
                                             type: 1 //Page层类型
                                             ,btn:["确定","取消"]
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
-                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_exuri' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_exuri' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>" +
+                                                "HOST排除：<input type='text' name='binding_childrule_host' class='layui-layer-input' value='"+data.data.binding_childrule_host+"' placeholder='HOST排除'>" +
+                                                "推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
                                                 var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();
+                                                var binding_childrule_host= $(layero).find("input[name='binding_childrule_host']").val();
                                                 var childrule_push_content = $(layero).find("textarea").val()
 
                                                 console.log();
@@ -164,6 +171,7 @@
                                                         url: "{:url('serverchildrule/updateServerChildRule')}", // ajax请求路径
                                                         data:{
                                                             "childrule_push_content" : childrule_push_content,
+                                                            "binding_childrule_host" : binding_childrule_host,
                                                             "childrule_exuri" : childrule_exuri,
                                                             "spid" : spid
                                                         },
