@@ -153,8 +153,8 @@ Class Serverchildruledata extends Model{
                 );
             }else{
                 $returnArray = array(
-                    'code' => 50011,
-                    'msg' => $errorModel::ERRORCODE[50011],
+                    'code' => 50018,
+                    'msg' => $errorModel::ERRORCODE[50018],
                     'data' => array()
                 );
             }
