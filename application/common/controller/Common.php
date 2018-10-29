@@ -50,5 +50,15 @@ class Common extends Controller
         }
     }
 
-//海华度
+
+
+   public static function requestGet($url = '') {
+       $curl = curl_init();//初始化
+       curl_setopt($curl, CURLOPT_URL, $url); //设置抓取的url
+       curl_setopt($curl, CURLOPT_HEADER, 1);  //设置头文件的信息作为数据流输出
+       curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //设置获取的信息以文件流的形式返回，而不是直接输出。
+       $data = curl_exec($curl); //执行命令
+       curl_close($curl); //关闭URL请求
+       return $data;//显示获得的数据
+    }
 }

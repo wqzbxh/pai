@@ -153,8 +153,8 @@
         <IE CollectTime="1010"/>
         <IE DstHost="wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0" HostFilter="王者荣耀$sadf">
-        <IE Exclude="王者荣耀$撒旦法$wangzherongyao"/>
+      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0" HostFilter="王者荣耀">
+        <IE Exclude="王者荣耀$wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
         <IE CookieFilter="王者荣耀$wangzherongyao"/>
@@ -163,7 +163,7 @@
         <IE ReferInclude="wangzherongyao"/>
         <IE ReferExclude="wangzherongyao"/>
         <IE ProcessMode="0"/>
-        <IE DstHost="阿斯蒂芬asdf"/>
+        <IE DstHost="wangzherongyao"/>
       </Rule>
     </APK>
   </GeneralRuleList>

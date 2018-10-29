@@ -245,6 +245,15 @@ Class Server extends Common{
             return $result;
         }
     }
+
+
+
+
+    public function lookStatus()
+    {
+        var_dump(session('server_code'));exit;
+        Cache::get('name');
+    }
 }
 
 

@@ -7,6 +7,7 @@
  */
 namespace app\common\model;
 
+use app\common\controller\Common;
 use think\Model;
 
 Class Serverdata extends Model{
@@ -564,11 +565,23 @@ Class Serverdata extends Model{
         $result = $doc->save("rulefile/rule_".$serverid.".xml");
         //执行加密操作
         $shellResult = @self::executeShell($serverid);
-        if($shellResult){
-            return $shellResult;
+
+        if($shellResult == 0){
+
+            //成功发送服务器
+//                生成加密文件后去get方式请求服务器
+            @self::requestGetTest($serverid);
+
+        }else{
+//                return $shellResult;
         }
 
 
+    }
+
+    public function requestGetTest($serverid)
+    {
+        @self::update(array('serverstatus' => 1),array('id' => $_POST['id']));
     }
 
     /**
@@ -602,7 +615,8 @@ Class Serverdata extends Model{
     public static function executeShell($serverid)
     {
 
-        $shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
+        //$shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
+        $shellCommand = 'mkdir test';
         system($shellCommand,$shellResult);
         if($shellResult == 0){
             $returnArray = array(
@@ -618,7 +632,7 @@ Class Serverdata extends Model{
             );;
         }
 
-        return $returnArray;
+        return 0;
     }
 
      public static function update($data = [], $where = [], $field = null)
@@ -701,6 +715,7 @@ Class Serverdata extends Model{
 
         return $resultArray;
     }
+
 }
 
 
