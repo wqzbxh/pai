@@ -123,7 +123,7 @@
             } else if(obj.event === 'sonLink'){
                 //填写子规则绑定模板渠道号编写
                 if(data.spid == null){
-                    layer.alert('开启后才能进行填写！');
+                    layer.alert('绑定后才能进行填写！');
                 }else{
                     var spid = data.spid
                     layui.use('jquery',function(){
@@ -153,9 +153,10 @@
                                             ,btn:["确定","取消"]
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
-                                            ,content: "<div class=''>渠道号：<input type='text' name='childrule_exuri' class='layui-layer-input' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>" +
-                                                "HOST排除：<input type='text' name='binding_childrule_host' class='layui-layer-input' value='"+data.data.binding_childrule_host+"' placeholder='HOST排除'>" +
-                                                "推送报文：<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,area:['730px']
+                                            ,content: "<div class=''><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>" +
+                                                "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.binding_childrule_host+"' placeholder='HOST排除'>" +
+                                                "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
                                                 var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();
@@ -287,3 +288,13 @@
 
 
 </script>
+
+<style>
+    .openinput{
+        margin: 0 !important;
+    }
+    .opendiv{
+        margin: 5px 0;
+    }
+
+</style>
