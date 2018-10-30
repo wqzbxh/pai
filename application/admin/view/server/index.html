@@ -115,6 +115,7 @@
                     layui.use('jquery',function(){
                         var i;
                         var $=layui.$;
+                        var startime = parseInt(Date.parse(new Date()) / 1000);
                         $.ajax({
                             type: 'post',
                             url: "{:url('server/generateRuleXml')}", // ajax请求路径
@@ -123,22 +124,6 @@
                                 i = showLoad();
                             },
                             success: function(){
-                                   // closeLoad(i);
-                                   // var a = layer.alert('已开启，是否刷新表格', {
-                                   //      skin: 'layui-layer-molv' //样式类名  自定义样式
-                                   //      ,closeBtn: 1    // 是否显示关闭按钮
-                                   //      ,anim: 1 //动画类型
-                                   //      ,btn: ['刷新','不刷新'] //按钮
-                                   //      ,icon: 6    // icon
-                                   //      ,yes:function(){
-                                   //          table.reload('idTest');
-                                   //          layer.close(a);
-                                   //      }
-                                   //      ,btn2:function(){
-                                   //
-                                   //      }});
-
-
                                 var c =  window.setInterval(function () {
                                     var q = 1;
                                     $.ajax({
@@ -148,14 +133,34 @@
                                             id:id
                                         },
                                         success: function(data){
-                                            console.log(data);
-                                            console.log(q);
-                                            if(data == 1){
+                                            var nowtime = parseInt(Date.parse(new Date()) / 1000);
+                                            var mistiming =  nowtime - startime;
+                                            console.log('开始时间'+startime);
+                                            console.log('当前时间'+nowtime);
+                                            console.log('时间差'+ mistiming);
+                                            if(data.code == 0){
                                                 window.clearInterval(c);
                                                 closeLoad(i);
-                                                layer.alert('已开启!');
+                                                var a = layer.alert('已开启，是否刷新表格', {
+                                                     skin: 'layui-layer-molv' //样式类名  自定义样式
+                                                     ,closeBtn: 1    // 是否显示关闭按钮
+                                                     ,anim: 1 //动画类型
+                                                     ,btn: ['刷新','不刷新'] //按钮
+                                                     ,icon: 6    // icon
+                                                     ,yes:function(){
+                                                         table.reload('idTest');
+                                                         layer.close(a);
+                                                     }
+                                                     ,btn2:function(){
+
+                                                     }});
                                             }
-                                               q++;
+                                            if(mistiming > 5){
+                                                window.clearInterval(c);
+                                                closeLoad(i);
+                                                return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                            }
+                                           q++;
                                         }
                                     })
                                 }, 2000);

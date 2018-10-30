@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 use app\common\model\Error;
+use think\Cache;
 use think\Controller;
 use app\common\model\Serverdata;
 
@@ -251,8 +252,19 @@ Class Server extends Common{
 
     public function lookStatus()
     {
-        var_dump(session('server_code'));exit;
-        Cache::get('name');
+        $returnArray = [];
+        $result = Cache::get('code'.$_POST['id']);
+        if($result){
+            Cache::rm('code'.$_POST['id']);
+            if($result == 'OPERATION_SUCCESS'){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => Error::ERRORCODE[0],
+                    'data' => array()
+                );
+            }
+        }
+        return $returnArray;
     }
 }
 

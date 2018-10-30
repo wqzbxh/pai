@@ -567,7 +567,6 @@ Class Serverdata extends Model{
         $shellResult = @self::executeShell($serverid);
 
         if($shellResult == 0){
-
             //成功发送服务器
 //                生成加密文件后去get方式请求服务器
             @self::requestGetTest($serverid);
@@ -581,7 +580,7 @@ Class Serverdata extends Model{
 
     public function requestGetTest($serverid)
     {
-        @self::update(array('serverstatus' => 1),array('id' => $_POST['id']));
+
     }
 
     /**
