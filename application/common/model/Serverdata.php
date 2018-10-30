@@ -8,6 +8,7 @@
 namespace app\common\model;
 
 use app\common\controller\Common;
+use think\Cache;
 use think\Model;
 
 Class Serverdata extends Model{
@@ -383,16 +384,14 @@ Class Serverdata extends Model{
         $generalRuleList = $doc->createElement("GeneralRuleList");
         $apkLabel = $doc->createElement('APK');//创建APK节点
         $exeLabel = $doc->createElement('EXE');//创建EXE节点
-        $ruleAllData = Serverchildruledata::ruleXmlsData($serverid);
-//        $ruleAllData = Serverruledata::ruleXmlsData($serverid);
-        $res = array(); //
-        foreach ($ruleAllData as $k => $v) {
+        $ruleAllData = Serverchildruledata::ruleXmlsData($serverid);//五表联查所有的规则
+        $res = array(); //创建三维数组
+        foreach ($ruleAllData as $k => $v) {//按照三维数组进行分型
             $res[$v['ruleid']][] = $v;
         }
         $hosti = 0;
         $generali = 0;
         foreach($res as $key=>$value){
-
            if(is_array($value) && count($value) > 0){
                if($value[0]['product_type'] == 1){//基本
                    $hosti++;
@@ -445,7 +444,6 @@ Class Serverdata extends Model{
                                 $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
                             }
                         }
-
                         $ruleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
                         $ruleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
                         $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
@@ -550,38 +548,28 @@ Class Serverdata extends Model{
                         }
                     }
                }
-
            }
         }
-        if($hosti > 0){
-        $flowRuleConvert  -> appendChild($hostRuleList);
-    }
-        if($generali > 0){
+        if($hosti > 0){//如果$hostRuleList有内容就追加到父节点中
+            $flowRuleConvert  -> appendChild($hostRuleList);
+        }
+        if($generali > 0){//如果$generalRuleList有内容就追加到父节点中
             $flowRuleConvert  -> appendChild($generalRuleList);
         }
-
-        $doc->appendChild($flowRuleConvert);
-        //保存文件到rulefile文件
-        $result = $doc->save("rulefile/rule_".$serverid.".xml");
-        //执行加密操作
-        $shellResult = @self::executeShell($serverid);
+        $doc->appendChild($flowRuleConvert);//添加父节点
+        $result = $doc->save("rulefile/rule_".$serverid.".xml");//保存文件到rulefile文件
+        $shellResult = @self::executeShell($serverid);//执行加密操作
 
         if($shellResult == 0){
-            //成功发送服务器
-//                生成加密文件后去get方式请求服务器
-            @self::requestGetTest($serverid);
-
+            Cache::rm('code'.$serverid);
+            // 生成加密文件后去get方式请求服务器发送通知  例如：192.168.7.250:8080?1  地址由后台配置
+            $url = 'http://47.100.226.65/index/index/test';
+            Common::requestGet($url);
         }else{
-//                return $shellResult;
+            return $shellResult;
         }
-
-
     }
 
-    public function requestGetTest($serverid)
-    {
-
-    }
 
     /**
      * 比较两个值，相等

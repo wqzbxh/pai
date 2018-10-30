@@ -51,7 +51,10 @@ class Common extends Controller
     }
 
 
-
+    /**
+     * @param string $url 向服务器发出信号
+     * @return mixed
+     */
    public static function requestGet($url = '') {
        $curl = curl_init();//初始化
        curl_setopt($curl, CURLOPT_URL, $url); //设置抓取的url

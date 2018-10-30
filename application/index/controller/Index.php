@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\common\model\Userdata;
 use think\Controller;
 
 class Index extends Controller
@@ -15,21 +16,9 @@ class Index extends Controller
     public function index()
     {
 
-        $file = 'index.php';
+        $file = 'rulefile';
         $mark = 'a';
         if(is_file($file)){
-            $length = filesize($file);
-            $type = mime_content_type($file);
-            $showname =  ltrim(strrchr($file,'/'),'/');
-            header("Content-Description: File Transfer");
-            header('Content-type: ' . $type);
-            header('Content-Length:' . $length);
-            if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'])) { //for IE
-                header('Content-Disposition: attachment; filename="' . rawurlencode($showname) . '"');
-            } else {
-                header('Content-Disposition: attachment; filename="' . $showname . '"');
-            }
-            readfile($file);
             $zip = new \ZipArchive();
             $filename = $mark . ".zip";
             $zip->open($filename, \ZipArchive::CREATE);   //打开压缩包
@@ -48,5 +37,12 @@ class Index extends Controller
             $this->error('源文件不存在！');
         }
 
+    }
+
+    //测试
+    public function test()
+    {
+        Userdata::update(array('createtime'=>time()),array('userflag'=>2));
+        var_dump(long2ip(1917900968));
     }
 }

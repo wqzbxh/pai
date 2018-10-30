@@ -256,7 +256,7 @@ Class Server extends Common{
         $result = Cache::get('code'.$_POST['id']);
         if($result){
             Cache::rm('code'.$_POST['id']);
-            if($result == 'OPERATION_SUCCESS'){
+            if($result == 1){
                 $returnArray = array(
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],

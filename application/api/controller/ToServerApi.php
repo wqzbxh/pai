@@ -160,4 +160,10 @@ class ToServerApi extends Controller{
 
         return json_encode($returnArray);
     }
+    //下载shell脚本 UpLoadShell	GET方式
+    public function upLoadShell()
+    {
+
+    }
+
 }
