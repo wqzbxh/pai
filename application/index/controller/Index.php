@@ -41,33 +41,65 @@ class Index extends Controller
     }
 
     //测试
-    public function test()
+    public function test21()
     {
-        $url = 'http://139.196.91.198:9559/?id=10';
-     //   $user_agent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.1.4322)";
+        $url = 'http://139.196.91.198:/?id=10';
+//         初始化一个 cURL 对象
+        header('content-type:application:json;charset=utf8');
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Methods:GET');
+        header('Access-Control-Allow-Headers:x-requested-with,content-type');
 
-        // 初始化一个 cURL 对象
-//        $curl = curl_init();
-//        $curl = curl_init(); // 启动一个CURL会话
-//        curl_setopt($curl, CURLOPT_URL, $url);
-//        curl_setopt($curl, CURLOPT_HEADER, 0);
-//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
-//        $tmpInfo = curl_exec($curl);
-//        var_dump(curl_error($curl)); //返回api的json对象
-//        //关闭URL请求
-//        curl_close($curl);
-        // 显示获得的数据
-//        print_r($tmpInfo);
+        $curl = curl_init(); // 启动一个CURL会话
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
+        $tmpInfo = curl_exec($curl);
+        var_dump(curl_error($curl));
+        curl_close($curl);
+
+        print_r($tmpInfo);
 
 
-        $fp = fsockopen('139.196.91.198', 9559, $ercode, $ermsg);
-        if($ercode !== 0)
-            exit ('error:'. $ermsg);
-        $st = sprintf("%b", 00100000);
-        fread($fp, $st);
 
 
     }
+
+
+    function test() {
+        $url = 'http://139.196.91.198:9559/9?id=10';
+        $host = parse_url($url,PHP_URL_HOST);
+        $port = parse_url($url,PHP_URL_PORT);
+        $port = $port ? $port : 9559;
+        $scheme = parse_url($url,PHP_URL_SCHEME);
+        $path = parse_url($url,PHP_URL_PATH);
+        $query = parse_url($url,PHP_URL_QUERY);
+
+        if($query) $path .= '?'.$query;
+        if($scheme == 'https') {
+            $host = 'ssl://'.$host;
+        }
+
+        $fp = fsockopen($host,$port,$error_code,$error_msg,1);
+        var_dump($fp);exit;
+        if(!$fp) {
+            return array('error_code' => $error_code,'error_msg' => $error_msg);
+        }
+        else {
+            stream_set_blocking($fp,true);//开启了手册上说的非阻塞模式
+            stream_set_timeout($fp,1);//设置超时
+            $header = "GET $path HTTP/1.1\r\n";
+            $header.="Host: $host\r\n";
+            $header.="Connection: close\r\n\r\n";//长连接关闭
+            fwrite($fp, $header);
+            usleep(1000); // 这一句也是关键，如果没有这延时，可能在nginx服务器上就无法执行成功
+            fclose($fp);
+            var_dump($fp);exit;
+            return array('error_code' => 0);
+        }
+    }
+
+
 }

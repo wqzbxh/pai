@@ -85,7 +85,7 @@
         <IE UaWholeFilter="Huawei$ziguize"/>
         <IE CookieFilter="lll撒的$ziguize"/>
         <IE UaInclude="ziguize"/>
-        <IE Include="ziguizeziguize"/>
+        <IE Include="啥的"/>
         <IE ReferInclude="ziguize"/>
         <IE ReferExclude="ziguize"/>
         <IE ProcessMode="0"/>
@@ -95,7 +95,7 @@
   </HostRuleList>
   <GeneralRuleList>
     <EXE>
-      <Rule id="38" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
+      <Rule id="38" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai$sdsf">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
@@ -127,8 +127,8 @@
         <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
-      <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
-        <IE Exclude="HOSTpaipaipai"/>
+      <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai$/777">
+        <IE Exclude="HOSTpaipaipai$/"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
         <IE CookieFilter="COOKIETpaipaipai"/>
@@ -137,6 +137,7 @@
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ProcessMode="0"/>
         <IE Content="1"/>
+        <IE RespContent="sd "/>
       </Rule>
     </EXE>
     <APK>
