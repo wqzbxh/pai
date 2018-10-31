@@ -58,7 +58,41 @@
     </div>
     <!-- 左侧导航 -->
     <div class="layui-side layui-bg-black">
-        <div class="navBar layui-side-scroll"></div>
+        <div class="navBar layui-side-scroll" style="height: 695px;">
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-computer" data-icon="icon-computer"></i><cite>服务器管理</cite><span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        {switch name="$userflag"}
+                            {case value="1"}
+                                <dd><a href="javascript:;" data-url="serverIndex"><i class="layui-icon" data-icon=""></i><cite>服务器</cite></a></dd>
+                                <dd><a href="javascript:;" data-url="whiteIndex"><i class="layui-icon" data-icon=""></i><cite>白名单</cite></a></dd>
+                                <dd><a href="javascript:;" data-url="blackIndex"><i class="layui-icon" data-icon=""></i><cite>黑名单</cite></a></dd>
+                                <dd class="layui-this"><a href="javascript:;" data-url="httpdatacollectServeridIndex"><i class="layui-icon" data-icon=""></i><cite>信息采集</cite></a></dd>
+                            {/case}
+                            {case value="2"}
+                              <dd><a href="javascript:;" data-url="serverIndex"><i class="layui-icon" data-icon=""></i><cite>服务器</cite></a></dd>
+                            {/case}
+                            {default /}
+                        {/switch}
+                    </dl></li>
+                <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon=""></i><cite>产品管理</cite><span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        {switch name="$userflag"}
+                        {case value="1"}
+                        <dd><a href="javascript:;" data-url="pushpolicyIndex"><i class="layui-icon" data-icon=""></i><cite>推送策略</cite></a></dd>
+                        <dd><a href="javascript:;" data-url="productIndex"><i class="layui-icon" data-icon=""></i><cite>产品管理</cite></a></dd>
+                        <dd><a href="javascript:;" data-url="binding"><i class="layui-icon" data-icon=""></i><cite>产品绑定</cite></a></dd>
+                        {/case}
+                        {case value="2"}
+                        <dd><a href="javascript:;" data-url="binding"><i class="layui-icon" data-icon=""></i><cite>产品绑定</cite></a></dd>
+                        {/case}
+                        {default /}
+                        {/switch}
+                    </dl>
+                </li>
+                <span class="layui-nav-bar" style="top: 227.5px; height: 0px; opacity: 0;"></span>
+            </ul>
+        </div>
     </div>
     <!-- 右侧内容 -->
     <div class="layui-body layui-form">
@@ -92,7 +126,6 @@
 <div class="site-mobile-shade"></div>
 
 <script type="text/javascript" src="__static__admin/layui/layui.js"></script>
-<script type="text/javascript" src="__static__admin/js/nav.js"></script>
 <script type="text/javascript" src="__static__admin/js/leftNav.js"></script>
 <script type="text/javascript" src="__static__admin/js/index.js"></script>
 </body>

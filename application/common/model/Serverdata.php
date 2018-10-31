@@ -9,6 +9,7 @@ namespace app\common\model;
 
 use app\common\controller\Common;
 use think\Cache;
+use think\Config;
 use think\Model;
 
 Class Serverdata extends Model{
@@ -102,7 +103,9 @@ Class Serverdata extends Model{
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         $criteria['is_del'] = 0;
-        $criteria['serveruserid'] = $serveruserid;
+        if($serveruserid != 1){
+            $criteria['serveruserid'] = $serveruserid;
+        }
         $result = self::where($criteria)
             ->limit($offset,$limit)
             ->select()
@@ -562,8 +565,12 @@ Class Serverdata extends Model{
 
         if($shellResult == 0){
             Cache::rm('code'.$serverid);
+            $serverIp = Config::get('server_ip');
+
             // 生成加密文件后去get方式请求服务器发送通知  例如：192.168.7.250:8080?1  地址由后台配置
-            $url = 'http://47.100.226.65/index/index/test';
+            $url = '139.196.91.198:9559/?9&id='.$serverid;
+            $data = Common::requestGet($url);
+            var_dump($data);exit;
             Common::requestGet($url);
         }else{
             return $shellResult;

@@ -124,46 +124,61 @@
                                 i = showLoad();
                             },
                             success: function(){
-                                var c =  window.setInterval(function () {
-                                    var q = 1;
-                                    $.ajax({
-                                        type: 'post',
-                                        url: "{:url('server/lookStatus')}", // ajax请求路径
-                                        data: {
-                                            id:id
-                                        },
-                                        success: function(data){
-                                            var nowtime = parseInt(Date.parse(new Date()) / 1000);
-                                            var mistiming =  nowtime - startime;
-                                            console.log('开始时间'+startime);
-                                            console.log('当前时间'+nowtime);
-                                            console.log('时间差'+ mistiming);
-                                            if(data.code == 0){
-                                                window.clearInterval(c);
-                                                closeLoad(i);
-                                                var a = layer.alert('已开启，是否刷新表格', {
-                                                     skin: 'layui-layer-molv' //样式类名  自定义样式
-                                                     ,closeBtn: 1    // 是否显示关闭按钮
-                                                     ,anim: 1 //动画类型
-                                                     ,btn: ['刷新','不刷新'] //按钮
-                                                     ,icon: 6    // icon
-                                                     ,yes:function(){
-                                                         table.reload('idTest');
-                                                         layer.close(a);
-                                                     }
-                                                     ,btn2:function(){
+                                $.ajax({
+                                    type: 'get',
+                                    url: "http://139.196.91.198:9559/?id=10", // ajax请求路径
+                                    success: function(data){
+                                            if(data == 200){
+                                                console.log(data);
+                                                var c =  window.setInterval(function () {
+                                                    var q = 1;
+                                                    $.ajax({
+                                                        type: 'post',
+                                                        url: "{:url('server/lookStatus')}", // ajax请求路径
+                                                        data: {
+                                                            id:id
+                                                        },
+                                                        success: function(data){
+                                                            var nowtime = parseInt(Date.parse(new Date()) / 1000);
+                                                            var mistiming =  nowtime - startime;
+                                                            console.log('开始时间'+startime);
+                                                            console.log('当前时间'+nowtime);
+                                                            console.log('时间差'+ mistiming);
+                                                            if(data.code == 0){
+                                                                window.clearInterval(c);
+                                                                closeLoad(i);
+                                                                var a = layer.alert('已开启，是否刷新表格', {
+                                                                    skin: 'layui-layer-molv' //样式类名  自定义样式
+                                                                    ,closeBtn: 1    // 是否显示关闭按钮
+                                                                    ,anim: 1 //动画类型
+                                                                    ,btn: ['刷新','不刷新'] //按钮
+                                                                    ,icon: 6    // icon
+                                                                    ,yes:function(){
+                                                                        table.reload('idTest');
+                                                                        layer.close(a);
+                                                                    }
+                                                                    ,btn2:function(){
 
-                                                     }});
-                                            }
-                                            if(mistiming > 6){
-                                                window.clearInterval(c);
+                                                                    }});
+                                                            }
+                                                            if(mistiming > 6){
+                                                                window.clearInterval(c);
+                                                                closeLoad(i);
+                                                                return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                            }
+                                                            q++;
+                                                        }
+                                                    })
+                                                }, 2000);
+                                            }else{
                                                 closeLoad(i);
-                                                return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                return layer.msg('执行失败，请检向服务器发出信号', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                             }
-                                           q++;
-                                        }
-                                    })
-                                }, 2000);
+                                    }
+                                })
+
+
+
 
 
                             }

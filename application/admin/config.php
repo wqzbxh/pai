@@ -7,6 +7,7 @@
  */
 return [
 
+    'server_ip' => '192.168.7.250',
     'layout_on'     =>  false,
     //目录位置
 ];

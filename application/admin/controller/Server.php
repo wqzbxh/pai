@@ -20,7 +20,6 @@ Class Server extends Common{
     public function _initialize()
     {
         parent::_initialize();
-        $this->userId = session('userInfo')['userflag'];
     }
 
 
@@ -106,7 +105,7 @@ Class Server extends Common{
             $offset = 0;
         }
         $serveruserid = $this->userId;
-        $result = $serverDataModel->getServerList('',$offset,$limit,$serveruserid);
+        $result = $serverDataModel->getServerList('',$offset,$limit,$this->userId);
         if($result['code'] == 0) {
             return $result;
         }

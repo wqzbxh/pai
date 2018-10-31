@@ -15,6 +15,8 @@ class Index extends  Common{
 
     public function index()
     {
+
+        $this->assign('userflag',session('userInfo')['userflag']);
         return $this->fetch('index');
     }
 
@@ -52,8 +54,6 @@ class Index extends  Common{
         }
 
     }
-
-
 
 
 

@@ -181,7 +181,7 @@ class Product extends  Common{
         $serverDataModel = new \app\common\model\Serverdata();
         $productDataModel = new \app\common\model\Productdata();
 //        获取服务器列表
-        $result = $serverDataModel->getServerList('',0,1000,0);
+        $result = $serverDataModel->getServerList('',0,1000,$this->userId);
 //        获取产品列表（分清与服务器绑定状态）getProductBindingList
         if($result['code'] == 0){
             $this->assign('serverList',$result['data']);
