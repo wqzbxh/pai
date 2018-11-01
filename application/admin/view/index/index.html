@@ -90,6 +90,16 @@
                         {/switch}
                     </dl>
                 </li>
+                {switch name="$userflag"}
+                {case value="1"}
+                <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon=""></i><cite>系统管理</cite><span class="layui-nav-more"></span></a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-url="userIndex"><i class="layui-icon layui-icon-username " data-icon=""></i><cite>用户管理</cite></a></dd>
+                    </dl>
+                </li>
+                {/case}
+                {/switch}
+
                 <span class="layui-nav-bar" style="top: 227.5px; height: 0px; opacity: 0;"></span>
             </ul>
         </div>

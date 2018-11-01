@@ -144,30 +144,23 @@
                                                 // console.log('时间差'+ mistiming);
                                                 if(data.code == 0){
                                                     window.clearInterval(c);
-                                                    closeLoad(i);
-                                                    var a = layer.alert('已停止，请点击确定按钮', {
-                                                        skin: 'layui-layer-molv' //样式类名  自定义样式
-                                                        ,closeBtn: 1    // 是否显示关闭按钮
-                                                        ,anim: 1 //动画类型
-                                                        ,btn: ['确定'] //按钮
-                                                        ,icon: 6    // icon
-                                                        ,yes:function(){
-                                                            table.reload('idTest');
-                                                            layer.close(a);
-                                                        }
+                                                    layer.msg('服务器'+id+'：已停止！', {
+                                                        offset: '6px'
                                                     });
+                                                    closeLoad(i);
+                                                    table.reload('idTest');
                                                 }
-                                                if(mistiming > 10){
+                                                if(mistiming > 12){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
-                                                    return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                    return layer.msg('服务器'+id+'：停止超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                                 }
                                             }
                                         })
                                     }, 2000);
                                 }else{
                                     closeLoad(i);
-                                    return layer.msg('向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    return layer.msg('服务器'+id+'：向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }
                             }
                         });
@@ -207,22 +200,15 @@
                                                 if(data.code == 0){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
-                                                    var a = layer.alert('已开启，是否刷新表格', {
-                                                        skin: 'layui-layer-molv' //样式类名  自定义样式
-                                                        ,closeBtn: 1    // 是否显示关闭按钮
-                                                        ,anim: 1 //动画类型
-                                                        ,btn: ['确定'] //按钮
-                                                        ,icon: 6    // icon
-                                                        ,yes:function(){
-                                                            table.reload('idTest');
-                                                            layer.close(a);
-                                                        }
+                                                    layer.msg('服务器'+id+'：已开启！', {
+                                                        offset: '6px'
                                                     });
+                                                    table.reload('idTest');
                                                 }
-                                                if(mistiming > 10){
+                                                if(mistiming > 15){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
-                                                    return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                    return layer.msg('服务器'+id+'：开启超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                                 }
                                                 q++;
                                             }
@@ -231,11 +217,11 @@
                                 }else if (data == 12001){
                                     window.clearInterval(c);
                                     closeLoad(i);
-                                    return layer.msg('加密文件失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    return layer.msg('服务器'+id+'：加密文件失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }else{
                                     window.clearInterval(c);
                                     closeLoad(i);
-                                    return layer.msg('向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    return layer.msg('服务器'+id+'：向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }
                             }
                         });

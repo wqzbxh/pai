@@ -1,0 +1,77 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    修改账号
+</blockquote>
+<form class="layui-form" action="" method="post">
+    <input type="hidden" name="data[id]" value="{$userInfo['id']}">
+    <div class="layui-form-item">
+        <label class="layui-form-label typename">账号</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[username]" value="{$userInfo['username']}"  lay-verify="name"   autocomplete="off" placeholder="请输入账号" class="layui-input inputWidth">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label typename"> 密码</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[passwd]" value="{$userInfo['passwd']}"  lay-verify="pass"  autocomplete="off" placeholder="请输入密码" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
+            <a class="layui-btn layui-btn-primary cancel"  lay-filter="cancel"  >取消</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+        //自定义验证规则
+        form.verify({
+            name: [/^[a-zA-Z0-9_-]{4,16}$/,'账号为：4-16位字母、数字、下划线、减号组合'],
+            pass: [/^[a-zA-Z0-9_-]{4,16}$/,'密码为：4-16位字母、数字、下划线、减号组合'],
+            content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+
+
+        form.on('submit(demo1)', function(data){
+            layui.use('jquery',function(){
+                var $=layui.$;
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('user/editAction')}", // ajax请求路径
+                    data: data.field,
+                    success: function(data){
+                        if(data.code==0){
+                             layer.msg('修改成功');
+                             setTimeout(function () {
+                                 window.location.href="{:url('pushpolicy/index')}"
+                             },1000)
+                         }else{
+                             layer.msg(data.msg);
+                         }
+                    }
+                });
+            });
+            return false;
+        });
+    });
+
+    $(function () {
+
+        // 取消
+        $(function () {
+            $(".cancel").click(function () {
+                window.location.href="{:url('index/userIndex')}"
+            })
+        })
+    })
+</script>

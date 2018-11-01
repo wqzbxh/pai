@@ -1,0 +1,157 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    用户列表&nbsp&nbsp&nbsp&nbsp&nbsp
+    <!--<span class="back xhx"></span>-->
+</blockquote>
+
+<form action="" class="layui-form">
+<table class="layui-table " lay-data="{width: 1400, height:667, url:'{:url('user/getList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+
+    <div class="layui-form-item" id="tpisshow">
+
+        <div class="layui-btn-group demoTable layui-inline">
+            <div class="layui-inline">
+                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+            <a class="layui-btn margin-left10 blackAdd" style="margin-left: 10px;"  lay-event="sonLink" c>添加子账户</a>
+        </div>
+
+    </div>
+    <thead>
+    <tr>
+        <th lay-data="{field:'id', width:115, sort: true, fixed: true}">ID</th>
+        <th lay-data="{field:'username', width:150}">账号</th>
+        <th lay-data="{field:'passwd', width:220}">密码</th>
+        <th lay-data="{field:'createtime', width:300,templet:'#Time'}">创建时间</th>
+        <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
+    </tr>
+    </thead>
+</table>
+</form>
+
+<script type="text/html" id="status">
+    <a class="layui-btn  layui-btn-xs " lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script type="text/html" id="Time">
+    {{ time2date(d.createtime) }}
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    function time2date(t){
+        var t1 = parseInt(t + '000');
+        return util.toDateString(t1,"yyyy-MM-dd HH:mm:ss");
+    }
+    layui.use(["table","form"], function(){
+
+
+    })
+    layui.use(["table","form"], function(){
+        var table = layui.table;
+        var form = layui.form;
+        util = layui.util;
+        form.on('select(selectChage)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:data.value,
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj.id)
+        });
+        form.on('radio(status)', function(data){
+            var serverid = $("#selected").find("option:selected").val();
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:serverid,
+                    status:data.value
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        })
+
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+
+            if(obj.event === 'edit'){
+                window.location.href="{:url('user/edit')}?id="+data.id;
+            }else if(obj.event === 'del'){
+                layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('pushpolicy/delAction')}", // ajax请求路径
+                            data: obj.data,
+                            success: function(data){
+                                if(data.code==0){
+                                    layer.msg('删除成功！');
+                                    obj.del();
+                                    layer.close(index);
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    });
+                });
+            } else if(obj.event === 'statusOff'){
+
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    $(function () {
+
+        $(".back").click(function () {
+            window.history.back(-1);
+            $("#selected").options[0].selected = true;
+        })
+
+        $(".blackAdd").click(function () {
+            window.location.href="{:url('user/add')}"
+        })
+    })
+
+    //
+    // window.onload = function(){
+    //     if(window.name!="hasLoad"){
+    //         location.reload();
+    //         window.name = "hasLoad";
+    //     }else{
+    //         window.name="";
+    //     }
+    // }
+</script>

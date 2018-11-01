@@ -139,6 +139,17 @@ class Index extends  Common{
     {
         return $this-> view ->fetch('main');
     }
+
+    /**
+     * @return string 用户首页页面
+     * @throws \think\Exception
+     */
+
+    public function  userIndex()
+    {
+        return $this-> view ->fetch('user/index');
+    }
+
     public function test()
     {
     var_dump(APP_PATH);

@@ -1,0 +1,98 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    添加推送策略
+</blockquote>
+<form class="layui-form" action="{:url('pushpolicy/addAction')}" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label typename">策略组名</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[name]"   lay-verify="name"  autocomplete="off" placeholder="请输入策略组名" class="layui-input inputWidth">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label typename"> 策略编号</label>
+        <div class="layui-input-block">
+            <input type="number" name="data[seq]"   lay-verify="seq"  autocomplete="off" placeholder="请输入策略编号" class="layui-input inputWidth">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label typename"> 策略时间</label>
+        <div class="layui-input-block">
+            <input type="number" name="data[time]"   lay-verify="time"  autocomplete="off" placeholder="请输入策略时间"  class="layui-input inputWidth">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即添加</button>
+            <a class="layui-btn layui-btn-primary cancel"  lay-filter="cancel"  >取消</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+        //自定义验证规则
+        form.verify({
+            seq: function(value){
+                if(50 > value > 0){
+
+                }else{
+                    return '策略时间编号必须存在0-50之间';
+                }
+            }
+           , time: function(value){
+                if(value.length < 1){
+                    return '策略时间必须存在！';
+                }
+            }
+            ,  name: function(value){
+                if(value.length < 1){
+                    return '策略组名必须存在！';
+                }
+            }
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            layui.use('jquery',function(){
+                var $=layui.$;
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('pushpolicy/addAction')}", // ajax请求路径
+                    data: data.field,
+                    success: function(data){
+                        if(data.code==0){
+                             layer.msg('添加成功');
+                             setTimeout(function () {
+                                 window.location.href="{:url('pushpolicy/index')}"
+                             },1000)
+                         }else{
+                             layer.msg(data.msg);
+                         }
+                    }
+                });
+            });
+            return false;
+        });
+    });
+
+    $(function () {
+
+        // 取消
+        $(function () {
+            $(".cancel").click(function () {
+                window.location.href="{:url('pushpolicy/index')}"
+            })
+        })
+    })
+</script>
