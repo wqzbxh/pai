@@ -109,6 +109,70 @@
                 });
             } else if(obj.event === 'edit'){
                 window.location.href="{:url('server/edit')}?id="+data.id;
+            }  else if(obj.event === 'detail'){
+                var id = data.id ;
+                layer.confirm('确定停止？', function(index){
+                    layui.use('jquery',function(){
+                        var i;
+                        var $=layui.$;
+                        var startime = parseInt(Date.parse(new Date()) / 1000);
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('server/operateServer')}", // ajax请求路径
+                            data: {
+                                serverid:id,
+                                opcode:5
+                            },
+                            beforeSend: function () {
+                                i = showLoad();
+                            },
+                            success: function(data){
+                                if(data == 200){
+                                    var c =  window.setInterval(function () {
+                                        var q = 1;
+                                        $.ajax({
+                                            type: 'post',
+                                            url: "{:url('server/lookStatus')}", // ajax请求路径
+                                            data: {
+                                                id:id
+                                            },
+                                            success: function(data){
+                                                var nowtime = parseInt(Date.parse(new Date()) / 1000);
+                                                var mistiming =  nowtime - startime;
+                                                // console.log('开始时间'+startime);
+                                                // console.log('当前时间'+nowtime);
+                                                // console.log('时间差'+ mistiming);
+                                                if(data.code == 0){
+                                                    window.clearInterval(c);
+                                                    closeLoad(i);
+                                                    var a = layer.alert('已停止，请点击确定按钮', {
+                                                        skin: 'layui-layer-molv' //样式类名  自定义样式
+                                                        ,closeBtn: 1    // 是否显示关闭按钮
+                                                        ,anim: 1 //动画类型
+                                                        ,btn: ['确定'] //按钮
+                                                        ,icon: 6    // icon
+                                                        ,yes:function(){
+                                                            table.reload('idTest');
+                                                            layer.close(a);
+                                                        }
+                                                    });
+                                                }
+                                                if(mistiming > 10){
+                                                    window.clearInterval(c);
+                                                    closeLoad(i);
+                                                    return layer.msg('执行超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                }
+                                            }
+                                        })
+                                    }, 2000);
+                                }else{
+                                    closeLoad(i);
+                                    return layer.msg('向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                }
+                            }
+                        });
+                    });
+                });
             } else if(obj.event === 'open'){
                 var id = data.id ;
                 layer.confirm('确定开启？', function(index){
@@ -137,9 +201,9 @@
                                             success: function(data){
                                                 var nowtime = parseInt(Date.parse(new Date()) / 1000);
                                                 var mistiming =  nowtime - startime;
-                                                console.log('开始时间'+startime);
-                                                console.log('当前时间'+nowtime);
-                                                console.log('时间差'+ mistiming);
+                                                // console.log('开始时间'+startime);
+                                                // console.log('当前时间'+nowtime);
+                                                // console.log('时间差'+ mistiming);
                                                 if(data.code == 0){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
@@ -147,15 +211,13 @@
                                                         skin: 'layui-layer-molv' //样式类名  自定义样式
                                                         ,closeBtn: 1    // 是否显示关闭按钮
                                                         ,anim: 1 //动画类型
-                                                        ,btn: ['刷新','不刷新'] //按钮
+                                                        ,btn: ['确定'] //按钮
                                                         ,icon: 6    // icon
                                                         ,yes:function(){
                                                             table.reload('idTest');
                                                             layer.close(a);
                                                         }
-                                                        ,btn2:function(){
-
-                                                        }});
+                                                    });
                                                 }
                                                 if(mistiming > 10){
                                                     window.clearInterval(c);

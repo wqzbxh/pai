@@ -235,6 +235,26 @@ Class Server extends Common{
         }
     }
 
+    /**
+     * @explain 对服务器的操作
+     * @param $serverid操作的id
+     * @param $opcode操作码
+     * @return array返回
+     */
+    public function operateServer()
+    {
+        $returnArray = array();
+        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){
+            $returnArray = Serverdata::operateServer($_POST['serverid'],$_POST['opcode']);
+        }else{
+            $returnArray = array(
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => array()
+            );
+        }
+        return $returnArray;
+    }
 
 //    更新服务器状态
     public function updateServerStatus()
@@ -248,14 +268,19 @@ Class Server extends Common{
 
 
 
-
+    /**
+     * @explain 对服务器的操作
+     * @param $serverid操作的id
+     * @param $opcode操作码
+     * @return array返回
+     */
     public function lookStatus()
     {
         $returnArray = [];
         $result = Cache::get('code'.$_POST['id']);
         if($result){
             Cache::rm('code'.$_POST['id']);
-            if($result == 1){
+            if($result){
                 $returnArray = array(
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],
@@ -265,6 +290,9 @@ Class Server extends Common{
         }
         return $returnArray;
     }
+
+
+
 }
 
 
