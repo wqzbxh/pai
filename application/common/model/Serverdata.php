@@ -279,9 +279,7 @@ Class Serverdata extends Model{
         $flowRuleConvert->setAttribute("version","1.0");//设置版本属性
         $flowRuleConvert->setAttribute("reset",$serverid);//设置服务器id
         $flowRuleConvert->setAttribute("userid",$userid);//设置用户ID
-
-
-//        -收发网卡列表XML
+//        -收发网卡列表XML 服务器
         $NetworkCard = $doc->createElement('NetworkCard');
         $serverData['ReceveCard'] = $data['inputcard'];//数据接收网卡
         $serverData['SendCard'] = $data['outcard'];//数据接收网卡
@@ -562,18 +560,18 @@ Class Serverdata extends Model{
         $doc->appendChild($flowRuleConvert);//添加父节点
         $result = $doc->save("rulefile/rule_".$serverid.".xml");//保存文件到rulefile文件
         $shellResult = @self::executeShell($serverid);//执行加密操作
-
-        if($shellResult == 0){
-            Cache::rm('code'.$serverid);
-            $serverIp = Config::get('server_ip');
-
-            // 生成加密文件后去get方式请求服务器发送通知  例如：192.168.7.250:8080?1  地址由后台配置
-            $url = '139.196.91.198:9559/?9&id='.$serverid;
-            $data = Common::requestGet($url);
-            var_dump($data);exit;
-            Common::requestGet($url);
+        if($shellResult['code'] == 0){ // 生成加密文件后去get方式请求服务器发送通知  例如：192.168.7.250:8080?1  地址由后台配置
+            Cache::rm('code'.$serverid);//再次清除缓存的该服务器提示代码
+            $serverIp = Config::get('server_ip');//获取服务器地址IP及其端口
+            $url = $serverIp.'/?9&id='.$serverid;//串接地址
+            $data = Common::requestGet($url);//发送GET请求
+            if($data = 200){//第二步向服务器ip端口发送请求成功，把服务器的200 rerun出去
+                return $data;
+            }else{
+                return $data;//返回的是直接错误结果解析
+            }
         }else{
-            return $shellResult;
+            return $shellResult['code'];//加密失败返回程序
         }
     }
 
@@ -611,7 +609,7 @@ Class Serverdata extends Model{
 
         //$shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
         $shellCommand = 'mkdir test';
-        system($shellCommand,$shellResult);
+        system($shellCommand,$shellResult);//成功以后这一步会将加密程序返回的0赋值给shellResult，对shellResult进行判断
         if($shellResult == 0){
             $returnArray = array(
                 'code' => 0,
@@ -622,11 +620,15 @@ Class Serverdata extends Model{
             $returnArray = array(
                 'code' => 12001,
                 'msg' => Error::ERRORCODE[12001],
-                'shellResult' => $shellResult,
+                'shellResult' => $shellResult,//返回加密失败的程序报的错误
             );;
         }
-
-        return 0;
+        $returnArray = array(
+            'code' => 0,
+            'msg' => Error::ERRORCODE[0],
+            'shellResult' => $shellResult,
+        );
+        return $returnArray;
     }
 
      public static function update($data = [], $where = [], $field = null)

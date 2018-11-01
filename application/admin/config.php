@@ -6,8 +6,7 @@
  * Time: 13:27
  */
 return [
-
-    'server_ip' => '192.168.7.250',
+    'server_ip' => '47.106.124.38:9559',
     'layout_on'     =>  false,
     //目录位置
 ];

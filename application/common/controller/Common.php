@@ -52,17 +52,25 @@ class Common extends Controller
 
 
     /**
-     * @param string $url 向服务器发出信号
+     * @param string $url 向服务器发出信号 get
      * @return mixed
      */
    public static function requestGet($url = '') {
-       $curl = curl_init();//初始化
-       curl_setopt($curl, CURLOPT_URL, $url); //设置抓取的url
-       curl_setopt($curl, CURLOPT_HEADER, 1);  //设置头文件的信息作为数据流输出
-       curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //设置获取的信息以文件流的形式返回，而不是直接输出。
-       $data = curl_exec($curl); //执行命令
-       curl_close($curl); //关闭URL请求
-       var_dump($data);exit;
-       return $data;//显示获得的数据
+       $ch = curl_init();
+       $header = ['User-Agent: boss']; //设置一个你的浏览器agent的header
+       curl_setopt($ch, CURLOPT_HTTPGET, true); //
+       curl_setopt($ch, CURLOPT_URL, $url);
+       curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);   //设置超时时间
+       curl_setopt($ch, CURLOPT_TIMEOUT, 15);   //设置超时时间
+       $response = curl_exec($ch);
+
+       if (curl_errno($ch) != 0) {
+           echo curl_error($ch);
+           $response = curl_error($ch);
+       }
+       curl_close($ch);
+       return $response;
     }
 }
