@@ -55,12 +55,13 @@ Class Userdata extends Model{
     }
 
 
-    public static function getOne($id)
+    public static function getOne($where)
     {
         $returnArray = [];
-        if(!empty($id)){
-            $result = self::find($id)->toArray();
+        if(!empty($where)){
+            $result = self::where($where)->find();
             if(!empty($result)){
+                $result = $result->toArray();
                 $returnArray =[
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],
@@ -137,7 +138,7 @@ Class Userdata extends Model{
     }
 
     /**
-     ** 删除操作
+     ** 获取子账号列表
      **/
     public static function getManyList($limit = 0,$offset = 0)
     {
@@ -169,6 +170,7 @@ Class Userdata extends Model{
         }
         return $returnArray;
     }
+
 }
 //        13001 => '查不到该用信息',
 //        13002 => '修改用户信息无效',

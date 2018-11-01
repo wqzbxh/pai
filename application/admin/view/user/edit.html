@@ -7,7 +7,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label typename">账号</label>
         <div class="layui-input-block">
-            <input type="text" name="data[username]" value="{$userInfo['username']}"  lay-verify="name"   autocomplete="off" placeholder="请输入账号" class="layui-input inputWidth">
+            <input type="text" name="data[username]" value="{$userInfo['username']}" disabled lay-verify="name"   autocomplete="off" placeholder="请输入账号" class="layui-input inputWidth">
         </div>
     </div>
     <div class="layui-form-item">
@@ -33,7 +33,6 @@
             ,laydate = layui.laydate;
         //自定义验证规则
         form.verify({
-            name: [/^[a-zA-Z0-9_-]{4,16}$/,'账号为：4-16位字母、数字、下划线、减号组合'],
             pass: [/^[a-zA-Z0-9_-]{4,16}$/,'密码为：4-16位字母、数字、下划线、减号组合'],
             content: function(value){
                 layedit.sync(editIndex);
@@ -53,7 +52,7 @@
                         if(data.code==0){
                              layer.msg('修改成功');
                              setTimeout(function () {
-                                 window.location.href="{:url('pushpolicy/index')}"
+                                 window.location.href="{:url('index/userIndex')}"
                              },1000)
                          }else{
                              layer.msg(data.msg);

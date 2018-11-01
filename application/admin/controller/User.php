@@ -47,6 +47,14 @@ Class User extends Common{
         }
         if($acceptData['username']){
             $data['username'] = $acceptData['username'];
+            $result = Userdata::getOne($data);
+            if($result['code'] == 0){
+                $returnArray = array(
+                    'code' => 13008,
+                    'msg' => Error::ERRORCODE[13008],
+                    'data' => array()
+                );
+            }
         }else{
             $returnArray = array(
                 'code' => 13006,
@@ -78,7 +86,7 @@ Class User extends Common{
     {
 
         if(!empty($_GET['id'])){
-            $result = Userdata::getOne($_GET['id']);
+            $result = Userdata::getOne(array('id'=>$_GET['id']));
             if($result['code'] == 0){
                 $this->assign('userInfo',$result['data']);
                 return $this->view->fetch('user/edit');
@@ -103,9 +111,13 @@ Class User extends Common{
 
             $where = array();
             $where['id'] = $_POST['data']['id'];
-            $editResult = Userdata::update($_POST['data'],$where);
+            $editResult = Userdata::update($_POST['data'],$where)->toArray();
             if($editResult){
-                $returnArray = $editResult;
+                $returnArray = $returnArray = [
+                    'code' => 0,
+                    'msg' => Error::ERRORCODE[0],
+                    'data' => $editResult
+                ];
             }else{
                 $returnArray = array(
                     'code' => 13002,
@@ -154,6 +166,9 @@ Class User extends Common{
         return $returnArray;
     }
 
+    /**
+     * @return array获取账号列表
+     */
     public function getList()
     {
         if(isset($_GET["limit"])){
@@ -169,6 +184,21 @@ Class User extends Common{
         $result =  Userdata::getManyList($offset,$limit);
 //        var_dump($result);
         return $result;
+    }
+
+    /**
+     * @return int
+     * 验证账号是否存在
+     */
+    public function verifyName()
+    {
+        if($_POST['username']){
+            $where['username'] = $_POST['username'];
+            $result = Userdata::getOne($where);
+            if($result['code'] == 0){
+                return 1;
+            }
+        }
     }
 }
 
