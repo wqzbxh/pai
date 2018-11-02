@@ -68,6 +68,12 @@ class Index extends Controller
         $data = self::arrayPidProcess($result);
         var_dump($data);
     }
+    public function testSon()
+    {
+        $result = Menuinfo::sonGetList(3);
+        $data = self::arrayPidProcess($result);
+        var_dump($data);
+    }
 
     public function arrayPidProcess($data,$res=array(),$pid='0'){
         foreach ($data as $k => $v){

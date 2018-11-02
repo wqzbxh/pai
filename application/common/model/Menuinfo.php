@@ -32,6 +32,8 @@ class Menuinfo extends Model{
 //    子账号获取列表
     public static function sonGetList($userId)
     {
-
+        $allSonmenuRelation = Usermenuinfo::getUsermenuinfoList($userId);
+        $menlist = array_map();
+        var_dump($menlist);exit;
     }
 }

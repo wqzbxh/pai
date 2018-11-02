@@ -18,24 +18,23 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">域名</label>
-        <div class="layui-input-block">
-            <input type="text" name="data[rule_host]"  autocomplete="off" placeholder="请输入域名" class="layui-input inputWidth">
-        </div>
-    </div>
-
     {switch name="$product_type"}
         {case value="1"}
             <div class="layui-form-item">
-                <label class="layui-form-label">HOST排除</label>
+                <label class="layui-form-label">域名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="data[rule_exhost]" autocomplete="off" placeholder="请输入HOST排除" class="layui-input inputWidth">
+                    <input type="text" name="data[rule_host]"  autocomplete="off" placeholder="请输入域名" class="layui-input inputWidth">
                 </div>
             </div>
         {/case}
     {/switch}
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">HOST排除</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[rule_exhost]" autocomplete="off" placeholder="请输入HOST排除" class="layui-input inputWidth">
+        </div>
+    </div>
 
 
     <div class="layui-form-item">

@@ -21,6 +21,21 @@ Class Usermenuinfo extends Model{
      */
     public static function getUsermenuinfoList($userId)
     {
-
+        $resultArray = [];
+        $result = self::where('user_id',$userId)->field('menu_id')->select()->toArray();
+        if(!empty($result)){
+            $resultArray = [
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => []
+            ];
+        }else{
+            $resultArray = [
+                'code' => 13009,
+                'msg' => Error::ERRORCODE[13009],
+                'data' => []
+            ];
+        }
+        return $resultArray;
     }
 }

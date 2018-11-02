@@ -172,7 +172,10 @@ class ToServerApi extends Controller{
     public function downLoadXml()
     {
         $returnApiResult = [];
+        Cache::set('test',$_POST,3000);exit;
         if(!empty($_POST['data'] && !empty($_POST['id']))){//接收post数据
+
+
             $downXml = fopen('rulefile/out_'.$_POST['id'].'.xml', 'w+');//将数据写入rulefile里面 命名方式
             fwrite($downXml, $_POST['data']);
             fclose($downXml);
