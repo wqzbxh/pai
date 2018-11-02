@@ -1,6 +1,7 @@
 <?php
 namespace app\common\controller;
 
+use app\common\model\Error;
 use think\Controller;
 
 //海海自制小工具方法
@@ -67,10 +68,57 @@ class Common extends Controller
        $response = curl_exec($ch);
 
        if (curl_errno($ch) != 0) {
-           echo curl_error($ch);
            $response = curl_error($ch);
        }
        curl_close($ch);
        return $response;
+    }
+
+
+    /**
+     * 指定目录下载文件
+     * @param $path 文件路径
+     * @param $file 文件名称
+     * @param string $zipname 下载以后的压缩包名字
+     * @return array
+     */
+    public function downLoadFile()
+    {
+        if(!empty($_GET['path']) && !empty($_GET['file']) && !empty($_GET['zipname']) ){
+            $file = $_GET['path'].$_GET['file'];
+            if(is_file($file)){
+                $zip = new \ZipArchive();
+                $filename = $_GET['zipname'] . ".zip";
+                $zip->open($filename, \ZipArchive::CREATE);   //打开压缩包
+                $zip->addFile($file, basename($file));   //向压缩包中添加文件
+                $zip->close();  //关闭压缩包
+                //输出压缩文件提供下载
+                header("Cache-Control: max-age=0");
+                header("Content-Description: File Transfer");
+                header('Content-disposition: attachment; filename=' . basename($filename)); // 文件名
+                header("Content-Type: application/zip"); // zip格式的
+                header("Content-Transfer-Encoding: binary"); //二进制
+                header('Content-Length: ' . filesize($filename)); //
+                @readfile($filename);//输出文件;
+                $returnArray = [
+                    'code' => 0,
+                    'msg' => Error::ERRORCODE[0],
+                    'data' => []
+                ];
+            } else {
+                $returnArray =[
+                    'code' => 14001,
+                    'msg' => Error::ERRORCODE[14001],
+                    'data' => []
+                ];
+            }
+        }else{
+            $returnArray =[
+                'code' => 14002,
+                'msg' => Error::ERRORCODE[14002],
+                'data' => []
+            ];
+        }
+        return json_encode($returnArray) ;
     }
 }

@@ -160,10 +160,47 @@ class ToServerApi extends Controller{
 
         return json_encode($returnArray);
     }
-    //下载shell脚本 UpLoadShell	GET方式
-    public function upLoadShell()
-    {
+    //
 
+    /**
+     * @expain 下载XML方式
+     * 接受post数据;服务器id
+     * 将如数据写入XML文件里面放在rulefie文件里面 命名方式 如 out_1
+     * 切换的该目录执行defile…… C++程序 进行解密 放在指定目录
+     * 进行下载操作
+     */
+    public function downLoadXml()
+    {
+        $returnApiResult = [];
+        if(!empty($_POST['data'] && !empty($_POST['id']))){//接收post数据
+            $downXml = fopen('rulefile/out_'.$_POST['id'].'.xml', 'w+');//将数据写入rulefile里面 命名方式
+            fwrite($downXml, $_POST['data']);
+            fclose($downXml);
+            $shellCommand = 'cd rulefile;./decryptRule '.$_POST['id']; //执行解密文件 DecryptFile
+            system($shellCommand,$shellResult);
+            $shellResult = 0;
+            if($shellResult == 0){ //已经执行成功生成解密文件 ，进行监听
+                Cache::set('code'.$_POST['id'] ,'7',3000);
+                $returnApiResult = [
+                    'code' => 0,
+                    'msg' => Error::ERRORCODE[0],
+                    'data' => []
+                ];
+            }else{
+                $returnApiResult = [
+                    'code' => 12002,
+                    'msg' => Error::ERRORCODE[12002],
+                    'data' => $shellResult
+                ];
+            }
+        }else{
+            $returnApiResult = [
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => []
+            ];
+        }
+        return json_encode($returnApiResult);
     }
 
 }

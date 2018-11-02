@@ -235,6 +235,8 @@ Class Server extends Common{
         }
     }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @explain 对服务器的操作
      * @param $serverid操作的id
@@ -244,7 +246,8 @@ Class Server extends Common{
     public function operateServer()
     {
         $returnArray = array();
-        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){
+        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){//接收服务器id
+            Cache::rm('code'.$_POST['serverid']);//清除缓存的该服务器提示代码
             $returnArray = Serverdata::operateServer($_POST['serverid'],$_POST['opcode']);
         }else{
             $returnArray = array(
@@ -255,24 +258,8 @@ Class Server extends Common{
         }
         return $returnArray;
     }
-
-//    更新服务器状态
-    public function updateServerStatus()
-    {
-        $serverDataModel = new Serverdata();
-        $result = $serverDataModel->checkServerStatus();
-        if($result){
-            return $result;
-        }
-    }
-
-
-
     /**
-     * @explain 对服务器的操作
-     * @param $serverid操作的id
-     * @param $opcode操作码
-     * @return array返回
+     * @return 一般监听服务器返回
      */
     public function lookStatus()
     {
@@ -289,6 +276,17 @@ Class Server extends Common{
             }
         }
         return $returnArray;
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//    更新服务器状态
+    public function updateServerStatus()
+    {
+        $serverDataModel = new Serverdata();
+        $result = $serverDataModel->checkServerStatus();
+        if($result){
+            return $result;
+        }
     }
 
 

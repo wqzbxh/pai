@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\Menuinfo;
 use app\common\model\Userdata;
 use think\Controller;
 
@@ -17,7 +18,7 @@ class Index extends Controller
     public function index()
     {
 
-        $file = 'rulefile';
+        $file = 'rulefile/DecryptFile/out_614.xml';
         $mark = 'a';
         if(is_file($file)){
             $zip = new \ZipArchive();
@@ -40,51 +41,41 @@ class Index extends Controller
 
     }
 
-    //测试
-    public function test21()
-    {
-        $url = 'http://139.196.91.198:/?id=10';
-//         初始化一个 cURL 对象
-        header('content-type:application:json;charset=utf8');
-        header('Access-Control-Allow-Origin:*');
-        header('Access-Control-Allow-Methods:GET');
-        header('Access-Control-Allow-Headers:x-requested-with,content-type');
+//    请求服务器测试代码
+//$ch = curl_init();
+//$header = ['User-Agent: boss']; //设置一个你的浏览器agent的header
+//curl_setopt($ch, CURLOPT_HTTPGET, true); //
+//curl_setopt($ch, CURLOPT_URL, 'http://47.106.124.38:9559/9?id=10');
+//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);   //设置超时时间
+//curl_setopt($ch, CURLOPT_TIMEOUT, 15);   //设置超时时间
+//$response = curl_exec($ch);
+//
+//if (curl_errno($ch) != 0) {
+//echo curl_error($ch);
+//$response = 0;
+//}
+//curl_close($ch);
+//return $response;
 
-        $curl = curl_init(); // 启动一个CURL会话
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
-        $tmpInfo = curl_exec($curl);
-        var_dump(curl_error($curl));
-        curl_close($curl);
-
-        print_r($tmpInfo);
-
-
-
-
-    }
-
+    /**
+     * 测试
+     */
     public function test()
     {
-        $ch = curl_init();
-        $header = ['User-Agent: boss']; //设置一个你的浏览器agent的header
-        curl_setopt($ch, CURLOPT_HTTPGET, true); //
-        curl_setopt($ch, CURLOPT_URL, 'http://47.106.124.38:9559/9?id=10');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);   //设置超时时间
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);   //设置超时时间
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch) != 0) {
-            echo curl_error($ch);
-            $response = 0;
-        }
-        curl_close($ch);
-        return $response;
+        $result = Menuinfo::getMenuList();
+        $data = self::arrayPidProcess($result);
+        var_dump($data);
     }
 
+    public function arrayPidProcess($data,$res=array(),$pid='0'){
+        foreach ($data as $k => $v){
+            if($v['father_id']==$pid){
+                $res[$v['id']]['info']=$v;
+                $res[$v['id']]['child']=self::arrayPidProcess($data,array(),$v['id']);
+            }
+        }
+        return $res;
+    }
 }

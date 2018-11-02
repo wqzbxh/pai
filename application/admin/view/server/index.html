@@ -50,7 +50,7 @@
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="detail">停止</a>
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs">产品</a>
+    <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
     <a class="layui-btn layui-btn-xs" lay-event="flow" >流量</a>
 </script>
 
@@ -84,7 +84,6 @@
         //监听工具条
         table.on('tool(demo)', function(obj){
             var data = obj.data;
-
             if(obj.event === 'flow'){
                 window.location.href="{:url('serverstatistics/flow')}?serverid="+data.id;
             } else if(obj.event === 'del'){
@@ -109,6 +108,62 @@
                 });
             } else if(obj.event === 'edit'){
                 window.location.href="{:url('server/edit')}?id="+data.id;
+            } else if(obj.event === 'download'){
+                var id = data.id ;
+                layer.confirm('确定下载？', function(index){
+                    layui.use('jquery',function(){
+                        var i;
+                        var $=layui.$;
+                        var startime = parseInt(Date.parse(new Date()) / 1000);
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('server/operateServer')}", // ajax请求路径
+                            data: {
+                                serverid:id,
+                                opcode:7
+                            },
+                            beforeSend: function () {
+                                i = showLoad();
+                            },
+                            success: function(data){
+                                if(data == 200){
+                                    var wqzbxhz1 =  window.setInterval(function () {
+                                        var q = 1;
+                                        $.ajax({
+                                            type: 'post',
+                                            url: "{:url('server/lookStatus')}", // ajax请求路径
+                                            data: {
+                                                id:id,
+                                                opcode:7
+                                            },
+                                            success: function(data){
+                                                var nowtime = parseInt(Date.parse(new Date()) / 1000);
+                                                var mistiming =  nowtime - startime;
+                                                if(data.code == 0){
+                                                    window.location.href="{:url('common/common/downLoadFile')}?path=rulefile/DecryptFile/&&file=out_"+id+".xml&&zipname=Server"+id+"XML";//下载文件
+                                                   window.clearInterval(wqzbxhz1);
+                                                    layer.msg('服务器'+id+'：XML文件正在下载！', {
+                                                        offset: '6px'
+                                                    });
+                                                    closeLoad(i);
+                                                    table.reload('idTest');
+                                                }
+                                                if(mistiming > 30){
+                                                    window.clearInterval(wqzbxhz1);
+                                                    closeLoad(i);
+                                                    return layer.msg('服务器'+id+'：下载XML文件超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                }
+                                            }
+                                        })
+                                    }, 2000);
+                                }else{
+                                    closeLoad(i);
+                                    return layer.msg('服务器'+id+'：向服务器发出请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                }
+                            }
+                        });
+                    });
+                });
             }  else if(obj.event === 'detail'){
                 var id = data.id ;
                 layer.confirm('确定停止？', function(index){
@@ -139,9 +194,6 @@
                                             success: function(data){
                                                 var nowtime = parseInt(Date.parse(new Date()) / 1000);
                                                 var mistiming =  nowtime - startime;
-                                                // console.log('开始时间'+startime);
-                                                // console.log('当前时间'+nowtime);
-                                                // console.log('时间差'+ mistiming);
                                                 if(data.code == 0){
                                                     window.clearInterval(c);
                                                     layer.msg('服务器'+id+'：已停止！', {
@@ -194,9 +246,6 @@
                                             success: function(data){
                                                 var nowtime = parseInt(Date.parse(new Date()) / 1000);
                                                 var mistiming =  nowtime - startime;
-                                                // console.log('开始时间'+startime);
-                                                // console.log('当前时间'+nowtime);
-                                                // console.log('时间差'+ mistiming);
                                                 if(data.code == 0){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
