@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\common\model\Productdata;
 use think\Controller;
 
 
@@ -61,6 +62,13 @@ class Rule extends  Common{
      */
     public function add()
     {
+        if(!empty($_GET['productid'])){
+            $produrtModel = new Productdata();
+            $result = $produrtModel->getProductOne($_GET['productid']);
+            if($result['code'] == 0){
+                $this->assign('product_type',$result['data'][0]['product_type']);
+            }
+        }
         $this->assign('productid',$_GET['productid']);
         return $this->fetch('add');
     }
@@ -101,6 +109,13 @@ class Rule extends  Common{
         if(!empty($_GET['id'])){
             $ruleDataDataModel = new \app\common\model\Ruledata();
             $result = $ruleDataDataModel->getRuleOne($_GET['id']);
+            if(!empty($result['data'][0]['productid'])){
+                $produrtModel = new Productdata();
+                $resultPro = $produrtModel->getProductOne($result['data'][0]['productid']);
+                if($result['code'] == 0){
+                    $this->assign('product_type',$resultPro['data'][0]['product_type']);
+                }
+            }
             $this->assign('rule',$result['data'][0]);
             return $this->fetch('edit');
         }else{
