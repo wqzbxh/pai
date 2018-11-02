@@ -62,6 +62,7 @@ Class User extends Common{
                 'data' => array()
             );
         }
+
         if($acceptData['passwd']){
             $data['passwd'] = $acceptData['passwd'];
         }else{
@@ -71,6 +72,7 @@ Class User extends Common{
                 'data' => array()
             );
         }
+        $data['userflag'] = $acceptData['userflag'];
         $data['createtime'] = time();
         if(empty($returnArray)){
                 $addUserResult = Userdata::addUserAction($data);
