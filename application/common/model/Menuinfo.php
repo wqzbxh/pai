@@ -32,8 +32,20 @@ class Menuinfo extends Model{
 //    子账号获取列表
     public static function sonGetList($userId)
     {
+        $resultArray = [];
         $allSonmenuRelation = Usermenuinfo::getUsermenuinfoList($userId);
-        $menlist = array_map();
-        var_dump($menlist);exit;
+        if($allSonmenuRelation['code'] == 0){
+            $menlist = array_map('array_shift',$allSonmenuRelation['data']);
+            $result = self::all($menlist)->toArray();
+            $resultArray =[
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => $result
+            ];
+        }else{
+            $resultArray = $allSonmenuRelation;
+        }
+
+        return $resultArray;
     }
 }

@@ -121,4 +121,19 @@ class Common extends Controller
         }
         return json_encode($returnArray) ;
     }
+
+
+
+    /**
+     * 查看二级分类
+     */
+    public function arrayPidProcess($data,$res=array(),$pid='0'){
+        foreach ($data as $k => $v){
+            if($v['father_id']==$pid){
+                $res[$v['id']]['info']=$v;
+                $res[$v['id']]['child']=self::arrayPidProcess($data,array(),$v['id']);
+            }
+        }
+        return $res;
+    }
 }

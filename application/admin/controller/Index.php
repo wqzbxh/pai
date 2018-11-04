@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\common\model\Menuinfo;
 use think\Controller;
 
 class Index extends  Common{
@@ -13,8 +14,42 @@ class Index extends  Common{
         parent::_initialize();
     }
 
+
+
+    public function testSon()
+    {
+        $result = Menuinfo::sonGetList(3);
+        if($result['code'] == 0){
+            $data = self::arrayPidProcess($result['data']);
+            $resultArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => $data
+            ];
+        }else{
+            $resultArray = $result;
+        }
+        var_dump($resultArray);
+    }
+
+
     public function index()
     {
+
+        $commonCrontroller = new \app\common\controller\Common();
+        if($this->userId == 1){//返回超级用户左侧菜单主题
+            $result = Menuinfo::getMenuList();
+            $menulist = $commonCrontroller->arrayPidProcess($result);
+            $this->assign('menulist',$menulist);
+        }else{
+            $result = Menuinfo::sonGetList($this->userId);
+            if($result['code'] == 0){
+                $menulist = $commonCrontroller->arrayPidProcess($result['data']);
+                $this->assign('menulist',$menulist);
+            }else{
+                $this->assign('msg',$result['msg']);
+            }
+        }
 
         $this->assign('userflag',session('userInfo')['userflag']);
         return $this->fetch('index');

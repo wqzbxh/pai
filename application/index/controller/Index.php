@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\Error;
 use app\common\model\Menuinfo;
 use app\common\model\Userdata;
 use think\Controller;
@@ -68,11 +69,21 @@ class Index extends Controller
         $data = self::arrayPidProcess($result);
         var_dump($data);
     }
+
     public function testSon()
     {
         $result = Menuinfo::sonGetList(3);
-        $data = self::arrayPidProcess($result);
-        var_dump($data);
+        if($result['code'] == 0){
+            $data = self::arrayPidProcess($result['data']);
+            $resultArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => $data
+            ];
+        }else{
+            $resultArray = $result;
+        }
+       var_dump($resultArray);
     }
 
     public function arrayPidProcess($data,$res=array(),$pid='0'){

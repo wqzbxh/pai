@@ -25,9 +25,9 @@ Class Usermenuinfo extends Model{
         $result = self::where('user_id',$userId)->field('menu_id')->select()->toArray();
         if(!empty($result)){
             $resultArray = [
-                'code' => 10005,
-                'msg' => Error::ERRORCODE[10005],
-                'data' => []
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => $result
             ];
         }else{
             $resultArray = [

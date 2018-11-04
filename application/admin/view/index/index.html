@@ -60,48 +60,25 @@
     <div class="layui-side layui-bg-black">
         <div class="navBar layui-side-scroll" style="height: 695px;">
             <ul class="layui-nav layui-nav-tree">
-                <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-computer" data-icon="icon-computer"></i><cite>服务器管理</cite><span class="layui-nav-more"></span></a>
-                    <dl class="layui-nav-child">
-                        {switch name="$userflag"}
-                            {case value="1"}
-                                <dd><a href="javascript:;" data-url="serverIndex"><i class="layui-icon" data-icon=""></i><cite>服务器</cite></a></dd>
-                                <dd><a href="javascript:;" data-url="whiteIndex"><i class="layui-icon" data-icon=""></i><cite>白名单</cite></a></dd>
-                                <dd><a href="javascript:;" data-url="blackIndex"><i class="layui-icon" data-icon=""></i><cite>黑名单</cite></a></dd>
-                                <dd><a href="javascript:;" data-url="httpdatacollectServeridIndex"><i class="layui-icon" data-icon=""></i><cite>信息采集</cite></a></dd>
-                            {/case}
-                            {case value="2"}
-                              <dd><a href="javascript:;" data-url="serverIndex"><i class="layui-icon" data-icon=""></i><cite>服务器</cite></a></dd>
-                            {/case}
-                            {default /}
-                        {/switch}
-                    </dl></li>
-                <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon=""></i><cite>产品管理</cite><span class="layui-nav-more"></span></a>
-                    <dl class="layui-nav-child">
-                        {switch name="$userflag"}
-                        {case value="1"}
-                        <dd><a href="javascript:;" data-url="pushpolicyIndex"><i class="layui-icon" data-icon=""></i><cite>推送策略</cite></a></dd>
-                        <dd><a href="javascript:;" data-url="productIndex"><i class="layui-icon" data-icon=""></i><cite>产品管理</cite></a></dd>
-                        <dd><a href="javascript:;" data-url="binding"><i class="layui-icon" data-icon=""></i><cite>产品绑定</cite></a></dd>
-                        {/case}
-                        {case value="2"}
-                        <dd><a href="javascript:;" data-url="binding"><i class="layui-icon" data-icon=""></i><cite>产品绑定</cite></a></dd>
-                        {/case}
-                        {default /}
-                        {/switch}
-                    </dl>
-                </li>
-                {switch name="$userflag"}
-                {case value="1"}
-                <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon=""></i><cite>系统管理</cite><span class="layui-nav-more"></span></a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="userIndex"><i class="layui-icon layui-icon-username " data-icon="">&#xe6c0;</i><cite>用户管理</cite></a></dd>
-                    </dl>
-                </li>
-                {/case}
-                {/switch}
 
+<!--//////////////////////////////////////-->
+
+            {if condition="!empty($menulist)"}
+                {volist name="$menulist" id="vo"}
+                    <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon="">{$vo.info.menu_icon}</i><cite>{$vo.info.menu_name}</cite><span class="layui-nav-more"></span></a>
+                        {volist name="$vo.child" id="child"}
+                            <dl class="layui-nav-child">
+                                <dd><a href="javascript:;" data-url="{$child.info.menu_url}"><i class="layui-icon layui-icon-username " data-icon="">{$child.info.menu_icon}</i><cite>{$child.info.menu_name}</cite></a></dd>
+                            </dl>
+                        {/volist}
+                    </li>
+                {/volist}
+            {else /} {$msg}
+            {/if}
+<!--//////////////////////////////////-->
                 <span class="layui-nav-bar" style="top: 227.5px; height: 0px; opacity: 0;"></span>
             </ul>
+
         </div>
     </div>
     <!-- 右侧内容 -->
@@ -119,10 +96,9 @@
     </div>
     <!-- 底部 -->
     <div class="layui-footer footer">
-
+        派群信息技术支持
     </div>
 </div>
-
 <!-- 锁屏 -->
 <div class="admin-header-lock" id="lock-box" style="display: none;">
     <div class="input_btn">

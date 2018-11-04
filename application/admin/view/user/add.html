@@ -20,6 +20,48 @@
         </div>
     </div>
 
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label" style="margin-right: -10px;">指定菜单栏</label>
+
+        <div class="layui-input-block" style="width: 600px;">
+
+            <div class="father">
+                <input type="checkbox"  name="fatherCheck" lay-skin="primary" value="1"  title="服务器管理">
+            </div>
+
+            <div class="son">
+                <input type="checkbox" name="sonCheck" lay-skin="primary" title="服务器">
+                <input type="checkbox" name="sonCheck" lay-skin="primary" title="黑名单">
+                <input type="checkbox" name="sonCheck" lay-skin="primary" title="白名单">
+                <input type="checkbox" name="sonCheck" lay-skin="primary" title="信息采集">
+            </div>
+
+        </div>
+
+
+
+        <!--<div class="layui-input-block" style="width: 600px;">-->
+            <!--<div class="father">-->
+                <!--<input type="checkbox" name="like1[name]" lay-skin="primary" value="1" title="产品管理">-->
+            <!--</div>-->
+            <!--<div class="son">-->
+                <!--<input type="checkbox" name="like1[write]" lay-skin="primary" title="推送策略">-->
+                <!--<input type="checkbox" name="like1[write]" lay-skin="primary" title="产品管理">-->
+                <!--<input type="checkbox" name="like1[read]" lay-skin="primary" title="产品绑定">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="layui-input-block" style="width: 600px;">-->
+            <!--<div class="father">-->
+                <!--<input type="checkbox" name="like1[name]" lay-skin="primary" value="1" title="系统设置">-->
+            <!--</div>-->
+            <!--<div class="son">-->
+                <!--<input type="checkbox" name="like1[write]" lay-skin="primary" title="用户管理">-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即添加</button>
@@ -27,6 +69,13 @@
         </div>
     </div>
 </form>
+<style>
+    .father{
+        color: #000;
+        font-size: 30px;
+        font-weight: 700;
+    }
+</style>
 
 <script>
     layui.use(['form', 'layedit', 'laydate'], function(){
@@ -67,6 +116,23 @@
             });
             return false;
         });
+
+        $('.son').click(function () {
+            console.log($("input[name='checkboxall']").val())
+            $(this).prev().children('input').prop("checked",true);
+            form.render('checkbox');
+        })
+
+
+        $('.father').click(function () {
+            var result = $(this).children('input').is(':checked');
+            if(result == true){
+                $(this).next().children('input').prop("checked",true);
+            }else{
+                $(this).next().children('input').prop("checked",false);
+            }
+            form.render('checkbox');
+        })
     });
 
 
@@ -102,6 +168,11 @@
         $(".cancel").click(function () {
             window.location.href="{:url('index/userIndex')}"
         })
+
+        $(function () {
+
+        })
+
     })
 
 </script>
