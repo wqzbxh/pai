@@ -38,4 +38,31 @@ Class Usermenuinfo extends Model{
         }
         return $resultArray;
     }
+
+
+    public static function addAction($data)
+    {
+        $resultArray = [];
+        $result = self::insertAll($data);
+        if($result){
+            $resultArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => []
+            ];
+        }else{
+            $resultArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => []
+            ];
+        }
+    }
+
+    public static function del($data)
+    {
+        if(!empty($data)){
+            self::where($data)->delete();
+        }
+    }
 }

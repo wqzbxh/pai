@@ -15,7 +15,6 @@ class Index extends  Common{
     }
 
 
-
     public function testSon()
     {
         $result = Menuinfo::sonGetList(3);

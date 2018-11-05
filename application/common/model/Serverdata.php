@@ -354,7 +354,6 @@ Class Serverdata extends Model{
         $srcIPBlackList = $doc->createElement("SrcIPBlackList");
         $radiusBlackList = $doc->createElement("RadiusBlackList");
         $srcIPBlackListResult = Ipblacklist::getListUpgrade(0,0,9,$serverid);
-
         if($srcIPBlackListResult['code'] == 0 && count($srcIPBlackListResult['data']) > 0){
             $br = 0;
             $bl = 0;
@@ -373,10 +372,10 @@ Class Serverdata extends Model{
                 }
             }
             if($bl>0){
-                $flowRuleConvert  -> appendChild($srcIPWhiteList);
+                $flowRuleConvert  -> appendChild($srcIPBlackList);
             }
             if($br>0){
-                $flowRuleConvert  -> appendChild($radiusList);
+                $flowRuleConvert  -> appendChild($radiusBlackList);
             }
         }
 
@@ -565,10 +564,8 @@ Class Serverdata extends Model{
             $serverIp = Config::get('server_ip');//获取服务器地址IP及其端口
             $url = $serverIp.'/?9&id='.$serverid;//串接地址
             $data = Common::requestGet($url);//发送GET请求
-            if($data = 200){//第二步向服务器ip端口发送请求成功，把服务器的200 rerun出去
+            if($data){//第二步向服务器ip端口发送请求成功，把服务器的200 rerun出去
                 return $data;
-            }else{
-                return $data;//返回的是直接错误结果解析
             }
         }else{
             return $shellResult['code'];//加密失败返回程序
@@ -648,6 +645,9 @@ Class Serverdata extends Model{
          if(!empty($serverid) &&  !empty($opcode)){
              $serverIp = Config::get('server_ip');//获取服务器地址IP及其端口
              $url = $serverIp.'/?'.$opcode.'&id='.$serverid;//串接地址
+             if($opcode == 7){
+                 $data = Common::otherRequestGet($url);//发送GET请求
+             }
              $data = Common::requestGet($url);//发送GET请求
              if($data = 200){//第二步向服务器ip端口发送请求成功，把服务器的200 rerun出去
                  return $data;

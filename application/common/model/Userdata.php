@@ -170,7 +170,6 @@ Class Userdata extends Model{
         }
         return $returnArray;
     }
-
 }
 //        13001 => '查不到该用信息',
 //        13002 => '修改用户信息无效',

@@ -60,9 +60,7 @@
     <div class="layui-side layui-bg-black">
         <div class="navBar layui-side-scroll" style="height: 695px;">
             <ul class="layui-nav layui-nav-tree">
-
 <!--//////////////////////////////////////-->
-
             {if condition="!empty($menulist)"}
                 {volist name="$menulist" id="vo"}
                     <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon="">{$vo.info.menu_icon}</i><cite>{$vo.info.menu_name}</cite><span class="layui-nav-more"></span></a>

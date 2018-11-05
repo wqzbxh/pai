@@ -191,10 +191,6 @@ Class Server extends Common{
         return $result;
     }
 
-
-
-
-
     /**
      * @return mixed
      * 推送数产品页面渲染
@@ -217,7 +213,6 @@ Class Server extends Common{
     /**
      * 对应生成XML文件
      */
-
     public function generateRuleXml()
     {
         $returnArray = array();
@@ -248,6 +243,30 @@ Class Server extends Common{
         $returnArray = array();
         if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){//接收服务器id
             Cache::rm('code'.$_POST['serverid']);//清除缓存的该服务器提示代码
+            $returnArray = Serverdata::operateServer($_POST['serverid'],$_POST['opcode']);
+        }else{
+            $returnArray = array(
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => array()
+            );
+        }
+        return $returnArray;
+    }
+
+    /**
+     * @explain 对服务器的操作
+     * @param $serverid操作的id
+     * @param $opcode操作码
+     * @return array返回
+     */
+    public function otherOperateServer()
+    {
+        $returnArray = array();
+        var_dump($_POST['opcode']);exit;
+        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){//接收服务器id
+            Cache::rm('code'.$_POST['serverid']);//清除缓存的该服务器提示代码
+
             $returnArray = Serverdata::operateServer($_POST['serverid'],$_POST['opcode']);
         }else{
             $returnArray = array(

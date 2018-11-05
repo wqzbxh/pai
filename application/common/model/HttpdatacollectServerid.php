@@ -23,7 +23,7 @@ Class HttpdatacollectServerid extends Model{
        $result = self::query('show tables');
        if(!empty($result)){
 
-//得到的表名匹配主数据库中服务器
+            //得到的表名匹配主数据库中服务器
 
            $serverDataModel = new \app\common\model\Serverdata();
            $serverNumResult = $serverDataModel->field('id')->select()->toArray();
@@ -42,6 +42,7 @@ Class HttpdatacollectServerid extends Model{
 
 
            $lastNum = array_intersect($branchWarehouseNum,$serverNum);
+
 //          将表名转换为大写
            $ChineseTable = array();
            $commonController  = new \app\common\controller\Common();

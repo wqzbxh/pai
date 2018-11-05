@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<FlowRuleConvert version="1.0" reset="12" userid="2">
+<FlowRuleConvert version="1.0" reset="12" userid="1">
   <NetworkCard>
     <Device ReceveCard="eth3'"/>
     <Device SendCard="eth&gt;"/>
@@ -22,6 +22,15 @@
   <RadiusList>
     <Radius Account="YYzhuslkd"/>
   </RadiusList>
+  <SrcIPBlackList>
+    <IP address="114.80.216.168" format="1"/>
+    <IP address="114" format="2"/>
+    <IP address="42.66.111.2" format="1"/>
+  </SrcIPBlackList>
+  <RadiusBlackList>
+    <Radius Account="YY1949"/>
+    <Radius Account="GG5151"/>
+  </RadiusBlackList>
   <HostRuleList>
     <HOST domain="tabbao.com" HostFilter="asd">
       <Rule id="58" productid="46" ruleid="47" type="200" match="2" ratio="10" combine="2">
@@ -80,22 +89,22 @@
         <IE RespContent="撒范德萨"/>
       </Rule>
       <Rule id="39" productid="46" ruleid="44" type="301" match="1" ratio="10" combine="1">
-        <IE Exclude="www.baidu.com$第三方$ziguize"/>
+        <IE Exclude="www.baidu.com$ziguize"/>
         <IE UaFilter="Android$ziguize"/>
         <IE UaWholeFilter="Huawei$ziguize"/>
         <IE CookieFilter="lll撒的$ziguize"/>
         <IE UaInclude="ziguize"/>
-        <IE Include="啥的"/>
+        <IE Include="ziguizeziguize"/>
         <IE ReferInclude="ziguize"/>
         <IE ReferExclude="ziguize"/>
         <IE ProcessMode="0"/>
-        <IE DstHost="发的说法大风歌阿萨德"/>
+        <IE DstHost="这是模范报文啦啦啦啦啦啦啦啦啦啦啦啦"/>
       </Rule>
     </HOST>
   </HostRuleList>
   <GeneralRuleList>
     <EXE>
-      <Rule id="38" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai$sdsf">
+      <Rule id="38" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
         <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
@@ -127,8 +136,8 @@
         <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
-      <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai$/777">
-        <IE Exclude="HOSTpaipaipai$/"/>
+      <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
+        <IE Exclude="HOSTpaipaipai"/>
         <IE UaFilter="UApaipaipai"/>
         <IE UaWholeFilter="UATpaipaipai"/>
         <IE CookieFilter="COOKIETpaipaipai"/>
@@ -137,7 +146,6 @@
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ProcessMode="0"/>
         <IE Content="1"/>
-        <IE RespContent="sd "/>
       </Rule>
     </EXE>
     <APK>

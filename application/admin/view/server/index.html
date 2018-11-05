@@ -173,7 +173,7 @@
                         var startime = parseInt(Date.parse(new Date()) / 1000);
                         $.ajax({
                             type: 'post',
-                            url: "{:url('server/operateServer')}", // ajax请求路径
+                            url: "{:url('server/otherOperateServer')}", // ajax请求路径
                             data: {
                                 serverid:id,
                                 opcode:5
@@ -270,6 +270,7 @@
                                 }else{
                                     window.clearInterval(c);
                                     closeLoad(i);
+                                    console.log(data);
                                     return layer.msg('服务器'+id+'：向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }
                             }

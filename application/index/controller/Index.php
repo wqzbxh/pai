@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\controller\Common;
 use app\common\model\Error;
 use app\common\model\Menuinfo;
+use app\common\model\User;
 use app\common\model\Userdata;
 use think\Controller;
 
@@ -65,9 +66,8 @@ class Index extends Controller
      */
     public function test()
     {
-        $result = Menuinfo::getMenuList();
-        $data = self::arrayPidProcess($result);
-        var_dump($data);
+       $result = Userdata::query('call userData(2)');
+       var_dump($result);
     }
 
     public function testSon()

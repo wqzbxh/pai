@@ -53,16 +53,23 @@ Class Serverchildrule extends  Common{
     public function updateServerChildRule()
     {
         $returnArray = array();
+
         $errorModel = new \app\common\model\Error();
         if($_POST['childrule_push_content']){
             $data['childrule_push_content'] = $_POST['childrule_push_content'];
+        }else{
+            $data['childrule_push_content'] = '';
         }
         if($_POST['childrule_exuri']){
             $data['childrule_exuri'] = $_POST['childrule_exuri'];
+        }else{
+            $data['childrule_exuri'] = '';
         }
 
         if($_POST['binding_childrule_host']){
             $data['binding_childrule_host'] = $_POST['binding_childrule_host'];
+        }else{
+            $data['binding_childrule_host'] = '';
         }
         if($_POST['spid']){
             $id = $_POST['spid'];
@@ -73,6 +80,7 @@ Class Serverchildrule extends  Common{
                 'data' => array()
             );
         }
+
 
         if(empty($returnArray)){
             $serverChildRuleDataModel = new \app\common\model\Serverchildruledata();
