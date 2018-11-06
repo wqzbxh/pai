@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="__static__admin/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="__static__admin/css/font_eolqem241z66flxr.css" media="all" />
     <link rel="stylesheet" href="__static__admin/css/main.css" media="all" />
+    <link rel="stylesheet" href="__static__admin/ali/iconfont.css" media="all" />
 
     <link rel="stylesheet" href="__static__css/pai.css">
     <script src="__static__js/jquery-3.3.1.js"></script>
@@ -63,17 +64,18 @@
 <!--//////////////////////////////////////-->
             {if condition="!empty($menulist)"}
                 {volist name="$menulist" id="vo"}
-                    <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon" data-icon="">{$vo.info.menu_icon}</i><cite>{$vo.info.menu_name}</cite><span class="layui-nav-more"></span></a>
+                    <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon licon iconfont {$vo.info.menu_icon}" data-icon=""></i><cite>{$vo.info.menu_name}</cite><span class="layui-nav-more"></span></a>
                         {volist name="$vo.child" id="child"}
                             <dl class="layui-nav-child">
-                                <dd><a href="javascript:;" data-url="{$child.info.menu_url}"><i class="layui-icon layui-icon-username " data-icon="">{$child.info.menu_icon}</i><cite>{$child.info.menu_name}</cite></a></dd>
+                                <dd><a href="javascript:;" data-url="{$child.info.menu_url}"> <i class="layui-icon licon iconfont {$child.info.menu_icon}" data-icon=""></i><cite>{$child.info.menu_name}</cite></a></dd>
+                                <!--<dd><a href="javascript:;" data-url="{$child.info.menu_url}"><i class="layui-icon layui-icon-username " data-icon="">{$child.info.menu_icon}</i><cite>{$child.info.menu_name}</cite></a></dd>-->
                             </dl>
                         {/volist}
                     </li>
                 {/volist}
             {else /} {$msg}
             {/if}
-<!--//////////////////////////////////-->
+<!--//////////////////////////////////-->  <i class="icon iconfont icon-fanhui">
                 <span class="layui-nav-bar" style="top: 227.5px; height: 0px; opacity: 0;"></span>
             </ul>
 
@@ -83,7 +85,7 @@
     <div class="layui-body layui-form">
         <div class="layui-tab marg0" lay-filter="bodyTab">
             <ul class="layui-tab-title top_tab">
-                <li class="layui-this" lay-id=""><i class="layui-icon">&#xe68e;</i> <cite>后台首页</cite></li>
+                <li class="layui-this" lay-id=""><i class="layui-icon licon iconfont icon-zhuye"></i> <cite>后台首页</cite></li>
             </ul>
             <div class="layui-tab-content clildFrame">
                 <div class="layui-tab-item layui-show">

@@ -420,8 +420,8 @@ Class Serverdata extends Model{
                        $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                        $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
                        $ieLabelArray = array_filter($ieLabelArray);
-                       $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
                        if($ruleAllDataValue['childrule_process_mode'] != 0){
+                           $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
                            $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
                        }
                         $ruleLabel = $doc ->createElement('Rule');
@@ -485,10 +485,8 @@ Class Serverdata extends Model{
                         $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                         $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
                         $ieLabelArray = array_filter($ieLabelArray);
-                        $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
-                        $ieLabelArray = array_filter($ieLabelArray);
-                        $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
                         if($ruleAllDataValue['childrule_process_mode'] != 0){
+                            $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
                             $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
                         }
                         $apkRuleLabel = $doc->createElement('Rule');//创建Rule节点
@@ -516,7 +514,9 @@ Class Serverdata extends Model{
                         $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
                         $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                         $ruleAllDataValue['rule_exhost'] =  self::compare($ruleAllDataValue['rule_exhost'],$ruleAllDataValue['binding_childrule_host']);
-                        $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
+                        if(!empty($ruleAllDataValue['rule_exhost'])){
+                            $apkRuleLabel->setAttribute("HostFilter",$ruleAllDataValue['rule_exhost']);
+                        }
                         if($ruleAllDataValue['autoexclude'] != 0){
                             $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
                         }
@@ -604,8 +604,8 @@ Class Serverdata extends Model{
     public static function executeShell($serverid)
     {
 
-        //$shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
-        $shellCommand = 'mkdir test';
+        $shellCommand = 'cd rulefile;./encryptionRule '.$serverid;
+       //$shellCommand = 'mkdir test';
         system($shellCommand,$shellResult);//成功以后这一步会将加密程序返回的0赋值给shellResult，对shellResult进行判断
         if($shellResult == 0){
             $returnArray = array(

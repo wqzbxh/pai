@@ -58,7 +58,6 @@
         <IE UriPrefix="fsaf"/>
         <IE ReferInclude="fsaf"/>
         <IE ReferExclude="fsaf"/>
-        <IE ProcessMode="0"/>
         <IE DstHost="fsaf"/>
       </Rule>
     </HOST>
@@ -72,7 +71,6 @@
         <IE UriPrefix="5"/>
         <IE ReferInclude="aidisheng"/>
         <IE ReferExclude="aidisheng"/>
-        <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
       <Rule id="40" productid="46" ruleid="44" type="200" match="1" ratio="10" combine="0">
@@ -89,7 +87,7 @@
         <IE RespContent="撒范德萨"/>
       </Rule>
       <Rule id="39" productid="46" ruleid="44" type="301" match="1" ratio="10" combine="1">
-        <IE Exclude="www.baidu.com$ziguize"/>
+        <IE Exclude="www.baidu.com$1231212$ziguize"/>
         <IE UaFilter="Android$ziguize"/>
         <IE UaWholeFilter="Huawei$ziguize"/>
         <IE CookieFilter="lll撒的$ziguize"/>
@@ -97,8 +95,7 @@
         <IE Include="ziguizeziguize"/>
         <IE ReferInclude="ziguize"/>
         <IE ReferExclude="ziguize"/>
-        <IE ProcessMode="0"/>
-        <IE DstHost="这是模范报文啦啦啦啦啦啦啦啦啦啦啦啦"/>
+        <IE DstHost="121233&#10;"/>
       </Rule>
     </HOST>
   </HostRuleList>
@@ -111,7 +108,6 @@
         <IE CookieFilter="COOKIETpaipaipai"/>
         <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
       <Rule id="37" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
@@ -122,7 +118,6 @@
         <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
       <Rule id="36" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
@@ -133,7 +128,6 @@
         <IE UaInclude="wangzherongyao"/>
         <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
       <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
@@ -144,13 +138,12 @@
         <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
         <IE ReferInclude="wangzherongyao"/>
         <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ProcessMode="0"/>
         <IE Content="1"/>
       </Rule>
     </EXE>
     <APK>
-      <Rule id="41" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0" HostFilter="王者荣耀">
-        <IE Exclude="王者荣耀$wangzherongyao"/>
+      <Rule id="41" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0">
+        <IE Exclude="wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
         <IE CookieFilter="王者荣耀$wangzherongyao"/>
@@ -162,8 +155,8 @@
         <IE CollectTime="1010"/>
         <IE DstHost="wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0" HostFilter="王者荣耀">
-        <IE Exclude="王者荣耀$wangzherongyao"/>
+      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0">
+        <IE Exclude="wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
         <IE CookieFilter="王者荣耀$wangzherongyao"/>
@@ -171,7 +164,6 @@
         <IE Include="wangzherongyao"/>
         <IE ReferInclude="wangzherongyao"/>
         <IE ReferExclude="wangzherongyao"/>
-        <IE ProcessMode="0"/>
         <IE DstHost="wangzherongyao"/>
       </Rule>
     </APK>

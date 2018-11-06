@@ -22,7 +22,7 @@ class Menuinfo extends Model{
      */
     public static function getMenuList()
     {
-        $menuList = self::select()->toArray();
+        $menuList = self::where('is_show',1)->select()->toArray();
         return $menuList;
     }
 
@@ -36,7 +36,7 @@ class Menuinfo extends Model{
         $allSonmenuRelation = Usermenuinfo::getUsermenuinfoList($userId);
         if($allSonmenuRelation['code'] == 0){
             $menlist = array_map('array_shift',$allSonmenuRelation['data']);
-            $result = self::all($menlist)->toArray();
+            $result = self::where('is_show',1)->ll($menlist)->toArray();
             $resultArray =[
                 'code' => 0,
                 'msg' => Error::ERRORCODE[0],

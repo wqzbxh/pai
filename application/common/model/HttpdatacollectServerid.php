@@ -32,11 +32,11 @@ Class HttpdatacollectServerid extends Model{
            $branchWarehouseNum = array();
            $serverNum = array();
            foreach ($serverNumResult as $value){
-               $serverNum[$k] = (int)$value['id'];
+               $serverNum[$k] = $value['id'];
                $k++;
            }
            foreach ($result as $value){
-               $branchWarehouseNum[$j] = (int)substr($value['Tables_in_pai_test'],16);
+               $branchWarehouseNum[$j] = substr($value['Tables_in_pai_test'],16);
                $j++;
            }
 

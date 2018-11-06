@@ -117,7 +117,7 @@
                         var startime = parseInt(Date.parse(new Date()) / 1000);
                         $.ajax({
                             type: 'post',
-                            url: "{:url('server/operateServer')}", // ajax请求路径
+                            url: "{:url('server/otherOperateServer')}", // ajax请求路径
                             data: {
                                 serverid:id,
                                 opcode:7
@@ -173,7 +173,7 @@
                         var startime = parseInt(Date.parse(new Date()) / 1000);
                         $.ajax({
                             type: 'post',
-                            url: "{:url('server/otherOperateServer')}", // ajax请求路径
+                            url: "{:url('server/operateServer')}", // ajax请求路径
                             data: {
                                 serverid:id,
                                 opcode:5

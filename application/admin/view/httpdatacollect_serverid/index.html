@@ -69,31 +69,39 @@
         //执行删除表动作
         $('#wipe_data').click(function () {
             var table_name = $("#selected").find("option:selected").val();
-            $.ajax({
-                type: 'get',
-                url: "{:url('HttpdatacollectServerid/delTable')}", // ajax请求路径
-                data: {table_name:table_name},
-                success: function(data){
-                    if(data.code==0){
-                        layer.confirm('已删除', {icon: 16, title:'删除提示',yes: function(index){
-                                layer.close(index);
-                                location.reload();
-                            },
-                            cancel: function(index, layero){
-                                layer.close(index);
-                                location.reload();
-                            }
-                        });
-                    }else{
-                        layer.msg(data.msg);
+            layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
+                $.ajax({
+                    type: 'get',
+                    url: "{:url('HttpdatacollectServerid/delTable')}", // ajax请求路径
+                    data: {table_name:table_name},
+                    success: function(data){
+                        if(data.code==0){
+                            layer.confirm('已删除', {icon: 1, title:'删除提示',yes: function(index){
+                                    layer.close(index);
+                                    location.reload();
+                                },
+                                cancel: function(index, layero){
+                                    layer.close(index);
+                                    location.reload();
+                                }
+                            });
+                        }else{
+                            layer.msg(data.msg);
+                        }
                     }
-                }
-            });
+                });
+            })
         })
         //下载导出文件
         $('#export_data').click(function () {
             var table_name = $("#selected").find("option:selected").val();
-            window.location.href="{:url('HttpdatacollectServerid/exportCsv')}?table_name="+table_name;
+            console.log(table_name);
+            if(table_name = 'undefined'){
+                    layer.msg('请选择数据表！');
+            }else{
+                window.location.href="{:url('HttpdatacollectServerid/exportCsv')}?table_name="+table_name;
+            }
+
         })
     })
 
