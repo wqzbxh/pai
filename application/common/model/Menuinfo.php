@@ -22,7 +22,7 @@ class Menuinfo extends Model{
      */
     public static function getMenuList()
     {
-        $menuList = self::where('is_show',1)->select()->toArray();
+        $menuList = self::where('is_show',1)->order('menu_order','asc')->select()->toArray();
         return $menuList;
     }
 
