@@ -8,9 +8,15 @@
 //产品统计模型
 namespace app\common\model;
 
+use think\Db;
 use think\Model;
 
 Class Productstatistics extends Model{
+
+    protected $connection = 'db_config_cards3';
+
+
+
 
     const RETURNFeild = 'p.id,p.product_name,pss.producthitcount,pss.time';
 
@@ -23,8 +29,10 @@ Class Productstatistics extends Model{
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         $endTime = $startTime + 86400;
+        ///select * from database1.table1 as t1 inner join database2.table2 as t2 where t1,id=t2.id
+
         $result = self::alias('pss')
-            ->join('productdata p','pss.productid = p.id','LEFT')
+            ->join('pai.productdata p','pss.productid = p.id','LEFT')
             ->where($where)
             ->where('pss.time','gt',$startTime)
             ->where('pss.time','elt',$endTime)
@@ -33,8 +41,9 @@ Class Productstatistics extends Model{
             ->order('pss.id DESC')
             ->select()
             ->toArray();
+
         $count = self::alias('pss')
-            ->join('productdata p','pss.productid = p.id','LEFT')
+            ->join('pai.productdata p','pss.productid = p.id','LEFT')
             ->where($where)
             ->where('pss.time','gt',$startTime)
             ->where('pss.time','elt',$endTime)

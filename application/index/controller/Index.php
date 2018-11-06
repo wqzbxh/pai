@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\controller\Common;
 use app\common\model\Error;
 use app\common\model\Menuinfo;
+use app\common\model\Productdata;
 use app\common\model\User;
 use app\common\model\Userdata;
 use think\Controller;
@@ -64,7 +65,7 @@ class Index extends Controller
     /**
      * 测试
      */
-    public function test()
+    public function test1()
     {
        $result = Userdata::query('call userData(2)');
        var_dump($result);
@@ -94,5 +95,14 @@ class Index extends Controller
             }
         }
         return $res;
+    }
+
+
+    public function test()
+    {
+        $result = Productdata::getliuliang();
+
+        var_dump($result);
+
     }
 }

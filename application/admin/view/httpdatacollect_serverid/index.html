@@ -96,7 +96,7 @@
         $('#export_data').click(function () {
             var table_name = $("#selected").find("option:selected").val();
             console.log(table_name);
-            if(table_name = 'undefined'){
+            if(table_name == undefined){
                     layer.msg('请选择数据表！');
             }else{
                 window.location.href="{:url('HttpdatacollectServerid/exportCsv')}?table_name="+table_name;

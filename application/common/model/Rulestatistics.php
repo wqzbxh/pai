@@ -12,6 +12,8 @@ use think\Model;
 
 Class Rulestatistics extends Model{
 
+    protected $connection = 'db_config_cards3';
+
     const RETURNFeild = 'r.rule_name,rss.rulehitcount,rss.time,rss.id';
 
     /**
@@ -24,7 +26,7 @@ Class Rulestatistics extends Model{
         $errorModel = new \app\common\model\Error();
         $endTime = $startTime + 86400;
         $result = self::alias('rss')
-            ->join('ruledata r','rss.topruleid = r.id','LEFT')
+            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)
@@ -34,7 +36,7 @@ Class Rulestatistics extends Model{
             ->select()
             ->toArray();
         $count = self::alias('rss')
-            ->join('ruledata r','rss.productid = r.productid','LEFT')
+            ->join('pai.ruledata r','rss.productid = r.productid','LEFT')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)

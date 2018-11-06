@@ -12,6 +12,7 @@ use think\Model;
 
 Class Serverstatistics extends Model{
 
+    protected $connection = 'db_config_cards3';
     /**
      * @param $where array 查询条件
      *

@@ -11,6 +11,8 @@ use think\Model;
 
 Class Flowspeedstatistics extends Model{
 
+    protected $connection = 'db_config_cards3';
+
     const EveryHourFlowField = 'SUM(mbps) as mbps_all,htime';
     /**计算当天的每小时的时间和流量
      * @param $dateTimeResult 当天凌晨的时间戳

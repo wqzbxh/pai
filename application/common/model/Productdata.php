@@ -277,4 +277,16 @@ class Productdata extends Model
         }
         return $result;
     }
+
+    public static function getliuliang()
+    {
+        $result = self::alias('a')
+        ->join('flow.productstatistics p','a.id = p.productid','LEFT')
+        ->select()
+        ->toArray();
+
+        return $result;
+
+
+    }
 }
