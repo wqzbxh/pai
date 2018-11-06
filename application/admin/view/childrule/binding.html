@@ -132,20 +132,27 @@
                             type: 'post',
                             url: "{:url('serverchildrule/getServerchildOne')}", // ajax请求路径
                             data:{
-                                "spid" : data.spid
+                                "spid" : data.spid,
+                                "id" : data.id
                             },
                             success: function(data){
+                                console.log(data);
                                 if(data.code==0){
                                     if(data.code==0){
                                         //弹出页面填写
-                                        if(data.data.childrule_exuri == null){
-                                            data.data.childrule_exuri = '';
+                                        if(data.data.chidruleRelations.childrule_exuri == null){
+                                            data.data.chidruleRelations.childrule_exuri = '';
                                         }
-                                        if(data.data.childrule_push_content == null){
-                                            data.data.childrule_push_content = '';
+                                        if(data.data.chidruleRelations.childrule_push_content == null){
+                                            data.data.chidruleRelations.childrule_push_content = '';
                                         }
-                                        if(data.data.binding_childrule_host == null || data.data.binding_childrule_host == undefined ){
-                                            data.data.binding_childrule_host = '';
+
+                                        if(data.data.chidruleResult.childrule_push_content == null){
+                                            data.data.chidruleResult.childrule_push_content = '';
+                                        }
+
+                                        if(data.data.chidruleRelations.binding_childrule_host == null || data.data.chidruleRelations.binding_childrule_host == undefined ){
+                                            data.data.chidruleRelations.binding_childrule_host = '';
                                         }
                                         console.log(data.data)
                                         layer.open({
@@ -154,9 +161,10 @@
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
                                             ,area:['730px']
-                                            ,content: "<div class=''><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.childrule_exuri+"' placeholder='渠道号'>" +
-                                                "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.binding_childrule_host+"' placeholder='HOST排除'>" +
-                                                "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.childrule_push_content+"</textarea></div>"
+                                            ,content: "<div class=''><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.childrule_exuri+"' placeholder='渠道号'>" +
+                                                "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.binding_childrule_host+"' placeholder='HOST排除'>" +
+                                                "<div class='opendiv'>推送报文模板：</div><input type='text' disabled name='binding_childrule_host' style='width: 680px;' class='layui-layer-input openinput' value='"+ data.data.chidruleResult.childrule_push_content+"' placeholder='暂无模板'>" +
+                                                "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.chidruleRelations.childrule_push_content+"</textarea></div>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
                                                 var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();

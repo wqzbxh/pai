@@ -7,6 +7,8 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\Childruledata;
+use app\common\model\Error;
 use think\Controller;
 
 Class Serverchildrule extends  Common{
@@ -96,10 +98,22 @@ Class Serverchildrule extends  Common{
 
     public function getServerchildOne()
     {
-        if(!empty($_POST['spid'])){
+        if(!empty($_POST['spid'])&&!empty($_POST['id'])){
             $serverChildRuleDataModel = new \app\common\model\Serverchildruledata();
+            $chidruleDataModel = new Childruledata();
             $result = $serverChildRuleDataModel->getServerchildOne($_POST['spid']);
-            return $result;
+
+            $chidruleResult = $chidruleDataModel->getChildruleOne($_POST['id']);
+            $returnArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => [
+                    'chidruleResult' => $chidruleResult['data'][0],
+                    'chidruleRelations' => $result['data']
+                ],
+            ];
+
+            return $returnArray;
         }
     }
 }
