@@ -73,6 +73,10 @@ Class Serverchildrule extends  Common{
         }else{
             $data['binding_childrule_host'] = '';
         }
+        if($_POST['binding_childrule_ratio']){
+            $data['binding_childrule_ratio'] = $_POST['binding_childrule_ratio'];
+        }
+
         if($_POST['spid']){
             $id = $_POST['spid'];
         }else{

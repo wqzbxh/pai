@@ -445,7 +445,7 @@ Class Serverdata extends Model{
                             }
                         }
                         $ruleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
-                        $ruleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
+                        $ruleLabel->setAttribute("ratio",$ruleAllDataValue['binding_childrule_ratio']);
                         $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                        if($ruleAllDataValue['autoexclude'] != 0){
                            $ruleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
@@ -511,7 +511,7 @@ Class Serverdata extends Model{
                         }
                         $apkRuleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
 
-                        $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['childrule_ratio']);
+                        $apkRuleLabel->setAttribute("ratio",$ruleAllDataValue['binding_childrule_ratio']);
                         $apkRuleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
                         $ruleAllDataValue['rule_exhost'] =  self::compare($ruleAllDataValue['rule_exhost'],$ruleAllDataValue['binding_childrule_host']);
                         if(!empty($ruleAllDataValue['rule_exhost'])){

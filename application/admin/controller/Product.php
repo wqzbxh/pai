@@ -141,10 +141,11 @@ class Product extends  Common{
             $productDataModel = new \app\common\model\Productdata();
             $result = $productDataModel->delProduct($_POST['id']);
             if($result['code'] == 0){
+                //删除产品下的规则
                 $ruleDataModel = new \app\common\model\Ruledata();
                 $ruleResultData = $ruleDataModel->conditionDel(array('productid' => $_POST['id']));
-                if($ruleResultData['code'] == 0 || $ruleResultData['code'] == 20011 ){
 
+                if($ruleResultData['code'] == 0 || $ruleResultData['code'] == 20011 ){
                     $SreverProductdataModel = new \app\common\model\Serverproductdata();
                     $serverRuletModel = new \app\common\model\Serverruledata();
                     $serverChildruletModel = new \app\common\model\Serverchildruledata();

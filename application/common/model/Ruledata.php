@@ -317,6 +317,7 @@ class Ruledata extends Model
             if($result>0){
                 $childRuleDataModel = new\app\common\model\Childruledata();
                 $childRuleDataResult = $childRuleDataModel->conditionDel($data);
+
                 if($childRuleDataResult['code'] == 0 || $childRuleDataResult['code'] == 30007){
                     $returnArray = array(
                         'code' => 0,
