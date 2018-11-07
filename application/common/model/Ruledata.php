@@ -124,7 +124,7 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $checkResult = self::checkRule($data['rule_name']);
+            $checkResult = self::checkRule($data['rule_name'],$data['productid']);
             if($checkResult > 0){
                 $returnArray = array(
                     'code' => 30005,
@@ -161,15 +161,15 @@ class Ruledata extends Model
     /**
      * @param $data
      */
-    public function checkRule($name,$id = 0)
+    public function checkRule($name,$productid,$id = 0)
     {
 
-        if($id == 0){
+        if($id = 0){
 //        对新增数据进行名称查重 返回0/1
-            $result = self::where(array('rule_name'=>$name))->count();
+            $result = self::where(array('rule_name'=>$name,'productid'=>$productid))->count();
         }else{
 //            对修改数据进行查重
-            $result = self::where(array('rule_name'=>$name))->select()->toArray();
+            $result = self::where(array('rule_name'=>$name,'productid'=>$productid))->select()->toArray();
 
             if($result){
                 if($result[0]['id'] == $id){
@@ -219,7 +219,7 @@ class Ruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-            $checkResult = self::checkRule($data['rule_name'],$data['id']);
+            $checkResult = self::checkRule($data['rule_name'],$data['productid'],$data['id']);
 
             if($checkResult > 0){
                 $returnArray = array(

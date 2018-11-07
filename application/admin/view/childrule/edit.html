@@ -4,6 +4,8 @@
 </blockquote>
 <form class="layui-form" action="{:url('product/addAction')}" method="post">
     <input type="hidden" value="{$childrule['id']}" name="data[id]">
+    <input type="hidden" value="{$childrule['productid']}" name="data[productid]">
+    <input type="hidden" value="{$childrule['ruleid']}" name="data[ruleid]">
 
     <input type="hidden" name="data[ruleid]" value="{$childrule['ruleid']}">
     <div class="layui-form-item">

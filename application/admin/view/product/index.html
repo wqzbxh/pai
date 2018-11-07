@@ -3,15 +3,17 @@
     产品管理&nbsp&nbsp&nbsp&nbsp&nbsp <span class="back xhx"></span>
 </blockquote>
 
-<div class="layui-btn-group demoTable">
-    <div class="layui-inline">
-        <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
-    </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
-    <a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>
-</div>
 
 <table class="layui-table" lay-data="{width: 685, height:667, url:'{:url('product/getProduct')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+
+    <div class="demoTable">
+        <!--搜索产品名称：-->
+        <div class="layui-inline">
+            <input class="layui-input" name="id"  placeholder="请输入搜索产品名称" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+        <a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>
+    </div>
     <thead>
     <tr>
         <th lay-data="{field:'id', width:180, sort: true, fixed: true}">ID</th>
@@ -77,11 +79,18 @@
             }
         });
 
+
         var $ = layui.$, active = {
-            getCheckData: function(){ //获取选中数据
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#demoReload').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        product_name: demoReload
+                    }
+                });
             }
             ,getCheckLength: function(){ //获取选中数目
                 var checkStatus = table.checkStatus('idTest')

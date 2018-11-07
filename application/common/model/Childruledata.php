@@ -109,7 +109,7 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $checkResult = self::checkChildRule($data['childrule_name']);
+            $checkResult = self::checkChildRule($data['childrule_name'],$data['ruleid'],$data['productid']);
             if($checkResult > 0){
                 $returnArray = array(
                     'code' => 30006,
@@ -147,15 +147,15 @@ class Childruledata extends Model
      * @param $name 名称
      * @param int $id
      */
-    public function checkChildRule($name,$id = 0)
+    public function checkChildRule($name,$ruleid,$productid,$id = 0)
     {
 
         if($id == 0){
 //        对新增数据进行名称查重 返回0/1
-            $result = self::where(array('childrule_name'=>$name))->count();
+            $result = self::where(array('childrule_name'=>$name,'ruleid'=>$ruleid,'productid'=>$productid))->count();
         }else{
 //            对修改数据进行查重
-            $result = self::where(array('childrule_name'=>$name))->select()->toArray();
+            $result = self::where(array('childrule_name'=>$name,'ruleid'=>$ruleid,'productid'=>$productid))->select()->toArray();
 
             if($result){
                 if($result[0]['id'] == $id){
@@ -206,7 +206,7 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(!empty($data['id'])){
-            $checkResult = self::checkChildRule($data['childrule_name'],$data['id']);
+            $checkResult = self::checkChildRule($data['childrule_name'],$data['ruleid'],$data['productid'],$data['id']);
             if($checkResult > 0){
                 $returnArray = array(
                     'code' => 30006,

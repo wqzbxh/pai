@@ -160,17 +160,40 @@
                                             ,btn:["确定","取消"]
                                             ,title:'子规则填写'
                                             ,skin: 'layui-layer-prompt'
-                                            ,area:['730px']
-                                            ,content: "<div class=''><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.childrule_exuri+"' placeholder='渠道号'>" +
-                                                "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.binding_childrule_host+"' placeholder='HOST排除'>" +
-                                                "<div class='opendiv'>推送报文模板：</div><input type='text' disabled name='binding_childrule_host' style='width: 680px;' class='layui-layer-input openinput' value='"+ data.data.chidruleResult.childrule_push_content+"' placeholder='暂无模板'>" +
-                                                "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.chidruleRelations.childrule_push_content+"</textarea></div>"
+                                            ,area:['730px','500px;']
+                                            ,content: "<form><div class='layui-form'><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.childrule_exuri+"' placeholder='渠道号'>" +
+                                                "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.binding_childrule_host+"' placeholder='HOST排除'>   " +
+                                                "<div class='opendiv'>权重比例：</div>" +
+                                                "<div class='layui-form-item' id='tpisshow'>\n" +
+                                                "        <div class='layui-inline'>\n" +
+                                                "            <div class=\"layui-input-inline\">\n" +
+                                                "                <select name='binding_childrule_ratio' lay-verify='required' lay-search='' class='selectWidth' id='selected'>\n" +
+                                                "                    <option value='10'>10</option>\n" +
+                                                "                    <option value='9'>9</option>\n" +
+                                                "                    <option value='8'>8</option>\n" +
+                                                "                    <option value='7'>7</option>\n" +
+                                                "                    <option value='6'>6</option>\n" +
+                                                "                    <option value='5'>5</option>\n" +
+                                                "                    <option value='4'>4</option>\n" +
+                                                "                    <option value='3'>3</option>\n" +
+                                                "                    <option value='2'>2</option>\n" +
+                                                "                    <option value='1'>1</option>\n" +
+                                                "                    <option value='0' >0</option>\n" +
+                                                "                </select>\n" +
+                                                "            </div>\n" +
+                                                "        </div>\n" +
+                                                "    </div>" +
+                                                "<div class='opendiv'>推送报文模板：</div><input type='text' disabled name='binding_childrule_host' style='width: 660px;' class='layui-layer-input openinput' value='"+ data.data.chidruleResult.childrule_push_content+"' placeholder='暂无模板'>" +
+                                                "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.chidruleRelations.childrule_push_content+"</textarea></div></form>"
                                             ,yes: function(index, layero){
                                                 //按钮【按钮一】的回调
                                                 var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();
                                                 var binding_childrule_host= $(layero).find("input[name='binding_childrule_host']").val();
                                                 var childrule_push_content = $(layero).find("textarea").val()
-
+                                                var binding_childrule_ratio = $("#selected").find("option:selected").val()
+                                                form.on('select', function(data){
+                                                    console.log(data); //得到被选中的值]
+                                                });
                                                 console.log();
                                                 //
                                                 layui.use('jquery',function(){
@@ -181,6 +204,7 @@
                                                         data:{
                                                             "childrule_push_content" : childrule_push_content,
                                                             "binding_childrule_host" : binding_childrule_host,
+                                                            "binding_childrule_ratio" :binding_childrule_ratio,
                                                             "childrule_exuri" : childrule_exuri,
                                                             "spid" : spid
                                                         },
@@ -200,6 +224,9 @@
                                                 });
                                             }
                                         });
+                                        $("#selected").find("option[value="+data.data.chidruleRelations.binding_childrule_ratio+"]").prop("selected",true);
+
+                                        form.render();
                                     }else{
                                         layer.msg(data.msg);
                                     }
@@ -268,7 +295,6 @@
                                         curr: 1 //重新从第 1 页开始
                                     }
                                 });
-                                layer.alert('绑定成功！');
                             }else{
                                 layer.msg(data.msg);
                             }

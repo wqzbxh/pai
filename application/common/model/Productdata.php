@@ -35,8 +35,14 @@ class Productdata extends Model
             $criteria['product_type'] = $product_type;
         }
         $criteria['is_del'] = 0;
-        $result = self::where($criteria)->limit($offset,$limit)->select()->toArray();
-        $count = self::where($criteria)->count();
+        if(!empty($product_name)){
+            $result = self::where($criteria)->where('product_name','like','%'.$product_name.'%')->limit($offset,$limit)->select()->toArray();
+            $count = self::where($criteria)->where('product_name','like','%'.$product_name.'%')->count();
+        }else{
+            $result = self::where($criteria)->limit($offset,$limit)->select()->toArray();
+            $count = self::where($criteria)->count();
+        }
+
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,

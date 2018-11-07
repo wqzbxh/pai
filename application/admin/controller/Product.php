@@ -43,7 +43,13 @@ class Product extends  Common{
             $offset = 0;
         }
 
-        $result = $productDataModel->getProductList(9,9,'',0,$offset,$limit);
+        if(isset($_GET["product_name"])){
+            $product_name = $_GET["product_name"];
+        }else{
+            $product_name = '';
+        }
+
+        $result = $productDataModel->getProductList(9,9,$product_name,0,$offset,$limit);
         if($result['code'] == 0) {
             return $result;
         }
