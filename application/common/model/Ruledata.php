@@ -27,25 +27,43 @@ class Ruledata extends Model
      */
 
 
-    public function getRuleList($childrule_name = '',$offset,$limit,$productid)
+    public function getRuleList($rule_name = '',$offset,$limit,$productid)
     {
         $criteria = array();
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         $criteria['r.is_del'] = 0;
         $criteria['productid'] = $productid;
-        $result = self::alias('r')
-                    ->join('productdata p','r.productid = p.id',"LEFT" )
-                    ->where($criteria)
-                    ->field(self::jionField)
-                    ->limit($offset,$limit)
-                    ->select()
-                    ->toArray();
+        if(!empty($rule_name)){//搜索
+            $result = self::alias('r')
+                ->join('productdata p','r.productid = p.id',"LEFT" )
+                ->where($criteria)
+                ->where('rule_name','like','%'.$rule_name.'%')
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
 
-        $count = self::alias('r')
-                    ->join('productdata p','r.productid = p.id',"LEFT" )
-                    ->where($criteria)
-                    ->count();
+            $count = self::alias('r')
+                ->join('productdata p','r.productid = p.id',"LEFT" )
+                ->where('rule_name','like','%'.$rule_name.'%')
+                ->where($criteria)
+                ->count();
+        }else{
+            $result = self::alias('r')
+                ->join('productdata p','r.productid = p.id',"LEFT" )
+                ->where($criteria)
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+
+            $count = self::alias('r')
+                ->join('productdata p','r.productid = p.id',"LEFT" )
+                ->where($criteria)
+                ->count();
+        }
+
 
         if(!empty($result)){
             $returnArray = array(

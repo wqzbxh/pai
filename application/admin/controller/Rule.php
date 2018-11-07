@@ -50,7 +50,14 @@ class Rule extends  Common{
             $offset = 0;
         }
 
-        $result = $ruleDataDataModel->getRuleList('',$offset,$limit,$productid);
+        if(isset($_GET["rule_name"])){
+            $rule_name = $_GET["rule_name"];
+        }else{
+            $rule_name = '';
+        }
+
+
+        $result = $ruleDataDataModel->getRuleList($rule_name,$offset,$limit,$productid);
         if($result) {
             return $result;
         }

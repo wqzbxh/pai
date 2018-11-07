@@ -33,13 +33,26 @@ class Childruledata extends Model
         $errorModel = new \app\common\model\Error();
         $criteria['is_del'] = 0;
         $criteria['ruleid'] = $childruleid;
-        $result = self::where($criteria)
-                    ->limit($offset,$limit)
-                    ->select()
-                    ->toArray();
+        if(!empty($childrule_name)){
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->where('childrule_name','like','%'.$childrule_name.'%')
+                ->select()
+                ->toArray();
 
-        $count = self::where($criteria)
-                    ->count();
+            $count = self::where($criteria)
+                ->count();
+        }else{
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->where('childrule_name','like','%'.$childrule_name.'%')
+                ->select()
+                ->toArray();
+
+            $count = self::where($criteria)
+                ->count();
+        }
+
 
         if(!empty($result)){
             $returnArray = array(

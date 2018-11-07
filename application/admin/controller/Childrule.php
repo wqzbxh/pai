@@ -98,7 +98,14 @@ class Childrule extends  Common{
         if(isset($_GET["ruleid"])){
             $childruleid = $_GET["ruleid"];
         }
-        $result = $childruleDataModel->getChildruleRuleList('',$offset,$limit,$childruleid);
+
+        if(isset($_GET["childrule_name"])){
+            $childrule_name = $_GET["childrule_name"];
+        }else{
+            $childrule_name = '';
+        }
+
+        $result = $childruleDataModel->getChildruleRuleList($childrule_name,$offset,$limit,$childruleid);
         if($result) {
             return $result;
         }

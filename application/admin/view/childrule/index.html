@@ -2,15 +2,17 @@
 <blockquote class="layui-elem-quote layui-text">
     <a class="xhx AA094" href="{:url('product/index')}">产品管理</a>&nbsp>&nbsp <a class="xhx AA094" href="{:url('rule/index')}?id={$productid}">规则列表</a>&nbsp>&nbsp子规则列表
 </blockquote>
-<div class="layui-btn-group demoTable">
-    <div class="layui-inline">
-        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
-    </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
-    <a href="{:url('childrule/add')}?ruleid={$ruleid} && productid={$productid}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加子规则</button></a>
-</div>
 
 <table class="layui-table" lay-data="{width: 1590, height:680, url:'{:url('childrule/getChildrule')}?ruleid={$ruleid}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="id"  placeholder="请输入搜索子规则名称" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+        <a href="{:url('childrule/add')}?ruleid={$ruleid} && productid={$productid}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加子规则</button></a>
+    </div>
+
     <thead>
     <tr>
         <th lay-data="{field:'id', width:180}">子规则ID</th>
@@ -85,6 +87,26 @@
             } else if(obj.event === 'edit'){
                 window.location.href="{:url('childrule/edit')}?id="+data.id+"&&ruleid={$ruleid} && productid={$productid}";
             }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#demoReload').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        childrule_name: demoReload
+                    }
+                });
+            }
+        };
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
         });
 
     });
