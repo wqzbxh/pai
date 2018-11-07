@@ -247,7 +247,7 @@ class Childrule extends  Common{
         if(empty($returnArray)){
             $childRuleDataModel = new \app\common\model\Childruledata();
             $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status);
-            if($result['code'] == 0) {
+            if($result) {
                 return $result;
             }
         }else{
