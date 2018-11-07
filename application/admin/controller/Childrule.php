@@ -238,6 +238,13 @@ class Childrule extends  Common{
             );
         }
 
+        if(isset($_GET["childrule_name"])){
+            $childrule_name = $_GET["childrule_name"];
+        }else{
+            $childrule_name = '';
+        }
+
+
         if(isset($_GET["status"])){
             $status = $_GET["status"];
         }else{
@@ -246,7 +253,8 @@ class Childrule extends  Common{
 
         if(empty($returnArray)){
             $childRuleDataModel = new \app\common\model\Childruledata();
-            $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status);
+            $result = $childRuleDataModel->getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status,$childrule_name);
+
             if($result) {
                 return $result;
             }

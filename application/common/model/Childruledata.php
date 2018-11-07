@@ -72,7 +72,7 @@ class Childruledata extends Model
     }
 
 
-    public function getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status)
+    public function getChildRuleBindingList($offset,$limit,$serverid,$rule_id,$product_id,$status,$childrule_name='')
     {
 
         $returnArray = array();
@@ -85,17 +85,35 @@ class Childruledata extends Model
         }else if($status == 0 && $status != 1 ){
             $criteria['s.status'] = null;
         }
-        $result = self::alias('r')
-            ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
-            ->field(self::binDingField)
-            ->where($criteria)
-            ->limit($offset,$limit)
-            ->select()
-            ->toArray();
-        $count = self::alias('r')
-            ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
-            ->field(self::binDingField)
-            ->where($criteria)->count();
+
+        if(!empty($childrule_name)){
+            $result = self::alias('r')
+                ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+                ->field(self::binDingField)
+                ->where($criteria)
+                ->where('r.childrule_name','like','%'.$childrule_name.'%')
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+            $count = self::alias('r')
+                ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+                ->field(self::binDingField)
+                ->where('r.childrule_name','like','%'.$childrule_name.'%')
+                ->where($criteria)->count();
+        }else{
+            $result = self::alias('r')
+                ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+                ->field(self::binDingField)
+                ->where($criteria)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+            $count = self::alias('r')
+                ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
+                ->field(self::binDingField)
+                ->where($criteria)->count();
+        }
+
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,

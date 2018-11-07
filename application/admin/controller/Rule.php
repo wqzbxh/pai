@@ -239,9 +239,18 @@ class Rule extends  Common{
             $status = 9;
         }
 
+        if(isset($_GET["rule_name"])){
+            $rule_name = $_GET["rule_name"];
+        }else{
+            $rule_name = '';
+        }
+
+
+
+
         if(empty($returnArray)){
             $ruleDataModel = new \app\common\model\Ruledata();
-            $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id,$status);
+            $result = $ruleDataModel->getRuleBindingList($offset,$limit,$serverid,$id,$status,$rule_name);
             if($result) {
                 return $result;
             }

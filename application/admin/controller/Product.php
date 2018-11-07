@@ -224,9 +224,15 @@ class Product extends  Common{
             $status = 9;
         }
 
+        if(isset($_GET["product_name"])){
+            $product_name = $_GET["product_name"];
+        }else{
+            $product_name = '';
+        }
+
 
         $productDataModel = new \app\common\model\Productdata();
-        $result = $productDataModel->getProductBindingList(9,9,'',0,$offset,$limit,$serverid,$status);
+        $result = $productDataModel->getProductBindingList(9,9,$product_name,0,$offset,$limit,$serverid,$status);
 //        var_dump($result);
         return $result;
     }

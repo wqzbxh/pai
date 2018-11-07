@@ -85,16 +85,44 @@ class Productdata extends Model
         }else if($status == 0 && $status != 1 ){
             $criteria['s.status'] = null;
         }
-        $result = self::alias('p')
-                    ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
-                    ->field(self::jionField)
-                    ->limit($offset,$limit)
-                    ->where($criteria)
-                    ->select()
-                    ->toArray();
+
+        if(!empty($product_name)){
+            $result = self::alias('p')
+                ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->where($criteria)
+                ->where('product_name','like','%'.$product_name.'%')
+                ->select()
+                ->toArray();
 
 
-        $count = self::alias('p')->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )->field(self::jionField)->limit($offset,$limit)->where($criteria)->count();
+            $count = self::alias('p')
+                ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->where($criteria)
+                ->where('product_name','like','%'.$product_name.'%')
+                ->count();
+
+        }else{
+            $result = self::alias('p')
+                ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->where($criteria)
+                ->select()
+                ->toArray();
+
+
+            $count = self::alias('p')
+                ->join('serverproductdata s','p.id = s.product_id and s.serverid='.$serviceid,"LEFT" )
+                ->field(self::jionField)
+                ->limit($offset,$limit)
+                ->where($criteria)
+                ->count();
+
+        }
 
         if(!empty($result)){
             $returnArray = array(

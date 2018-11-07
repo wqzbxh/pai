@@ -93,7 +93,7 @@ class Ruledata extends Model
      * @throws \think\exception\DbException
      */
 
-    public function getRuleBindingList($offset,$limit,$serviceid,$id,$status)
+    public function getRuleBindingList($offset,$limit,$serviceid,$id,$status,$rule_name)
     {
 
         $returnArray = array();
@@ -107,15 +107,34 @@ class Ruledata extends Model
         }else if($status == 0 && $status != 1 ){
             $criteria['s.status'] = null;
         }
+        if(!empty($rule_name)){
+            $result = self::alias('r')
+                ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
+                ->field(self::binDingField)
+                ->where($criteria)
+                ->where('r.rule_name','like','%'.$rule_name.'%')
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+            $count = self::alias('r')
+                ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
+                ->field(self::binDingField)->where($criteria)
+                ->where('r.rule_name','like','%'.$rule_name.'%')
+                ->count();
 
-        $result = self::alias('r')
-            ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
-            ->field(self::binDingField)
-            ->where($criteria)
-            ->limit($offset,$limit)
-            ->select()
-            ->toArray();
-        $count = self::alias('r')->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )->field(self::binDingField)->where($criteria)->count();
+        }else{
+            $result = self::alias('r')
+                ->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )
+                ->field(self::binDingField)
+                ->where($criteria)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+            $count = self::alias('r')->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )->field(self::binDingField)->where($criteria)->count();
+
+        }
+
+
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,

@@ -3,27 +3,28 @@
     <a class="xhx AA094" href="{:url('index/binding')}">产品绑定</a>&nbsp>&nbsp <a class="xhx AA094" href="{:url('rule/binding')}?serverid={$serverid}&&id={$product_id}">规则绑定</a>&nbsp>&nbsp子规则绑定
 </blockquote>
 
-<form action="" class="layui-form">
-<table class="layui-table " lay-data="{width: 454, height:667, url:'{:url('childrule/getChildruleBindingList')}?serverid={$serverid}&&rule_id={$rule_id}&&product_id={$product_id}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
-        <div class="layui-form-item" id="tpisshow">
+<div class="layui-form">
+<table class="layui-table layui-form" lay-data="{width: 454, height:667, url:'{:url('childrule/getChildruleBindingList')}?serverid={$serverid}&&rule_id={$rule_id}&&product_id={$product_id}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+        <div class="layui-form-item">
             <input type="hidden" value="{$serverid}" name="serverid" id="serverid">
             <input type="hidden" value="{$product_id}" name="product_id" id="product_id">
             <input type="hidden" value="{$rule_id}" name="rule_id" id="rule_id">
-        <div class="layui-btn-group demoTable layui-inline">
-            <div class="layui-inline">
-                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+
+            <div class="demoTable layui-inline">
+                <div class="layui-inline">
+                    <input class="layui-input" name="id"  placeholder="请输入搜索子规则名称" id="demoReload" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload">搜索</button>
             </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
-        </div>
 
 
-        <div class="layui-inline" style="margin-left: -120px;">
-            <div class="layui-input-block product_radio"  id="childrule_status">
-                <input type="radio" name="data[status]" value="1" lay-filter="status" title="绑定" class="product_radio" >
-                <input type="radio" name="data[status]" value="0" lay-filter="status" title="解绑" class="product_radio">
-                <input type="radio" name="data[status]" value="9" title="全部"  lay-filter="status" class="product_radio" checked>
-            </div>
-        </div>
+            <div class="layui-inline" style="">
+                <div class=" product_radio"  id="childrule_status">
+                    <input type="radio" name="data[status]" value="1" lay-filter="status" title="绑定" class="product_radio" >
+                    <input type="radio" name="data[status]" value="0" lay-filter="status" title="解绑" class="product_radio">
+                    <input type="radio" name="data[status]" value="9" title="全部"  lay-filter="status" class="product_radio" checked>
+                </div>
+             </div>
 
     </div>
 
@@ -36,7 +37,7 @@
     </tr>
     </thead>
 </table>
-</form>
+</div>
 
 <script type="text/html" id="status">
     {{#  if(d.status == 1){ }}
@@ -62,10 +63,7 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
 
-    layui.use(["table","form"], function(){
 
-
-    })
     layui.use(["table","form"], function(){
         var table = layui.table;
         var form = layui.form;
@@ -305,12 +303,27 @@
         });
 
 
+        var $ = layui.$, active = {
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#demoReload').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        childrule_name: demoReload
+                    }
+                });
+            }
+        };
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
     });
+
 
     $(function () {
         $(".back").click(function () {
