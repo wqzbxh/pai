@@ -188,4 +188,12 @@ class Index extends  Common{
     {
     var_dump(APP_PATH);
     }
+
+    /**
+     * 加载链接链接管理页面资源
+     */
+    public function shortlinkset()
+    {
+        return $this-> view ->fetch('shortlinkset/index');
+    }
 }

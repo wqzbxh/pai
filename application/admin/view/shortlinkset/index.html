@@ -1,0 +1,199 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    链接管理&nbsp&nbsp&nbsp&nbsp&nbsp
+    <!--<span class="back xhx"></span>-->
+</blockquote>
+
+<div action="" class="layui-form">
+    <table class="layui-table " lay-data="{width: 900, height:667, url:'{:url('shortlinkset/getShortlinksetList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+        <div class="layui-form-item">
+            <div class=" demoTable">
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" placeholder="请输入搜索链接地址" >
+                </div>
+                <button class="layui-btn" disabled >搜索</button>
+                <a class="layui-btn margin-left10 blackAdd" style="margin-left: 10px;"  lay-event="add">添加短链</a>
+                <a class="layui-btn margin-left10 blackAdd" style="margin-left: 10px;"  lay-event=""><b>更新</b></a>
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend><b>监控服务器</b></legend>
+        </fieldset>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label" style="padding: 9px 0px;">服务器</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="like1[write]" lay-skin="primary" title="服务器一" checked="">
+                <input type="checkbox" name="like1[read]" lay-skin="primary" title="服务器二">
+                <input type="checkbox" name="like1[read]" lay-skin="primary" title="服务器三">
+                <input type="checkbox" name="like1[read]" lay-skin="primary" title="服务器四">
+            </div>
+        </div>
+
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend><b>监控地址</b></legend>
+        </fieldset>
+
+
+        <thead>
+            <tr>
+                <th lay-data="{field:'id', width:70, sort: true, fixed: true}">ID</th>
+                <th lay-data="{field:'content', width:500}">链接地址</th>
+                <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script type="text/html" id="status">
+    <a class="layui-btn  layui-btn-xs " lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script type="text/html" id="product_names">
+    <a class="xhx" lay-event="sonLink">{{d.product_name}}</a>
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">规则</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(["table","form"], function(){
+
+
+    })
+    layui.use(["table","form"], function(){
+        var table = layui.table;
+        var form = layui.form;
+        form.on('select(selectChage)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:data.value,
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj.id)
+        });
+        form.on('radio(status)', function(data){
+            var serverid = $("#selected").find("option:selected").val();
+            table.reload('idTest',{
+                limit:15,
+                where:{
+                    serverid:serverid,
+                    status:data.value
+                },
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        })
+
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            var serverid = $("#selected").find("option:selected").val();
+
+            if(obj.event === 'edit'){
+                window.location.href="{:url('shortlinkset/edit')}?id="+data.id+"&&serverid="+serverid;
+            } else if(obj.event === 'add'){
+                window.location.href="{:url('shortlinkset/add')}";
+            } else if(obj.event === 'del'){
+                layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('blacklist/delAction')}", // ajax请求路径
+                            data: obj.data,
+                            success: function(data){
+                                if(data.code==0){
+                                    layer.msg('删除成功！');
+                                    obj.del();
+                                    layer.close(index);
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    });
+                });
+            } else if(obj.event === 'statusOff'){
+                console.log(obj)
+
+
+                layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('serverproduct/changeStatus')}", // ajax请求路径
+                        data:{
+                            "serverid" : serverid,
+                            "productid" : data.id,
+                            "status" : data.status,
+                            "spid" : data.spid
+                        },
+                        success: function(data){
+                            if(data.code==0){
+                                table.reload('idTest',{
+
+                                });
+                                layer.alert('已绑定');
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    $(function () {
+
+        $(".back").click(function () {
+            window.history.back(-1);
+            $("#selected").options[0].selected = true;
+        })
+
+        $(".blackAdd").click(function () {
+            var serverid = $("#selected").find("option:selected").val();
+            console.log(serverid);
+            window.location.href="{:url('blacklist/add')}?serverid="+serverid
+        })
+    })
+
+    //
+    // window.onload = function(){
+    //     if(window.name!="hasLoad"){
+    //         location.reload();
+    //         window.name = "hasLoad";
+    //     }else{
+    //         window.name="";
+    //     }
+    // }
+</script>

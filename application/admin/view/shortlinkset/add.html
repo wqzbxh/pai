@@ -1,0 +1,110 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    添加黑名单
+</blockquote>
+<form class="layui-form" action="{:url('product/addAction')}" method="post">
+    <input type="hidden" value="{$serverid}" name="data[serverid]">
+    <div class="layui-form-item">
+        <label class="layui-form-label">黑名单类型</label>
+        <div class="layui-input-block product_radio">
+            <input type="radio" name="data[iptype]" value="0" title="账号" class="product_radio" >
+            <input type="radio" name="data[iptype]" value="1" title="IP" class="product_radio" checked="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label typename">用户IP</label>
+        <div class="layui-input-block">
+            <input type="text" name="data[content]" lay-verify="blackContent" autocomplete="off" placeholder="请输入" class="layui-input inputWidth">
+        </div>
+    </div>
+
+    <div class="layui-form-item format">
+        <label class="layui-form-label">IP格式</label>
+        <div class="layui-input-block product_radio ">
+            <input type="radio" name="data[format]" value="1" title="IP地址" class="product_radio"  checked="">
+            <input type="radio" name="data[format]" value="2" title="IP前缀" class="product_radio">
+        </div>
+    </div>
+    <!--<div class="layui-form-item" id="tpisshow">-->
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-form-label">通匹类型</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="match_type" lay-verify="required" lay-search="">-->
+                    <!--<option value="0">APK</option>-->
+                    <!--<option value="1">EXE</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即添加</button>
+            <a class="layui-btn layui-btn-primary cancel"  lay-filter="cancel"  >取消</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+        //自定义验证规则
+        form.verify({
+            blackContent: function(value){
+                if(value.length < 1){
+                    return '内容不能为空！';
+                }
+            }
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            layui.use('jquery',function(){
+                var $=layui.$;
+                $.ajax({
+                    type: 'post',
+                    url: "{:url('blacklist/addAction')}", // ajax请求路径
+                    data: data.field,
+                    success: function(data){
+                        if(data.code==0){
+                             layer.msg('添加成功');
+                             setTimeout(function () {
+                                 window.location.href="{:url('index/blackIndex')}"
+                             },1000)
+                         }else{
+                             layer.msg(data.msg);
+                         }
+                    }
+                });
+            });
+            return false;
+        });
+    });
+
+    $(function () {
+        $(".product_radio").click(function () {
+            var product =  $("input[name='data[iptype]']:checked").val();
+            if(product == 0){
+                $('.typename').text('宽带账号');
+                $('.format').hide();
+
+            }else if(product == 1){
+                $('.typename').text('用户IP');
+                $('.format').show();
+            }
+        })
+        // 取消
+        $(function () {
+            $(".cancel").click(function () {
+                window.location.href="{:url('index/blackIndex')}"
+            })
+        })
+    })
+</script>

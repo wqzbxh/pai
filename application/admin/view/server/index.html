@@ -21,7 +21,7 @@
         <th lay-data="{field:'inputcard', width:180}">入口网卡</th>
         <th lay-data="{field:'outcard', width:180}">回包网卡</th>
         <th lay-data="{field:'macaddress', width:180}">网关MAC地址</th>
-        <th lay-data="{fixed: 'right', width:350, align:'center', toolbar: '#barDemo'}">操作项</th>
+        <th lay-data="{fixed: 'right', width:400, align:'center', toolbar: '#barDemo'}">操作项</th>
     </tr>
     </thead>
 </table>
@@ -50,6 +50,7 @@
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="detail">停止</a>
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="order">命令</a>
     <a class="layui-btn layui-btn-xs" lay-event="download">下载规则</a>
     <a class="layui-btn layui-btn-xs" lay-event="flow" >流量</a>
 </script>
@@ -86,6 +87,8 @@
             var data = obj.data;
             if(obj.event === 'flow'){
                 window.location.href="{:url('serverstatistics/flow')}?serverid="+data.id;
+            }else if(obj.event === 'order'){
+                layer.alert('命令暂时未开放');
             } else if(obj.event === 'del'){
                 layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
                     layui.use('jquery',function(){
