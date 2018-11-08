@@ -263,7 +263,6 @@ Class Server extends Common{
     public function otherOperateServer()
     {
         $returnArray = array();
-        var_dump($_POST['opcode']);exit;
         if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){//接收服务器id
             Cache::rm('code'.$_POST['serverid']);//清除缓存的该服务器提示代码
 

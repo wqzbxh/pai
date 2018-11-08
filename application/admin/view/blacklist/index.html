@@ -4,21 +4,15 @@
     <!--<span class="back xhx"></span>-->
 </blockquote>
 
-<form action="" class="layui-form">
+<div action="" class="layui-form">
 <table class="layui-table " lay-data="{width: 500, height:667, url:'{:url('blacklist/getBlacklist')}?serverid={$serverDefault}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
-    <!--<div class="layui-btn-group demoTable">-->
-        <!--<div class="layui-inline">-->
-            <!--<input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">-->
-        <!--</div>-->
-        <!--<button class="layui-btn" data-type="reload">搜索</button>-->
-        <!--<a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>-->
-    <!--</div>-->
+
 
     <div class="layui-form-item" id="tpisshow">
 
-        <div class="layui-btn-group demoTable layui-inline">
+        <div class=" demoTable layui-inline">
             <div class="layui-inline">
-                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+                <input class="layui-input" name="id" id="search" placeholder="请输入搜索黑名单内容">
             </div>
             <button class="layui-btn" data-type="reload">搜索</button>
         </div>
@@ -47,7 +41,7 @@
     </tr>
     </thead>
 </table>
-</form>
+</div>
 
 <script type="text/html" id="status">
     <a class="layui-btn  layui-btn-xs " lay-event="edit">修改</a>
@@ -210,7 +204,19 @@
             }
         });
 
-
+        var $ = layui.$, active = {
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#search').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        content: demoReload
+                    }
+                });
+            }
+        };
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');

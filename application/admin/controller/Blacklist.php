@@ -54,9 +54,14 @@ Class Blacklist extends Common{
             $serverid = 0;
         }
 
+        if(isset($_GET["content"])){
+            $content = $_GET["content"];
+        }else{
+            $content = '';
+        }
 
         $ipBlackListDataModel = new \app\common\model\Ipblacklist();
-        $result = $ipBlackListDataModel->getList($offset,$limit,$serverid);
+        $result = $ipBlackListDataModel->getList($offset,$limit,$serverid,$content);
 //        var_dump($result);
         return $result;
     }

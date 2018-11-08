@@ -20,7 +20,7 @@ Class Ipblacklist extends Model{
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getList($limit,$offset,$serveruserid = 0)
+    public function getList($limit,$offset,$serveruserid = 0,$content)
     {
 
         $criteria = array();
@@ -30,13 +30,25 @@ Class Ipblacklist extends Model{
             $criteria['serverid'] = $serveruserid;
         }
 
-        $result = self::where($criteria)
-            ->limit($offset,$limit)
-            ->select()
-            ->toArray();
+        if(!empty($content)){
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->where('content','like','%'.$content.'%')
+                ->select()
+                ->toArray();
+            $count = self::where($criteria)
+                ->where('content','like','%'.$content.'%')
+                ->count();
+        }else{
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
 
-        $count = self::where($criteria)
-            ->count();
+            $count = self::where($criteria)
+                ->count();
+        }
+
 
         if(!empty($result)){
             $returnArray = array(

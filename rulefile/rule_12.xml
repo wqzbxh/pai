@@ -32,9 +32,67 @@
     <Radius Account="GG5151"/>
   </RadiusBlackList>
   <HostRuleList>
+    <HOST domain="www.jd.com" HostFilter="123">
+      <Rule id="39" productid="46" ruleid="44" type="301" match="1" ratio="10" combine="1">
+        <IE Exclude="www.baidu.com$ziguize"/>
+        <IE UaFilter="Android$ziguize"/>
+        <IE UaWholeFilter="Huawei$ziguize"/>
+        <IE CookieFilter="lll撒的$ziguize"/>
+        <IE UaInclude="ziguize"/>
+        <IE Include="ziguizeziguize"/>
+        <IE ReferInclude="ziguize"/>
+        <IE ReferExclude="ziguize"/>
+        <IE DstHost="这是模范报文啦啦啦啦啦啦啦啦啦啦啦啦"/>
+      </Rule>
+      <Rule id="40" productid="46" ruleid="44" type="200" match="1" ratio="10" combine="0">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android"/>
+        <IE UaWholeFilter="Huawei"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE UaInclude="wangzherongyao"/>
+        <IE ReferInclude="wangzherongyao"/>
+        <IE ReferExclude="wangzherongyao"/>
+        <IE ProcessMode="1"/>
+        <IE CollectTime="10"/>
+        <IE Content="1"/>
+        <IE RespContent="这是不想看到的模板，就是不想看到"/>
+      </Rule>
+      <Rule id="43" productid="46" ruleid="44" type="200" match="2" ratio="10" combine="2">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android$爱迪生"/>
+        <IE UaWholeFilter="Huawei"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE UaInclude="wangzherongyaoaidisheng"/>
+        <IE UriPrefix="5"/>
+        <IE ReferInclude="aidisheng"/>
+        <IE ReferExclude="aidisheng"/>
+        <IE Content="1"/>
+      </Rule>
+      <Rule id="56" productid="46" ruleid="44" type="200" match="2" ratio="10" combine="3">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android$12"/>
+        <IE UaWholeFilter="Huawei$1212"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE Content="1"/>
+      </Rule>
+      <Rule id="69" productid="46" ruleid="44" type="200" match="1" ratio="10" combine="2">
+        <IE Exclude="www.baidu.com"/>
+        <IE UaFilter="Android"/>
+        <IE UaWholeFilter="Huawei"/>
+        <IE CookieFilter="lll撒的"/>
+        <IE Content="1"/>
+      </Rule>
+    </HOST>
     <HOST domain="tabbao.com" HostFilter="asd">
+      <Rule id="68" productid="46" ruleid="47" type="200" match="1" ratio="10" combine="2">
+        <IE Exclude="asdaf"/>
+        <IE UaFilter="asf"/>
+        <IE UaWholeFilter="saf"/>
+        <IE CookieFilter="asf"/>
+        <IE Content="1"/>
+      </Rule>
       <Rule id="58" productid="46" ruleid="47" type="200" match="2" ratio="10" combine="2">
-        <IE Exclude="asdaf$撒大哥$dsa"/>
+        <IE Exclude="asdaf$dsa"/>
         <IE UaFilter="asf$0152"/>
         <IE UaWholeFilter="saf$dsa"/>
         <IE CookieFilter="asf$dsa"/>
@@ -46,7 +104,6 @@
         <IE ProcessMode="1"/>
         <IE CollectTime="10"/>
         <IE Content="1"/>
-        <IE RespContent="撒大哥"/>
       </Rule>
       <Rule id="59" productid="46" ruleid="47" type="301" match="2" ratio="10" combine="2">
         <IE Exclude="asdaf$fsaf"/>
@@ -61,88 +118,10 @@
         <IE DstHost="fsaf"/>
       </Rule>
     </HOST>
-    <HOST domain="www.jd.com" HostFilter="sale.jd.com">
-      <Rule id="43" productid="46" ruleid="44" type="200" match="2" ratio="10" combine="2">
-        <IE Exclude="www.baidu.com"/>
-        <IE UaFilter="Android$爱迪生"/>
-        <IE UaWholeFilter="Huawei"/>
-        <IE CookieFilter="lll撒的"/>
-        <IE UaInclude="wangzherongyaoaidisheng"/>
-        <IE UriPrefix="5"/>
-        <IE ReferInclude="aidisheng"/>
-        <IE ReferExclude="aidisheng"/>
-        <IE Content="1"/>
-      </Rule>
-      <Rule id="40" productid="46" ruleid="44" type="200" match="1" ratio="10" combine="0">
-        <IE Exclude="www.baidu.com$撒大哥sag"/>
-        <IE UaFilter="Android"/>
-        <IE UaWholeFilter="Huawei"/>
-        <IE CookieFilter="lll撒的"/>
-        <IE UaInclude="wangzherongyao"/>
-        <IE ReferInclude="wangzherongyao"/>
-        <IE ReferExclude="wangzherongyao"/>
-        <IE ProcessMode="1"/>
-        <IE CollectTime="10"/>
-        <IE Content="1"/>
-        <IE RespContent="撒范德萨"/>
-      </Rule>
-      <Rule id="39" productid="46" ruleid="44" type="301" match="1" ratio="10" combine="1">
-        <IE Exclude="www.baidu.com$1231212$ziguize"/>
-        <IE UaFilter="Android$ziguize"/>
-        <IE UaWholeFilter="Huawei$ziguize"/>
-        <IE CookieFilter="lll撒的$ziguize"/>
-        <IE UaInclude="ziguize"/>
-        <IE Include="ziguizeziguize"/>
-        <IE ReferInclude="ziguize"/>
-        <IE ReferExclude="ziguize"/>
-        <IE DstHost="121233&#10;"/>
-      </Rule>
-    </HOST>
   </HostRuleList>
   <GeneralRuleList>
-    <EXE>
-      <Rule id="38" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
-        <IE Exclude="HOSTpaipaipai"/>
-        <IE UaFilter="UApaipaipai"/>
-        <IE UaWholeFilter="UATpaipaipai"/>
-        <IE CookieFilter="COOKIETpaipaipai"/>
-        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE Content="1"/>
-      </Rule>
-      <Rule id="37" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
-        <IE Exclude="HOSTpaipaipai"/>
-        <IE UaFilter="UApaipaipai"/>
-        <IE UaWholeFilter="UATpaipaipai"/>
-        <IE CookieFilter="COOKIETpaipaipai"/>
-        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE Content="1"/>
-      </Rule>
-      <Rule id="36" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
-        <IE Exclude="HOSTpaipaipai"/>
-        <IE UaFilter="UApaipaipai"/>
-        <IE UaWholeFilter="UATpaipaipai"/>
-        <IE CookieFilter="COOKIETpaipaipai"/>
-        <IE UaInclude="wangzherongyao"/>
-        <IE ReferInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE Content="1"/>
-      </Rule>
-      <Rule id="35" productid="45" ruleid="42" type="200" match="1" ratio="10" combine="0" HostFilter="HOSTpaipaipai">
-        <IE Exclude="HOSTpaipaipai"/>
-        <IE UaFilter="UApaipaipai"/>
-        <IE UaWholeFilter="UATpaipaipai"/>
-        <IE CookieFilter="COOKIETpaipaipai"/>
-        <IE UaInclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE ReferInclude="wangzherongyao"/>
-        <IE ReferExclude="wangzherongyao&#13;&#10;wangzherongyao"/>
-        <IE Content="1"/>
-      </Rule>
-    </EXE>
     <APK>
-      <Rule id="41" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0">
+      <Rule id="41" productid="47" ruleid="45" type="301" match="1" ratio="10" combine="0">
         <IE Exclude="wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
@@ -155,7 +134,7 @@
         <IE CollectTime="1010"/>
         <IE DstHost="wangzherongyao"/>
       </Rule>
-      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="7" combine="0">
+      <Rule id="42" productid="47" ruleid="45" type="301" match="1" ratio="10" combine="0">
         <IE Exclude="wangzherongyao"/>
         <IE UaFilter="王者荣耀$wangzherongyao"/>
         <IE UaWholeFilter="王者荣耀$wangzherongyao"/>
@@ -165,6 +144,20 @@
         <IE ReferInclude="wangzherongyao"/>
         <IE ReferExclude="wangzherongyao"/>
         <IE DstHost="wangzherongyao"/>
+      </Rule>
+      <Rule id="66" productid="47" ruleid="52" type="200" match="1" ratio="10" combine="2">
+        <IE Content="1"/>
+      </Rule>
+      <Rule id="62" productid="47" ruleid="52" type="200" match="1" ratio="10" combine="2" UserPushTimePolicy="50">
+        <IE ProcessMode="1"/>
+        <IE CollectTime="30"/>
+        <IE Content="1"/>
+      </Rule>
+      <Rule id="64" productid="47" ruleid="54" type="200" match="1" ratio="10" combine="2">
+        <IE Content="1"/>
+      </Rule>
+      <Rule id="63" productid="47" ruleid="54" type="200" match="1" ratio="10" combine="2">
+        <IE Content="1"/>
       </Rule>
     </APK>
   </GeneralRuleList>

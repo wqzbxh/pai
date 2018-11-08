@@ -4,50 +4,37 @@
     <!--<span class="back xhx"></span>-->
 </blockquote>
 
-<form action="" class="layui-form">
-<table class="layui-table " lay-data="{width: 500, height:667, url:'{:url('whitelist/getWhitelist')}?serverid={$serverDefault}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
-    <!--<div class="layui-btn-group demoTable">-->
-        <!--<div class="layui-inline">-->
-            <!--<input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">-->
-        <!--</div>-->
-        <!--<button class="layui-btn" data-type="reload">搜索</button>-->
-        <!--<a href="{:url('product/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加产品</button></a>-->
-    <!--</div>-->
+<div action="" class="layui-form">
+    <table class="layui-table " lay-data="{width: 500, height:667, url:'{:url('whitelist/getWhitelist')}?serverid={$serverDefault}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+        <div class="layui-form-item" id="tpisshow">
+            <div class=" demoTable layui-inline">
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" id="search" placeholder="请输入搜索白名单内容">
+                </div>
+                <button class="layui-btn" data-type="reload">搜索</button>
+            </div>
 
-    <div class="layui-form-item" id="tpisshow">
-
-        <div class="layui-btn-group demoTable layui-inline">
             <div class="layui-inline">
-                <input class="layui-input" name="id" placeholder="请输入搜索产品名称" style="width: 300px;">
+                <div class="layui-input-inline">
+                    <select name="" lay-verify="required" lay-search=""  autocomplete="off" lay-filter="selectChage" class="selectWidth" id="selected">
+                        {volist name="serverList" id="vo"}
+                            <option value="{$vo.id}">{$vo.servername}</option>
+                        {/volist}
+                    </select>
+                </div>
             </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
+
+            <a class="layui-btn margin-left10 blackAdd" style="margin-left: 10px;"  lay-event="sonLink" c>添加白名单</a>
         </div>
-
-        <div class="layui-inline">
-            <div class="layui-input-inline">
-                <select name="" lay-verify="required" lay-search=""  autocomplete="off" lay-filter="selectChage" class="selectWidth" id="selected">
-                    {volist name="serverList" id="vo"}
-                        <option value="{$vo.id}">{$vo.servername}</option>
-                    {/volist}
-                </select>
-            </div>
-        </div>
-
-        <a class="layui-btn margin-left10 blackAdd" style="margin-left: 10px;"  lay-event="sonLink" c>添加白名单</a>
-
-
-    </div>
-
-
-    <thead>
-    <tr>
-        <th lay-data="{field:'id', width:115, sort: true, fixed: true}">ID</th>
-        <th lay-data="{field:'content', width:220}">账号名称</th>
-        <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
-    </tr>
-    </thead>
-</table>
-</form>
+        <thead>
+        <tr>
+            <th lay-data="{field:'id', width:115, sort: true, fixed: true}">ID</th>
+            <th lay-data="{field:'content', width:220}">账号名称</th>
+            <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 
 <script type="text/html" id="status">
     <a class="layui-btn  layui-btn-xs " lay-event="edit">修改</a>
@@ -210,7 +197,19 @@
             }
         });
 
-
+        var $ = layui.$, active = {
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#search').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        content: demoReload
+                    }
+                });
+            }
+        };
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');

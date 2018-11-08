@@ -54,9 +54,14 @@ Class Whitelist extends Common{
             $serverid = 0;
         }
 
+        if(isset($_GET["content"])){
+            $content = $_GET["content"];
+        }else{
+            $content = '';
+        }
 
         $ipWhiteListDataModel = new \app\common\model\Ipwhitelist();
-        $result = $ipWhiteListDataModel->getList($offset,$limit,$serverid);
+        $result = $ipWhiteListDataModel->getList($offset,$limit,$serverid,$content);
 //        var_dump($result);
         return $result;
     }
