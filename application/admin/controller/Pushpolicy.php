@@ -43,8 +43,15 @@ Class Pushpolicy extends Common{
         }
 
 
+        if(isset($_GET["name"])){
+            $name = $_GET["name"];
+        }else{
+            $name = '';
+        }
+
+
         $pushpolicyModel = new \app\common\model\Pushpolicy();
-        $result = $pushpolicyModel->getList($offset,$limit);
+        $result = $pushpolicyModel->getList($offset,$limit,$name);
 //        var_dump($result);
         return $result;
     }

@@ -19,21 +19,32 @@ Class Pushpolicy extends Model{
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getList($limit,$offset)
+    public function getList($limit,$offset,$name)
     {
 
         $criteria = array();
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
 
-        $result = self::where($criteria)
-            ->limit($offset,$limit)
-            ->select()
-            ->toArray();
+        if(!empty($name)){
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->where('name','like','%'.$name.'%')
+                ->select()
+                ->toArray();
 
-        $count = self::where($criteria)
-            ->count();
+            $count = self::where($criteria)
+                ->where('name','like','%'.$name.'%')
+                ->count();
+        }else{
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
 
+            $count = self::where($criteria)
+                ->count();
+        }
         if(!empty($result)){
             $returnArray = array(
                 'code' => 0,
