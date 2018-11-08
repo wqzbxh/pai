@@ -194,6 +194,34 @@ class Index extends  Common{
      */
     public function shortlinkset()
     {
-        return $this-> view ->fetch('shortlinkset/index');
+        $serverDataModel = new \app\common\model\Serverdata();
+        $productDataModel = new \app\common\model\Productdata();
+//        获取服务器列表
+        $result = $serverDataModel->getServerList('',0,1000,$this->userId);
+        $linkResult = \app\common\model\Shortlinkset::find();
+        if(!empty($linkResult)){
+            $arrayResult = $linkResult->toArray();
+            if(!empty($arrayResult['serverid'])){//说明是已经有更新过短链 反显上次的更新服务器
+                $servcerids = explode(',',$arrayResult['serverid']);
+                $this->assign('servcerids',$servcerids);
+            }else{//说明已经添加过链接，但是没有更新过
+                $this->assign('servcerids','');
+            }
+        }else{//证明数据库没有记录,服务器复选框全部选中
+            $this->assign('servcerids','');
+        }
+        if($result['code'] == 0){
+            $this->assign('serverList',$result['data']);
+            return $this-> view ->fetch('shortlinkset/index');
+        }
+
+    }
+
+    /**
+     * 加载链接结果页面资源
+     */
+    public function warning()
+    {
+        return $this-> view ->fetch('warning/link_result_index');
     }
 }

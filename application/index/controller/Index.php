@@ -65,10 +65,9 @@ class Index extends Controller
     /**
      * 测试
      */
-    public function test1()
+    public function test()
     {
-       $result = Userdata::query('call userData(2)');
-       var_dump($result);
+        return $this->fetch('test');
     }
 
     public function testSon()
@@ -98,7 +97,7 @@ class Index extends Controller
     }
 
 
-    public function test()
+    public function test1()
     {
         $result = Productdata::getliuliang();
 

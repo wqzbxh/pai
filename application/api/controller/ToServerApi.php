@@ -10,6 +10,7 @@ namespace app\api\controller;
 
 use app\common\model\Error;
 use app\common\model\Serverdata;
+use app\common\model\Warningdata;
 use think\Cache;
 use think\Controller;
 //给服务器提供的接口
@@ -203,4 +204,54 @@ class ToServerApi extends Controller{
         return json_encode($returnApiResult);
     }
 
+    /**
+     * 写入出错链接 错误链接统计
+     * $data 出错链接统计
+     */
+    public function linkErrorStatistics()
+    {
+        $returnApiResult = [];
+        if(!empty($_POST['data'])){
+            $dataArray = [];
+            $dataArray = explode("~~",$_POST['data']);//拆分字符串 打乱为大数组  []
+            if($dataArray>1){
+                $dataInfo = [];
+                $i = 0;
+                foreach ($dataArray as $dataArrayList){
+                    $recode = explode("@@",$dataArrayList);
+                    $dataInfo[$i]['content'] = $recode[0];
+                    $dataInfo[$i]['type'] = $recode[1];
+                    $dataInfo[$i]['time'] = time();
+                    $i++;
+                }
+
+                if(is_array($dataInfo)){
+                    $recsult = Warningdata::insertAllAction($dataInfo);
+                    if($recsult){
+                        $returnApiResult = $recsult;
+                    }
+                }else{
+                    $returnApiResult = [
+                        'code' => 16006,
+                        'msg' => Error::ERRORCODE[16006],
+                        'data' => []
+                    ];
+                }
+            }else{
+                $returnApiResult = [
+                    'code' => 16006,
+                    'msg' => Error::ERRORCODE[16006],
+                    'data' => []
+                ];
+            }
+        }else{
+            $returnApiResult = [
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => []
+            ];
+        }
+
+        return json_encode($returnApiResult);
+    }
 }
