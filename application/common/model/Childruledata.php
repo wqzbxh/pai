@@ -84,7 +84,7 @@ class Childruledata extends Model
             $criteria['s.status'] = $status;
         }else if($status == 0 && $status != 1 ){
           // $criteria['s.status'] =  array('in',array(0,'null'));
-            $criteria['s.status'] = array('neq',1);
+            $criteria['s.status'] = [ [ '<>' , 1] , [ 'NULL' , null ] ,'or' ] ;
 
         }
 
@@ -110,7 +110,7 @@ class Childruledata extends Model
                 ->limit($offset,$limit)
                 ->select()
                 ->toArray();
-//            echo self::getLastSql();exit;
+
             $count = self::alias('r')
                 ->join('serverchildruledata s','r.id = s.child_rule_id and s.serverid='.$serverid.' and s.product_id = '.$product_id.' and s.rule_id = '.$rule_id,"LEFT" )
                 ->field(self::binDingField)
