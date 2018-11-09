@@ -97,11 +97,45 @@ class Index extends Controller
     }
 
 
-    public function test1()
+    public function testBarcode()
     {
-        $result = Productdata::getliuliang();
+        return $this->fetch('barcode');
+    }
 
-        var_dump($result);
+    public function BarcodeDispose()
+    {
+//
+//        $pagecontent = file_get_contents($_POST['data']);
+//        $str =  htmlspecialchars($pagecontent);//htmlentities 或者htmlspecialcharse
+//        var_dump($str);exit;
+//        $preg = '/<img[^>]*\/>/';
+//        preg_match_all($preg, $str, $matches);
+//        exit;
+        // maximum execution time in seconds
+        set_time_limit (24 * 60 * 60);
+//if (!isset($_POST['submit'])) die();
+// folder to save downloaded files to. must end with slash
+        $destination_folder = 'down/';
 
+        $url=$_POST['data'].urlencode(iconv("GB2312","UTF-8","45.doc"));  //英文名字直接写路径就可以了
+        echo $url."<br>";
+        $newfname = 'text.txt';
+        echo $newfname;
+
+        $file = fopen ($url, "rb");
+
+        if ($file) {
+            $newf = fopen ($newfname, "wb");
+            if ($newf)
+                while(!feof($file)) {
+                    fwrite($newf, fread($file, 1024 * 8 ), 1024 * 8 );
+                }
+        }
+        if ($file) {
+            fclose($file);
+        }
+        if ($newf) {
+            fclose($newf);
+        }
     }
 }

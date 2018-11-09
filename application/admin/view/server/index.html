@@ -3,16 +3,16 @@
     服务器列表&nbsp&nbsp&nbsp&nbsp&nbsp
     <!--<span class="back xhx"></span>-->
 </blockquote>
-<div class="layui-btn-group demoTable">
-    <div class="layui-inline">
-        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
-    </div>
-    <button class="layui-btn" data-type="reload">搜索</button>
 
-    <a href="{:url('server/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加服务器</button></a>
-</div>
 
 <table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+    <div class=" demoTable layui-inline">
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="search" placeholder="请输入服务器名称">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+        <a href="{:url('server/add')}"><button class="layui-btn margin-left10" style="margin-left: 10px;" >添加服务器</button></a>
+    </div>
     <thead>
     <tr>
         <th lay-data="{field:'id', width:70}">ID</th>
@@ -284,21 +284,19 @@
         });
 
         var $ = layui.$, active = {
-            getCheckData: function(){ //获取选中数据
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-            }
-            ,getCheckLength: function(){ //获取选中数目
-                var checkStatus = table.checkStatus('idTest')
-                    ,data = checkStatus.data;
-                layer.msg('选中了：'+ data.length + ' 个');
-            }
-            ,isAll: function(){ //验证是否全选
-                var checkStatus = table.checkStatus('idTest');
-                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#search').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        servername: demoReload
+                    }
+                });
             }
         };
+
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');

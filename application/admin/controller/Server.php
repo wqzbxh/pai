@@ -104,8 +104,15 @@ Class Server extends Common{
         }else{
             $offset = 0;
         }
+
+        if(isset($_GET["servername"])){
+            $servername = $_GET["servername"];
+        }else{
+            $servername = '';
+        }
+
         $serveruserid = $this->userId;
-        $result = $serverDataModel->getServerList('',$offset,$limit,$this->userId);
+        $result = $serverDataModel->getServerList($servername,$offset,$limit,$this->userId);
         if($result['code'] == 0) {
             return $result;
         }

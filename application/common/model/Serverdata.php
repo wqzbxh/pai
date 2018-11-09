@@ -106,13 +106,27 @@ Class Serverdata extends Model{
         if($serveruserid != 1){
             $criteria['serveruserid'] = $serveruserid;
         }
-        $result = self::where($criteria)
-            ->limit($offset,$limit)
-            ->select()
-            ->toArray();
 
-        $count = self::where($criteria)
-            ->count();
+        if(!empty($servername)){
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->where('servername','like','%'.$servername.'%')
+                ->select()
+                ->toArray();
+
+            $count = self::where($criteria)
+                ->where('servername','like','%'.$servername.'%')
+                ->count();
+        }else{
+            $result = self::where($criteria)
+                ->limit($offset,$limit)
+                ->select()
+                ->toArray();
+
+            $count = self::where($criteria)
+                ->count();
+        }
+
 
         if(!empty($result)){
             $returnArray = array(
