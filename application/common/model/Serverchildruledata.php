@@ -116,6 +116,7 @@ Class Serverchildruledata extends Model{
         $returnArray = array();
         if(is_array($data)){
             $result = self::insertAll($data);
+
             if($result > 0){
                 $returnArray = array(
                     'code' => 0,

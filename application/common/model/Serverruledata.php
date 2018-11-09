@@ -198,7 +198,7 @@ Class Serverruledata extends Model{
 //           取出差集（取出的差集做新增，状态为$data['status']）
             $allAddId = array_diff($allChildId,$allServerChildId);
 //          做修改
-            $updateWhere['rule_id'] = array('in',$allUpdateId);
+            $updateWhere['child_rule_id'] = array('in',$allUpdateId);
             $updateWhere['serverid'] =$data['serverid'];
             $updateWhere['product_id'] = $data['product_id'];
             $updateWhere['rule_id'] = $data['rule_id'];
@@ -297,4 +297,37 @@ Class Serverruledata extends Model{
         }
         return $returnArray;
     }
+
+    /** 批量添加自规则绑定
+     * @param $data 绑定数据的二维数组
+     */
+    public function addListRule($data)
+    {
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(is_array($data)){
+            $result = self::insertAll($data);
+            if($result > 0){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 50011,
+                    'msg' => $errorModel::ERRORCODE[50011],
+                    'data' => array()
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10002,
+                'msg' => $errorModel::ERRORCODE[10002],
+                'data' => array()
+            );
+        }
+        return $returnArray;
+    }
+
 }
