@@ -186,11 +186,45 @@ Class Serverchildruledata extends Model{
         return $returnArray;
     }
 
+    public static function getOne($data)
+    {
+        if(!empty($data)){
+            $errorModel = new \app\common\model\Error();
+            $returnArray = array();
+            $result = self::where($data)->select()->toArray();
+
+            if(!empty($result)){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result[0]
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 50019,
+                    'msg' => $errorModel::ERRORCODE[50019],
+                    'data' => []
+                );
+            }
+
+        }
+        return $returnArray;
+    }
+
+    /***
+     * @param $serverid
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+
     public static function ruleXmlsData($serverid)
     {
 
         $where = array(
             'scr.serverid' => $serverid,
+            'scr.status' => 1,
             'r.rule_status' => 1,
             'sr.status' => 1,
             'c.childrule_status' => 1

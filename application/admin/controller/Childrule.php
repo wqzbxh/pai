@@ -244,7 +244,6 @@ class Childrule extends  Common{
             $childrule_name = '';
         }
 
-
         if(isset($_GET["status"])){
             $status = $_GET["status"];
         }else{
