@@ -168,4 +168,65 @@ Class Serverruledata extends Model{
         return $returnArray;
     }
 
+    /**
+     * @param $data
+     * @param $id
+     * @return array
+     */
+
+    public function updateRocode($data,$id){
+        $errorModel = new \app\common\model\Error();
+        $returnArray = array();
+        if(is_array($data)){
+            $result = self::where('id',$id)->update($data);
+            if($result > 0){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 50019,
+                    'msg' => $errorModel::ERRORCODE[50019],
+                    'data' => array()
+                );
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10002,
+                'msg' => $errorModel::ERRORCODE[10002],
+                'data' => array()
+            );
+        }
+        return $returnArray;
+    }
+
+    /**
+     * @param $data 查询条件
+     */
+    public static function getOne($data)
+    {
+        if(!empty($data)){
+            $errorModel = new \app\common\model\Error();
+            $returnArray = array();
+            $result = self::where($data)->select()->toArray();
+
+            if(!empty($result)){
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $result[0]
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 50019,
+                    'msg' => $errorModel::ERRORCODE[50019],
+                    'data' => []
+                );
+            }
+
+        }
+        return $returnArray;
+    }
 }

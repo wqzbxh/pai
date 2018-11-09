@@ -105,7 +105,7 @@ class Ruledata extends Model
         if($status != 9 && $status != 0) {
             $criteria['s.status'] = $status;
         }else if($status == 0 && $status != 1 ){
-            $criteria['s.status'] = null;
+            $criteria['s.status'] = [ [ '<>' , 1] , [ 'NULL' , null ] ,'or' ] ;
         }
         if(!empty($rule_name)){
             $result = self::alias('r')
