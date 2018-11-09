@@ -7,6 +7,7 @@
  */
 namespace app\common\model;
 
+use think\migration\command\migrate\Status;
 use think\Model;
 
 Class Serverruledata extends Model{
@@ -172,13 +173,80 @@ Class Serverruledata extends Model{
      * @param $data
      * @param $id
      * @return array
+    'rule_id'=> $_POST['rule_id'],
+    'serverid'=> $_POST['serverid'],
+    'product_id'=> $_POST['product_id'],
      */
 
     public function updateRocode($data,$id){
         $errorModel = new \app\common\model\Error();
         $returnArray = array();
         if(is_array($data)){
-            $result = self::where('id',$id)->update($data);
+           $result = self::where('id',$id)->update($data);
+            $ServerchildruleDataModel = new \app\common\model\Serverchildruledata();
+
+            $childRuleDataModel = new \app\common\model\Childruledata();
+//          查出所有子规则的id\
+            $allChildId = $childRuleDataModel->where('ruleid',$data['rule_id'])->field('id')->select()->toArray();
+            $allChildId = array_map('array_shift',$allChildId);
+//          查出所有已经绑定的子规则的id
+            $allServerChildId = $ServerchildruleDataModel->where(array('rule_id'=>$data['rule_id'],'serverid'=>$data['serverid'],'product_id'=> $data['product_id']))->field('child_rule_id')->select()->toArray();
+            $allServerChildId = array_map('array_shift',$allServerChildId);
+//           取出交集（取出的交集只做修改状态）
+            $allUpdateId = array_intersect($allServerChildId,$allChildId);
+            $allUpdateId = implode(',',$allUpdateId);
+//           取出差集（取出的差集做新增，状态为$data['status']）
+            $allAddId = array_diff($allChildId,$allServerChildId);
+//          做修改
+            $updateWhere['rule_id'] = array('in',$allUpdateId);
+            $updateWhere['serverid'] =$data['serverid'];
+            $updateWhere['product_id'] = $data['product_id'];
+            $updateWhere['rule_id'] = $data['rule_id'];
+            $ServerchildruleDataModel->where($updateWhere)->update(['status' => $data['status']]);
+
+//            作新增
+//          添加该规则下所有自规则绑定
+            $i = 0;
+            if(!empty($allAddId)){
+                foreach ($allAddId as $key => $value){
+                    $serverChildRuleDatas[$i]['child_rule_id'] = $value;
+                    $serverChildRuleDatas[$i]['rule_id'] = $data['rule_id'];
+                    $serverChildRuleDatas[$i]['product_id'] = $data['product_id'];
+                    $serverChildRuleDatas[$i]['serverid'] = $data['serverid'];
+                    $serverChildRuleDatas[$i]['createtime'] = time();
+                    $serverChildRuleDatas[$i]['status'] = $data['status'];
+                    $i ++;
+                }
+                $listResult = $ServerchildruleDataModel->addListRule($serverChildRuleDatas);
+
+                if($listResult['code'] == 0 && $result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 50006,
+                        'msg' => $errorModel::ERRORCODE[50006],
+                        'data' => $result
+                    );
+                }
+            }else{
+                if($result == 1){
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => $errorModel::ERRORCODE[0],
+                        'data' => $result
+                    );
+                }else{
+                    $returnArray = array(
+                        'code' => 50006,
+                        'msg' => $errorModel::ERRORCODE[50006],
+                        'data' => $result
+                    );
+                }
+            }
             if($result > 0){
                 $returnArray = array(
                     'code' => 0,

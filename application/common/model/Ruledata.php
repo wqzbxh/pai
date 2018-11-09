@@ -130,10 +130,10 @@ class Ruledata extends Model
                 ->limit($offset,$limit)
                 ->select()
                 ->toArray();
+
             $count = self::alias('r')->join('serverruledata s','r.id = s.rule_id and s.serverid='.$serviceid.' and s.product_id = '.$id,"LEFT" )->field(self::binDingField)->where($criteria)->count();
 
         }
-
 
         if(!empty($result)){
             $returnArray = array(
