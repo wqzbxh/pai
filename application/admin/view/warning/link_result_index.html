@@ -4,7 +4,7 @@
 </blockquote>
 
 <div action="" class="layui-form">
-    <table class="layui-table " lay-data="{width: 900, height:667, url:'{:url('warning/getWarningList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+    <table class="layui-table " lay-data="{width: 1300, height:667, url:'{:url('warning/getWarningList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
         <div class="layui-form-item">
             <div class=" demoTable layui-inline">
                 <div class="layui-inline">
@@ -27,7 +27,8 @@
         <thead>
             <tr>
                 <th lay-data="{field:'id', width:70, sort: true, fixed: true}">ID</th>
-                <th lay-data="{field:'content', width:500}">链接地址</th>
+                <th lay-data="{field:'content', width:900}">链接地址</th>
+                <th lay-data="{field:'time', width:150,templet: '#Time'}">入库时间</th>
                 <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
             </tr>
         </thead>
@@ -36,14 +37,16 @@
 
 <script type="text/html" id="status">
     {{#  if(d.is_dispose == 0){ }}
-          <a class="layui-btn  layui-btn-xs layui-btn-danger" href="javascript:void(0);" lay-event="statusOn" style="background: red">处&nbsp&nbsp&nbsp&nbsp理</a>
+          <a class="layui-btn  layui-btn-xs layui-btn-danger" href="javascript:void(0);" lay-event="statusOn" style="background: red">未处理</a>
     {{#  } else if(d.is_dispose == 1){ }}
          <a class="layui-btn  layui-btn-xs " lay-event="statusOff">已处理</a>
     {{#  } }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-
+<script type="text/html" id="Time">
+    {{ time2date(d.time) }}
+</script>
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
@@ -51,6 +54,7 @@
 
     layui.use(["table","form","laydate"], function(){
         var table = layui.table;
+        util = layui.util;
         var form = layui.form;
         var laydate = layui.laydate;
         laydate.render({
@@ -173,6 +177,11 @@
             active[type] ? active[type].call(this) : '';
         });
     });
+
+    function time2date(t){
+        var t1 = parseInt(t + '000');
+        return util.toDateString(t1,'yyyy年MM月dd日');
+    }
 
     $(function () {
 

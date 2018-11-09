@@ -4,7 +4,7 @@
 </blockquote>
 
 <div action="" class="layui-form">
-    <table class="layui-table " lay-data="{width: 900, height:667, url:'{:url('shortlinkset/getShortlinksetList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
+    <table class="layui-table " lay-data="{width: 1300, height:667, url:'{:url('shortlinkset/getShortlinksetList')}', page:true,limits:[15,30,45],limit:15,serverid:0, id:'idTest'}" lay-filter="demo">
         <div class="layui-form-item">
             <div class=" demoTable">
                 <div class="layui-inline">
@@ -48,7 +48,7 @@
         <thead>
             <tr>
                 <th lay-data="{field:'id', width:70, sort: true, fixed: true}">ID</th>
-                <th lay-data="{field:'link', width:500}">链接地址</th>
+                <th lay-data="{field:'link', width:900}">链接地址</th>
                 <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
             </tr>
         </thead>
