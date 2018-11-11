@@ -92,36 +92,41 @@ Class Serverproductdata extends Model{
                     $childResultData = $childDataModel->where(array('productid'=>$productid))->field('id,ruleid')->select()->toArray();//取出规则表里面的该产品的所有的规则
 
                     $childResultDataInfo = [];
-                    foreach ($childResultData as $value){
+                    foreach ($childResultData as $value){//取出该产品下的全部的子规则
                         $childResultDataInfo[$value['id']] = $value['ruleid'];
                     }
 
                     $serverChildRuleData = $serverchildruleDataModel->where(array('serverid'=>$serverid,'product_id'=>$productid))->field('rule_id,child_rule_id')->select()->toArray();//取出相应的规则记录的规则id
 
                     $serverChildRuleDataInfo = [];
-                    foreach ($serverChildRuleData as $value){
+                    foreach ($serverChildRuleData as $value){//取出该产品下的全部的已绑定子规则
                         $serverChildRuleDataInfo[$value['child_rule_id']] = $value['rule_id'];
                     }
 //                取出差集 新增的
-                    $diffData = array_diff_assoc($childResultDataInfo,$serverChildRuleDataInfo);
 
-                    //                取交集  修改的
+                    $diffData = array_diff_assoc($childResultDataInfo,$serverChildRuleDataInfo);
                     $intersectData = array_intersect_assoc($childResultDataInfo,$serverChildRuleDataInfo);
+
+
+
                     $updateChildId = array_keys($intersectData);
                     $updateRuleId = implode(',',array_unique(array_values($intersectData)));//取出规则的ID
                     $allUpdateId = implode(',',$updateChildId);//子规则的id
+
+
 //                  做修改
-                    $updateWhere['child_rule_id'] = array('in',$allUpdateId);
-                    $updateWhere['serverid'] =$data['serverid'];
-                    $updateWhere['product_id'] = $data['product_id'];
-                    $updateWhere['rule_id'] = array('in',$updateRuleId);
-                    $serverchildruleDataModel->where($updateWhere)->update(['status' => $data['status']]);
+//                    $updateWhere['child_rule_id'] = array('in',$allUpdateId);
+//                    $updateWhere['serverid'] =$data['serverid'];
+//                    $updateWhere['product_id'] = $data['product_id'];
+//                    $updateWhere['rule_id'] = array('in',$updateRuleId);
+//                    $serverchildruleDataModel->where($updateWhere)->update(['status' => $data['status']]);
 
 
 //                   作新增
                     //          添加该规则下所有自规则绑定
                     $i = 0;
                     if(!empty($diffData)){
+                        $serverChildRuleDatas = [];
                         foreach ($diffData as $key => $value){
                             $serverChildRuleDatas[$i]['serverid'] = $serverid;
                             $serverChildRuleDatas[$i]['product_id'] = $productid;
@@ -348,13 +353,18 @@ Class Serverproductdata extends Model{
                 $updateWhere['serverid'] =$data['serverid'];
                 $updateWhere['product_id'] = $data['product_id'];
                 $updateWhere['rule_id'] = array('in',$updateRuleId);
-                $serverchildruleDataModel->where($updateWhere)->update(['status' => $data['status']]);
-
+                $serverUpdateResult = $serverchildruleDataModel->where($updateWhere)->update(['status' => $data['status']]);
+                $returnArray = array(
+                    'code' => 0,
+                    'msg' => $errorModel::ERRORCODE[0],
+                    'data' => $serverUpdateResult
+                );
 
 //            作新增
     //          添加该规则下所有自规则绑定
                 $i = 0;
                 if(!empty($diffData)){
+                    $serverChildRuleDatas = [];
                     foreach ($diffData as $key => $value){
                         $serverChildRuleDatas[$i]['child_rule_id'] = $key;
                         $serverChildRuleDatas[$i]['rule_id'] = $value;
@@ -380,6 +390,7 @@ Class Serverproductdata extends Model{
                         );
                     }
                 }
+
             }
         }
 
