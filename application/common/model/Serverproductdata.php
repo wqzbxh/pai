@@ -192,21 +192,14 @@ Class Serverproductdata extends Model{
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         if(!empty($data)){
-            $result = self::where($data)->delete();
-            if($result == 1){
-                $returnArray = array(
-                    'code' => 0,
-                    'msg' => $errorModel::ERRORCODE[0],
-                    'data' => $result
-                );
-
-            }else{
-                $returnArray = array(
-                    'code' => 50001,
-                    'msg' => $errorModel::ERRORCODE[50001],
-                    'data' => $result
-                );
-            }
+            self::where(array('id'=>$data['id']))->delete();
+            Serverchildruledata::destroy(array('product_id'=> $data['productid']));
+            Serverruledata::destroy(array('product_id'=> $data['productid']));
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'data' => []
+            );
         }else{
             $returnArray = array(
                 'code' => 50003,
