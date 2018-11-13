@@ -30,11 +30,8 @@
             <!-- 顶部右侧菜单 -->
             <ul class="layui-nav top_menu">
                 <li class="layui-nav-item showNotice" id="showNotice" pc>
-                    <!--<a href="javascript:;"><i class="iconfont icon-gonggao"></i><cite>通知&nbsp<span class="layui-badge warning">{$count}</span></cite></a>-->
+                    <a href="javascript:;"><i class="iconfont icon-gonggao"></i><cite class="yujing">预警&nbsp&nbsp <?php if($count>0){?><span class="layui-badge warning countLinks" >{$count}</span><?php } ?> </cite></a>
                 </li>
-                <!--<li class="layui-nav-item" mobile>-->
-                    <!--<a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>设置</cite></a>-->
-                <!--</li>-->
                 <li class="layui-nav-item" mobile>
                     <a href="javascript:;"><i class="iconfont icon-loginout quit"></i> 退出</a>
                 </li>
@@ -47,13 +44,7 @@
                     <a href="javascript:;"><i class="iconfont icon-loginout "></i><span class="quit"> 退出</span></a>
                 </li>
 
-                <!--<li class="layui-nav-item" pc>-->
-                    <!--<dl class="layui-nav-child">-->
-                        <!--<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a></dd>-->
-                        <!--<dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>修改密码</cite></a></dd>-->
-                        <!--<dd><a href="javascript:;"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>-->
-                    <!--</dl>-->
-                <!--</li>-->
+
             </ul>
         </div>
     </div>
@@ -93,11 +84,12 @@
     <div class="layui-body layui-form">
         <div class="layui-tab marg0" lay-filter="bodyTab">
             <ul class="layui-tab-title top_tab">
-                <li class="layui-this" lay-id=""><i class="layui-icon licon iconfont icon-zhuye"></i> <cite>后台首页<?php if($count>0){?><span class="layui-badge warning" id="countLink">{$count}</span><?php } ?> </cite></li>
+                <li class="layui-this" lay-id=""><i class="layui-icon licon iconfont icon-zhuye"></i> <cite>后台首页&nbsp&nbsp
+                    <a href="{:url('index/warning')}"  style="display: inline"  target="myFrameName" ><?php if($count>0){?><span class="layui-badge warning countLink" >{$count}</span><?php } ?> </a> </cite></li>
             </ul>
             <div class="layui-tab-content clildFrame">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="{:url('index/main')}"></iframe>
+                    <iframe src="{:url('index/main')}" name="myFrameName"></iframe>
                 </div>
             </div>
         </div>
@@ -136,8 +128,12 @@
                 layer.msg('此功能待开放！');
             })
 
+            $('.yujing').click(function () {
+                console.log(1)
+                window.myFrameName.location.href = '{:url(\'index/warning\')}';
+            })
+
             $('.quit').click(function () {
-                console.log(11111);
                 $.post("{:url('login/exitAction')}",function(data){
                     console.log(data)
                     if(data == 0){
@@ -151,6 +147,16 @@
         })
 
     })
+    
+    function time()
+    {
+        dt = new Date();
+        var h=dt.getHours();//获取时
+        var m=dt.getMinutes();//获取分
+        var s=dt.getSeconds();//获取秒
+        document.getElementById("showTime").innerHTML =  "如今的时间为："+h+"时"+m+"分"+s+"秒";
+        setTimeout("time()",1000); //设定定时器，循环运行
+    }
 
 
 </script>

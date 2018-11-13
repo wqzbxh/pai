@@ -243,11 +243,13 @@ class ToServerApi extends Controller{
                                         }
                                     }
                                 }
+
                                 if(!empty($serverName)){
                                     $dataInfo[$i]['content'] = $dataValue['url'] . '-' . $serverName;
                                 }else{
-                                    $dataInfo[$i]['content'] = $dataValue['url'];
+                                    $dataInfo[$i]['content'] = $dataValue['url'] . '-不在系统内的服务器';
                                 }
+
                                 $dataInfo[$i]['type'] = 0;
                                 $dataInfo[$i]['time'] = time();
                                 $i++;
