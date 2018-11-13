@@ -756,6 +756,20 @@ Class Serverdata extends Model{
         return $resultArray;
     }
 
+    public static  function upgradeGetOne($where,$filed = null)
+    {
+        if(!empty($where)){
+            $result = self::where($where)->field($filed)->find();
+            if($result){
+                $returnArray  = $result->toArray();
+                return $returnArray['servername'];
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 }
 
 

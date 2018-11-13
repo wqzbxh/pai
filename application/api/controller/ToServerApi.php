@@ -212,19 +212,52 @@ class ToServerApi extends Controller{
     {
         $returnApiResult = [];
         if(!empty($_POST['data'])){
-            $dataArray = [];
-            $dataArray = explode("~~",$_POST['data']);//拆分字符串 打乱为大数组  []
-            if($dataArray>1){
-                $dataInfo = [];
-                $i = 0;
-                foreach ($dataArray as $dataArrayList){
-                    $recode = explode("@@",$dataArrayList);
-                    $dataInfo[$i]['content'] = $recode[0];
-                    $dataInfo[$i]['type'] = $recode[1];
-                    $dataInfo[$i]['time'] = time();
-                    $i++;
-                }
+            $data = $_POST['data'];
+            $data = json_decode($data,true);
+            $dataInfo = [];
+            $i = 0;
+            if(is_array($data) && !empty($data)) {
+                foreach ($data as $key => $value) {
+                    switch ($key) {
+                        case 'update'://链接更新
+                            foreach ($value as $dataValue) {
+                                $dataInfo[$i]['content'] = $dataValue['url'];
+                                $dataInfo[$i]['type'] = 1;
+                                $dataInfo[$i]['time'] = time();
+                                $i++;
+                            }
+                            break;
+                        case 'links':
+                            foreach ($value as $dataValue) {
+                                if (!empty($dataValue['serverid'])) {
+                                    $sereveridAll = explode(',', $dataValue['serverid']);
+                                    $serverName = '';
+                                    foreach ($sereveridAll as $sereverid) {
+                                        $servernameResult = Serverdata::upgradeGetOne(array('id' => $sereverid), 'servername');
+                                        if (!empty($servernameResult)) {
+                                            if (!empty($serverName)) {
+                                                $serverName = $serverName . '，' . $servernameResult;
+                                            } else {
+                                                $serverName = "服务器名称：" . $servernameResult;
+                                            }
+                                        }
+                                    }
+                                }
+                                if(!empty($serverName)){
+                                    $dataInfo[$i]['content'] = $dataValue['url'] . '-' . $serverName;
+                                }else{
+                                    $dataInfo[$i]['content'] = $dataValue['url'];
+                                }
+                                $dataInfo[$i]['type'] = 0;
+                                $dataInfo[$i]['time'] = time();
+                                $i++;
+                            }
+                            break;
+                        default:
 
+                            break;
+                    }
+                }
                 if(is_array($dataInfo)){
                     $recsult = Warningdata::insertAllAction($dataInfo);
                     if($recsult){
@@ -239,8 +272,8 @@ class ToServerApi extends Controller{
                 }
             }else{
                 $returnApiResult = [
-                    'code' => 16006,
-                    'msg' => Error::ERRORCODE[16006],
+                    'code' => 16007,
+                    'msg' => Error::ERRORCODE[16007],
                     'data' => []
                 ];
             }
@@ -251,7 +284,6 @@ class ToServerApi extends Controller{
                 'data' => []
             ];
         }
-
-        return json_encode($returnApiResult);
+         return json_encode($returnApiResult);
     }
 }
