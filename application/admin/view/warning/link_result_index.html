@@ -134,6 +134,14 @@
                         success: function(data){
                             if(data.code==0){
                                 layer.msg('ID:'+obj.data.id+':已处理！');
+                                var coutLinkNum = $("#countLink",parent.document).text();
+                                coutLinkNum--;
+                                if(coutLinkNum>0){
+                                    $("#countLink",parent.document).text(coutLinkNum);
+                                }else{
+                                    $("#countLink",parent.document).hide();
+                                }
+
                                 table.reload('idTest',{
 
                                 });

@@ -15,7 +15,7 @@ layui.config({
 			type : 1,
 			content : $("#lock-box"),
 			closeBtn : 0,
-			shade : 0.9
+			shade : 1
 		})
 	}
 	$(".lockcms").on("click",function(){
