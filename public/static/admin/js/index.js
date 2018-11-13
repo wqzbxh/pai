@@ -31,7 +31,7 @@ layui.config({
 		if($(this).siblings(".admin-header-lock-input").val() == ''){
 			layer.msg("请输入解锁密码！");
 		}else{
-			if($(this).siblings(".admin-header-lock-input").val() == "123456"){
+			if($(this).siblings(".admin-header-lock-input").val() == "hp123654"){
 				window.sessionStorage.setItem("lockcms",false);
 				$(this).siblings(".admin-header-lock-input").val('');
 				layer.closeAll("page");
