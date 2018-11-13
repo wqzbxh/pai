@@ -75,7 +75,13 @@
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
+    function showLoad() {
+        return layer.msg('正在执行中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:100000});
+    }
+    function closeLoad(index) {
+        layer.close(index);
 
+    }
     layui.use(["table","form"], function(){
 
 
@@ -207,7 +213,6 @@
         })
         // 更新
         $(".updateLink").click(function () {
-
             var serverid = [];
             $(" input[ name = 'serverid']:checked ").each(function(){
                 serverid.push($(this).val())
@@ -218,8 +223,17 @@
                 data:{
                     "serverid" : serverid,
                 },
+                beforeSend: function () {
+                    i = showLoad();
+                },
                 success: function(data){
-                    console.log(data);
+                    if(data == 200){
+                        closeLoad(i);
+                        layer.alert('生成文件成功');
+                    }else{
+                        closeLoad(i);
+                        layer.alert(data);
+                    }
                 }
             });
         })

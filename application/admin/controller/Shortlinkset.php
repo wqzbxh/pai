@@ -212,6 +212,13 @@ Class Shortlinkset extends Common{
                       fwrite($myfile, $serverid);
                       fflush($myfile);
                       fclose($myfile);
+
+                      //调接口地址
+                      $url = 'http://47.100.222.239:6565/?opc=1';
+                      $result = \app\common\controller\Common::otherRequestGet($url);
+                      if($result){
+                          return $result;
+                      }
                   }
             }
         }else{
