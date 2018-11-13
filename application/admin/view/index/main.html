@@ -26,7 +26,7 @@
     </fieldset>
     <blockquote class="layui-elem-quote layui-quote-nm">
         当前时间：
-        <span class="layui-badge-dot"><?php echo date('Y-m-d H:i:s')?></span>
+        <span class="layui-badge-dot" id="showTime"></span>
 
     </blockquote>
     <blockquote class="layui-elem-quote layui-quote-nm">
@@ -121,3 +121,19 @@
 <script type="text/javascript" src="__static__admin/js/index.js"></script>
 </body>
 </html>
+<script>
+    function time()
+    {
+        dt = new Date();
+        var y=dt.getFullYear();//获取四位数年
+        var m=dt.getMonth();//获取月份
+        var d=dt.getDate();//获取日期
+        var h=dt.getHours();//获取时
+        var i=dt.getMinutes();//获取分
+        var s=dt.getSeconds();//获取秒
+        document.getElementById("showTime").innerHTML =  y+"-"+m+"-"+d+" "+h+":"+i+":"+s;//进行组合
+        setTimeout("time()",1000); //设定定时器，循环运行
+    }
+    time();
+</script>
+
