@@ -230,4 +230,34 @@ Class Shortlinkset extends Common{
         }
     }
 
+    public function uodateServerid()
+    {
+        $resurnArray = [];
+        if(!empty($_POST['serverid'])){
+            $serverid = implode(',',$_POST['serverid']);
+            $result = ShortlinkModel::update(array('serverid'=>$serverid),'1=1');
+            if($result){
+                $resurnArray = [
+                    'code' => 0,
+                    'msg' => Error::ERRORCODE[0],
+                    'data' => $result
+                ];
+            }else{
+                $resurnArray = [
+                    'code' => 16008,
+                    'msg' => Error::ERRORCODE[16008],
+                    'data' => []
+                ];
+            }
+        }else{
+            $result = ShortlinkModel::update(array('serverid'=>''),'1=1');
+            $resurnArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => $result
+            ];
+        }
+        return $resurnArray;
+    }
+
 }

@@ -21,17 +21,17 @@
         </fieldset>
         <div class="layui-form-item" pane="">
             <label class="layui-form-label" style="padding: 9px 0px;">服务器</label>
-            <div class="layui-input-block" id="LinkServerid">
+            <div class="layui-input-block" id="LinkServerid" lay-event="checkboxs">
                 {if condition="!empty($serverList)"}
                     {volist name="$serverList" id="vo"}
                           {if condition="!empty($servcerids)"}
                                 {if condition="in_array($vo.id,$servcerids)"}
-                                    <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"   title="{$vo.servername}" checked>
+                                    <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"  lay-filter="checkboxs" title="{$vo.servername}" checked>
                                 {else /}
-                                      <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"   title="{$vo.servername}">
+                                      <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"  lay-filter="checkboxs" title="{$vo.servername}">
                                 {/if}
                           {else /}
-                              <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"  title="{$vo.servername}" checked>
+                              <input type="checkbox" name="serverid" lay-skin="primary" value="{$vo.id}"  lay-filter="checkboxs" title="{$vo.servername}" checked>
                           {/if}
                     {/volist}
                 {else /} {$msg}
@@ -104,8 +104,26 @@
             });
         });
         //监听表格复选框选择
-        table.on('checkbox(demo)', function(obj){
-            console.log(obj.id)
+        form.on('checkbox(checkboxs)', function(obj){
+            var serverid = [];
+            $(" input[ name = 'serverid']:checked ").each(function(){
+                serverid.push($(this).val())
+            });
+            $.ajax({
+                type: 'post',
+                url: "{:url('shortlinkset/uodateServerid')}", // ajax请求路径
+                data:{
+                    "serverid" : serverid,
+                },
+                success: function(data){
+                  console.log(data.code);
+                  if(data.code == 0){
+
+                  }else{
+                      layer.msg(data.msg);
+                  }
+                }
+            });
         });
         form.on('radio(status)', function(data){
             var serverid = $("#selected").find("option:selected").val();
@@ -199,6 +217,7 @@
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
     });
 
     $(function () {
@@ -229,7 +248,7 @@
                 success: function(data){
                     if(data == 200){
                         closeLoad(i);
-                        layer.alert('生成文件成功');
+                        layer.msg('生成文件成功');
                     }else{
                         closeLoad(i);
                         layer.alert(data);
