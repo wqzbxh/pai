@@ -1,2 +1,0 @@
-checkVerList = www.baidu.com,https://www.cnblogs.com/Darlin356230410/p/5253987.html,https://www.sina.com.cn/,https://www.tmall.com/?ali_trackid=2:mm_26632322_6858406_70736499:1541648057_235_76219389,https://sh.58.com/?utm_source=market&spm=b-31580022738699-me-f-862.mingzhan,https://www.chsi.com.cn/
-serverIdList = 611,616,619
