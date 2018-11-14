@@ -2,8 +2,11 @@
 namespace app\admin\controller;
 
 use app\common\model\Error;
+use app\common\model\Operationlog;
 use app\common\model\Warningdata;
 use think\Controller;
+use think\Request;
+
 /**
  * Class Warning
  * @package app\admin\controller
@@ -11,6 +14,10 @@ use think\Controller;
  */
 Class Warning extends Common{
 
+    const TYPE = [
+        0 => '死链',
+        1 => '版本更新',
+    ];
     /**
      * @return mixe 获取有问题链接结果集
      */
@@ -77,7 +84,9 @@ Class Warning extends Common{
     public function delAction()
     {
         if(!empty($_POST['id'])){
+
             $result = Warningdata::destroy(array('id'=>$_POST['id']));
+            Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),3,'[链接检查结果]删除了类型为〖'.self::TYPE[$_POST['type']].'〗的链接：'.$_POST['content']);
             if($result){
                 $returnArray = [
                     'code' => 0,

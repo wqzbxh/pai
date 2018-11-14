@@ -230,4 +230,11 @@ class Index extends  Common{
     {
         return $this-> view ->fetch('warning/link_result_index');
     }
+    /**
+     * 加载链接结果页面资源
+     */
+    public function operation()
+    {
+        return $this-> view ->fetch('operation/operation');
+    }
 }
