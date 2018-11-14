@@ -135,7 +135,6 @@
                             if(data.code==0){
                                 layer.msg('ID:'+obj.data.id+':已处理！');
                                 var coutLinkNum = parseInt($(".countLink",parent.document).text());
-                                console.log(coutLinkNum);
                                 coutLinkNum--;
                                 if(coutLinkNum>0){
                                     $(".countLink",parent.document).text(coutLinkNum);
@@ -163,6 +162,17 @@
                             data: obj.data,
                             success: function(data){
                                 if(data.code==0){
+                                    if(obj.data.is_dispose == 0){
+                                        var coutLinkNum = parseInt($(".countLink",parent.document).text());
+                                        coutLinkNum--;
+                                        if(coutLinkNum>0){
+                                            $(".countLink",parent.document).text(coutLinkNum);
+                                            $(".countLinks",parent.document).text(coutLinkNum);
+                                        }else{
+                                            $(".countLinks",parent.document).hide();
+                                            $(".countLink",parent.document).hide();
+                                        }
+                                    }
                                     layer.msg('删除成功！');
                                     obj.del();
                                     layer.close(index);

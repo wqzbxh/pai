@@ -238,16 +238,16 @@ class ToServerApi extends Controller{
                                             if (!empty($serverName)) {
                                                 $serverName = $serverName . '，' . $servernameResult;
                                             } else {
-                                                $serverName = "服务器名称：" . $servernameResult;
+                                                $serverName = "服务器：----------" . $servernameResult;
                                             }
                                         }
                                     }
                                 }
 
                                 if(!empty($serverName)){
-                                    $dataInfo[$i]['content'] = $dataValue['url'] . '-' . $serverName;
+                                    $dataInfo[$i]['content'] = $dataValue['url'] . '【' . $serverName.'】';
                                 }else{
-                                    $dataInfo[$i]['content'] = $dataValue['url'] . '-不在系统内的服务器';
+                                    $dataInfo[$i]['content'] = $dataValue['url'] . '【服务器：----------未知】';
                                 }
 
                                 $dataInfo[$i]['type'] = 0;
