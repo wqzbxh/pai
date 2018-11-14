@@ -238,7 +238,7 @@ class ToServerApi extends Controller{
                                             if (!empty($serverName)) {
                                                 $serverName = $serverName . '，' . $servernameResult;
                                             } else {
-                                                $serverName = "服务器：----------" . $servernameResult;
+                                                $serverName = "服务器：" . $servernameResult;
                                             }
                                         }
                                     }
@@ -247,7 +247,7 @@ class ToServerApi extends Controller{
                                 if(!empty($serverName)){
                                     $dataInfo[$i]['content'] = $dataValue['url'] . '【' . $serverName.'】';
                                 }else{
-                                    $dataInfo[$i]['content'] = $dataValue['url'] . '【服务器：----------未知】';
+                                    $dataInfo[$i]['content'] = $dataValue['url'] . '【服务器：未知】';
                                 }
 
                                 $dataInfo[$i]['type'] = 0;

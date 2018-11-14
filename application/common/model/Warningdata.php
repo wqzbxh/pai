@@ -34,7 +34,7 @@ Class Warningdata extends Model{
                     ->where('time','>',$startTime)
                     ->where('content','like','%'.$link.'%')
                     ->limit($offset,$limit)
-                    ->order('is_dispose asc')
+                    ->order('is_dispose asc,time desc')
                     ->select()
                     ->toArray();
                 $count = self::where('time','<',$endTime)
@@ -52,7 +52,7 @@ Class Warningdata extends Model{
                 $result = self::where('time','<',$endTime)
                     ->where('time','>',$startTime)
                     ->limit($offset,$limit)
-                    ->order('is_dispose asc')
+                    ->order('is_dispose asc,time desc')
                     ->select()
                     ->toArray();
                 $count = self::where('time','<',$endTime)
@@ -63,7 +63,7 @@ Class Warningdata extends Model{
                     $result = self::select()->order('is_dispose asc')->toArray();
                     $count = self::count();
                 }else{
-                    $result = self::limit($offset,$limit)->order('is_dispose asc')->select()->toArray();
+                    $result = self::limit($offset,$limit)->order('is_dispose asc,time desc')->select()->toArray();
                     $count = self::count();
                 }
                }

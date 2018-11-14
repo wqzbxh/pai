@@ -29,7 +29,7 @@
                 <th lay-data="{field:'id', width:70}">ID</th>
                 <th lay-data="{field:'type', width:140, templet:'#type'}">类型</th>
                 <th lay-data="{field:'content', width:900}">链接地址</th>
-                <th lay-data="{field:'time', width:110,templet: '#Time'}">入库时间</th>
+                <th lay-data="{field:'time', width:180,templet: '#Time'}">入库时间</th>
                 <th lay-data="{field:'status', width:140,templet: '#status'}">操作项</th>
             </tr>
         </thead>
@@ -209,7 +209,7 @@
 
     function time2date(t){
         var t1 = parseInt(t + '000');
-        return util.toDateString(t1,'yyyy-MM-dd');
+        return util.toDateString(t1,'yyyy-MM-dd   HH:mm:ss');
     }
 
     $(function () {
