@@ -17,6 +17,28 @@
         </div>
     </div>
 
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label" style="margin-right: -10px;">指定菜单栏</label>
+        {if condition="!empty($menulist)"}
+        {volist name="$menulist" id="vo"}
+        <div class="layui-input-block" style="width: 600px;">
+            <div class="father">
+                <input type="checkbox"  name="sonCheck[]" lay-skin="primary" value="{$vo.info.id}"  title="{$vo.info.menu_name}">
+            </div>
+            <div class="son">
+                {volist name="$vo.child" id="child"}
+                <input type="checkbox" name="sonCheck[]" lay-skin="primary" value="{$child.info.id}" title="{$child.info.menu_name}">
+                {/volist}
+            </div>
+
+        </div>
+        {/volist}
+        {else /} {$msg}
+        {/if}
+
+    </div>
+
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="demo1">立即修改</button>
@@ -62,15 +84,43 @@
             });
             return false;
         });
+
+        $('.son').click(function () {
+            console.log($("input[name='checkboxall']").val())
+            $(this).prev().children('input').prop("checked",true);
+            form.render('checkbox');
+        })
+
+
+        $('.father').click(function () {
+            var result = $(this).children('input').is(':checked');
+            if(result == true){
+                $(this).next().children('input').prop("checked",true);
+            }else{
+                $(this).next().children('input').prop("checked",false);
+            }
+            form.render('checkbox');
+        })
     });
 
-    $(function () {
 
-        // 取消
+
+        // JQUery辅助代码
         $(function () {
+            var usermenu = {$userMenu};
+            console.log(usermenu);
+            //反显用户已经存在的菜单
+            if(usermenu.code == 0){
+                var userMneuLength = usermenu.data.length
+                var userMneudadata = usermenu.data
+                var usermenuI = 0;
+                for (usermenuI;usermenuI<userMneuLength;usermenuI++){
+                    $("input[value='"+userMneudadata[usermenuI].menu_id+"']").prop("checked",true)
+                }
+            }
             $(".cancel").click(function () {
                 window.location.href="{:url('index/userIndex')}"
             })
         })
-    })
+
 </script>

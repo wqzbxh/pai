@@ -118,6 +118,15 @@ Class User extends Common{
         if(!empty($_GET['id'])){
             $result = Userdata::getOne(array('id'=>$_GET['id']));
             if($result['code'] == 0){
+                //查询所有的菜单
+                $commonCrontroller = new Common();
+                $resultMenu = Menuinfo::getMenuList();
+                $menulist = $commonCrontroller->arrayPidProcess($resultMenu);
+                $this->assign('menulist',$menulist);
+                //查询账号的菜单
+                $userMenu = Usermenuinfo::getUsermenuinfoList($_GET['id']);
+                $userMenu = \GuzzleHttp\json_encode($userMenu);
+                $this->assign('userMenu',$userMenu);
                 $this->assign('userInfo',$result['data']);
                 return $this->view->fetch('user/edit');
             }else{
@@ -143,6 +152,18 @@ Class User extends Common{
             $where['id'] = $_POST['data']['id'];
             $editResult = Userdata::update($_POST['data'],$where)->toArray();
             if($editResult){
+
+                if(!empty($_POST['sonCheck'])){
+                    foreach ($_POST['sonCheck'] as $value){
+                        $menuIfo[] = [
+                            'user_id' => $where['id'],
+                            'menu_id' => $value,
+                        ];
+                    }
+                    //添加用户菜单
+                    Usermenuinfo::del(array('user_id'=>$where['id']));
+                    Usermenuinfo::addAction($menuIfo);
+                }
                 $returnArray = $returnArray = [
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],

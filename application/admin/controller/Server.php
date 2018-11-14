@@ -113,7 +113,7 @@ Class Server extends Common{
 
         $serveruserid = $this->userId;
         $result = $serverDataModel->getServerList($servername,$offset,$limit,$this->userId);
-        if($result['code'] == 0) {
+        if($result) {
             return $result;
         }
     }

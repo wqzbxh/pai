@@ -34,9 +34,10 @@ class Menuinfo extends Model{
     {
         $resultArray = [];
         $allSonmenuRelation = Usermenuinfo::getUsermenuinfoList($userId);
+
         if($allSonmenuRelation['code'] == 0){
             $menlist = array_map('array_shift',$allSonmenuRelation['data']);
-            $result = self::where('is_show',1)->ll($menlist)->toArray();
+            $result = self::where(array('id'=>array('in',$menlist)))->where('is_show',1)->select()->toArray();
             $resultArray =[
                 'code' => 0,
                 'msg' => Error::ERRORCODE[0],

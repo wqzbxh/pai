@@ -54,10 +54,8 @@ class Index extends  Common{
         $warningModel = new Warningdata();
         $count = $warningModel->where('is_dispose', 0)->count();
 
-
-        $count = $warningModel->where('is_dispose', 0)->count();
-
         $this->assign('count',$count);
+        $this->assign('username',session('userInfo')['username']);
         $this->assign('userflag',session('userInfo')['userflag']);
         return $this->fetch('index');
     }

@@ -32,19 +32,30 @@
                 <li class="layui-nav-item showNotice" id="showNotice" pc>
                     <a href="javascript:;"><i class="iconfont icon-gonggao"></i><cite class="yujing">预警&nbsp&nbsp <?php if($count>0){?><span class="layui-badge warning countLinks" >{$count}</span><?php } ?> </cite></a>
                 </li>
+                <?php if($userflag == 1){ ?>
+                    <li class="layui-nav-item lockcms" pc>
+                        <a href="javascript:;"><i class="iconfont icon-lock1 "></i><cite class="">锁屏</cite></a>
+                    </li>
+                <?php } ?>
                 <li class="layui-nav-item" mobile>
                     <a href="javascript:;"><i class="iconfont icon-loginout quit"></i> 退出</a>
                 </li>
 
-                <li class="layui-nav-item lockcms" pc>
-                    <a href="javascript:;"><i class="iconfont icon-lock1 "></i><cite class="">锁屏</cite></a>
-                </li>
 
                 <li class="layui-nav-item" pc>
                     <a href="javascript:;"><i class="iconfont icon-loginout "></i><span class="quit"> 退出</span></a>
                 </li>
 
-
+                <li class="layui-nav-item" pc>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        {$username}
+                    </a>
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="">密码修改</a></dd>-->
+                    <!--</dl>-->
+                </li>
+                </li>
             </ul>
         </div>
     </div>
