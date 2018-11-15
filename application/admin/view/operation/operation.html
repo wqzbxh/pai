@@ -23,12 +23,12 @@
             <tr>
                 <th lay-data="{field:'id', width:70}">ID</th>
                 <th lay-data="{field:'username', width:100}">用户</th>
-                <th lay-data="{field:'module', width:150}">操作模块名</th>
-                <th lay-data="{field:'controller', width:150}">操作控制器</th>
-                <th lay-data="{field:'method', width:150}">操作方法</th>
+                <!--<th lay-data="{field:'module', width:130}">操作模块名</th>-->
+                <!--<th lay-data="{field:'controller', width:130}">操作控制器</th>-->
+                <!--<th lay-data="{field:'method', width:130}">操作方法</th>-->
                 <th lay-data="{field:'operate_type', width:100,templet: '#status'}">类型</th>
                 <th lay-data="{field:'operate_info', width:580}">具体信息</th>
-                <th lay-data="{field:'createtime', width:180,templet: '#Time'}">入库时间</th>
+                <th lay-data="{field:'createtime', width:180,templet: '#Time'}">操作时间</th>
 
             </tr>
         </thead>
@@ -37,13 +37,20 @@
 
 <script type="text/html" id="status">
     {{#  if(d.operate_type == 0){ }}
-    <a class="c009688" href="javascript:void(0);" >新增</a>
+    <a class="" href="javascript:void(0);" >新增</a>
+    <!--c009688-->
     {{#  } else if(d.operate_type == 1){ }}
-    <a class="c009688"  href="javascript:void(0);">修改</a>
+    <a class=""  href="javascript:void(0);">修改</a>
+    <!--E9FFFF-->
+    {{#  } else if(d.operate_type == 2){ }}
+    <a class=""  href="javascript:void(0);">生成文件</a>
+    <!--E9FFFF-->
     {{#  } else if(d.operate_type == 3){ }}
-    <a class="c009688" href="javascript:void(0);" >删除</a>
+    <a class="" href="javascript:void(0);" >删除</a>
+    <!--FF5722-->
     {{#  } else if(d.operate_type == 4){ }}
-    <a class="c009688" href="javascript:void(0);">其他</a>
+    <a class="" href="javascript:void(0);">服务器交互</a>
+    <!--c009688-->
     {{#  } }}
 </script>
 

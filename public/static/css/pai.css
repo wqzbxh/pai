@@ -28,10 +28,16 @@
 .c666{
     color: red !important;
 }
+.FF5722{
+    color: #FF5722 !important;
+}
 .E9FFF{
     color: #1E9FFF;
     border: 1px solid #1E9FFF;
-  }
+}
+.E9FFFF{
+    color: #1E9FFF !important;
+}
 .overstriking{
     font-weight: 700;
 }

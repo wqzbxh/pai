@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 use app\common\model\Error;
+use app\common\model\Operationlog;
 use app\common\model\Shortlinkset as ShortlinkModel;
 use think\Controller;
 use think\Request;
@@ -45,6 +46,7 @@ Class Shortlinkset extends Common{
        if(!empty($data['link'])){
            $result =  \app\common\model\Shortlinkset::create($data,'link');
            if($result){
+               Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),0,'[链接管理]添加了短链为的链接：'.$data['link']);
                $returnArray = [
                     'code' => 0,
                    'msg' => Error::ERRORCODE[0],
@@ -101,8 +103,11 @@ Class Shortlinkset extends Common{
         $returnArray = [];
         $data = Request::instance()->param();
         if(!empty($data['link'])){
+
+            $resultEditBefor = ShortlinkModel::getOne(array('id' =>$data['id']));
             $result =  \app\common\model\Shortlinkset::update($data,array('id'=>$data['id']),'link');
             if($result){
+                Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),1,'[链接管理]将短链：'.$resultEditBefor['data']['link'].'　修改为：'.$data['link']);
                 $returnArray = [
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],
@@ -162,6 +167,7 @@ Class Shortlinkset extends Common{
         if(!empty($_POST['id'])){
             $result = ShortlinkModel::destroy(array('id'=>$_POST['id']));
             if($result){
+                Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),3,'[链接管理]将短链：'.$_POST['link'].'　删除');
                 $returnArray = [
                     'code' => 0,
                     'msg' => Error::ERRORCODE[0],
@@ -212,11 +218,12 @@ Class Shortlinkset extends Common{
                       fwrite($myfile, $serverid);
                       fflush($myfile);
                       fclose($myfile);
-
+                      Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),2,'[链接管理]生成文件〖linkfile/checklink.txt〗，监控服务器id为'.$serverid);
                       //调接口地址
                       $url = 'http://47.100.222.239:6565/?opc=1';
                       $result = \app\common\controller\Common::otherRequestGet($url);
                       if($result){
+                          Operationlog::addOperation($this->userId,'common','Common','otherRequestGet',4,'[链接管理]请求服务器链接地址：'.$url.'成功，并返回结果：'.$result);
                           return $result;
                       }
                   }

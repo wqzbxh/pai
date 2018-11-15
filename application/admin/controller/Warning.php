@@ -66,6 +66,7 @@ Class Warning extends Common{
         $returnArray =[];
         if(!empty($_POST['id'])){
             $result = Warningdata::chanage($_POST['id']);
+            Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),1,'[链接检查结果]处理了类型为〖'.self::TYPE[$_POST['type']].'〗的链接：'.$_POST['content']);
             $returnArray = $result;
         }else{
             $returnArray = [

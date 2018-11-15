@@ -71,7 +71,8 @@ Class Operationlog extends Model
                     ->where('o.createtime','>',$startTime)
                     ->where(self::fuzzy_query,'like','%'.$content.'%')
                     ->limit($offset,$limit)
-                    ->order('o.id asc,o.createtime desc')
+                    ->field(self::returnfiled)
+                    ->order('o.id desc')
                     ->select()
                     ->toArray();
                 $count = self::alias('o')
@@ -85,7 +86,9 @@ Class Operationlog extends Model
                     ->join('userdata u','o.user_id = u.id','LEFT')
                     ->where($criteria)
                     ->where(self::fuzzy_query,'like','%'.$content.'%')
-                    ->limit($offset,$limit)->order('o.id asc')
+                    ->limit($offset,$limit)
+                    ->field(self::returnfiled)
+                    ->order('o.id desc')
                     ->select()
                     ->toArray();
                 $count = self::alias('o')
@@ -103,7 +106,8 @@ Class Operationlog extends Model
                     ->where('o.createtime','<',$endTime)
                     ->where('o.createtime','>',$startTime)
                     ->limit($offset,$limit)
-                    ->order('o.id asc,o.createtime desc')
+                    ->field(self::returnfiled)
+                    ->order('o.id desc')
                     ->select()
                     ->toArray();
                 $count =self::alias('o')
@@ -115,7 +119,7 @@ Class Operationlog extends Model
                 if($limit == 0){
                     $result =self::alias('o')
                         ->join('userdata u','o.user_id = u.id','LEFT')
-                        ->order('o.id asc')
+                        ->order('o.id desc')
                         ->select()
                         ->toArray();
                     $count = self::count();
@@ -124,7 +128,7 @@ Class Operationlog extends Model
                         ->join('userdata u','o.user_id = u.id','LEFT')
                         ->limit($offset,$limit)
                         ->field(self::returnfiled)
-                        ->order('o.id asc,o.createtime desc')
+                        ->order('o.id desc')
                         ->select()
                         ->toArray();
                     $count = self::count();
