@@ -9,7 +9,11 @@ namespace app\admin\controller;
 
 use app\common\model\Childruledata;
 use app\common\model\Error;
+use app\common\model\Operationlog;
+use app\common\model\Productdata;
+use app\common\model\Ruledata;
 use think\Controller;
+use think\Request;
 
 Class Serverchildrule extends  Common{
 
@@ -30,29 +34,34 @@ Class Serverchildrule extends  Common{
         $returnArray = array();
         if(!empty($_POST['rule_id']) && !empty($_POST['serverid']) && !empty($_POST['product_id']) && !empty($_POST['child_rule_id'])){
             $serverChildRuleDataModel = new \app\common\model\Serverchildruledata();
-
+            $productDataModel = new Productdata();
+            $productData = $productDataModel->getProductOne($_POST['product_id']);
+            $ruledataDataModel = new Ruledata();
+            $ruleData = $ruledataDataModel->getRuleOne($_POST['rule_id']);
+            $childRuleDataModel = new Childruledata();
+            $childRuleData = $childRuleDataModel->getChildruleOne($_POST['child_rule_id']);
 //        如果没有status的值表明邦定表中没有这个规则和这个服务器产品之间进行邦定，因此进行邦定操作
             if(empty($_POST['status'])){
-//                如果不存在记录则为添加，存在则改变状态
+                //                如果不存在记录则为添加，存在则改变状态
                 $data = [
                     'child_rule_id'=> $_POST['child_rule_id'],
                     'rule_id'=> $_POST['rule_id'],
                     'serverid'=> $_POST['serverid'],
                     'product_id'=> $_POST['product_id'],
                 ];
-
                 $checkCode = $serverChildRuleDataModel::getOne($data);
                 if($checkCode['code'] == 0){//说明已经存在，则改变状态
                     $result = $serverChildRuleDataModel->updateRocode(array('status'=>1),$checkCode['data']['id']);
                 }else{
                     $result = $serverChildRuleDataModel->addServerchildruleBindingRecord($_POST['child_rule_id'],$_POST['rule_id'],$_POST['serverid'],$_POST['product_id'],1);
                 }
+                Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),6,'[产品绑定:子规则]进行绑定:'.$childRuleData['data'][0]['childrule_name'].'【'.$productData['data'][0]['product_name'].'|'.$ruleData['data'][0]['rule_name'].'】');
             }else if($_POST['status'] == 1 && !empty($_POST['spid'])){//进行解绑操作
-//
                 $result = $serverChildRuleDataModel->updateRocode(array('status'=>0),$_POST['spid']);
+                Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),5,"[产品绑定:子规则]进行解绑:".$childRuleData['data'][0]['childrule_name']."【".$productData['data'][0]['product_name']."|".$ruleData['data'][0]['rule_name']."】");
             }else if($_POST['status'] == 2 && !empty($_POST['spid'])){//进行删除操作
-//                进行解绑操作
                 $result = $serverChildRuleDataModel->delBindingRecord($_POST['spid']);
+                Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),3,"[产品绑定:子规则]进行绑定删除:".$childRuleData['data'][0]['childrule_name']."【".$productData['data'][0]['product_name']."|".$ruleData['data'][0]['rule_name']."】");
             }
         }else{
             $errorModel = new \app\common\model\Error();

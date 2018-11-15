@@ -22,7 +22,7 @@
         <thead>
             <tr>
                 <th lay-data="{field:'id', width:70}">ID</th>
-                <th lay-data="{field:'username', width:100}">用户</th>
+                <th lay-data="{field:'username', width:100}">操作用户</th>
                 <!--<th lay-data="{field:'module', width:130}">操作模块名</th>-->
                 <!--<th lay-data="{field:'controller', width:130}">操作控制器</th>-->
                 <!--<th lay-data="{field:'method', width:130}">操作方法</th>-->
@@ -51,6 +51,15 @@
     {{#  } else if(d.operate_type == 4){ }}
     <a class="" href="javascript:void(0);">服务器交互</a>
     <!--c009688-->
+    {{#  } else if(d.operate_type == 5){ }}
+    <a class="" href="javascript:void(0);" >解绑</a>
+    <!--FF5722-->
+    {{#  } else if(d.operate_type == 6){ }}
+    <a class="" href="javascript:void(0);" >绑定</a>
+    <!--FF5722-->
+    {{#  } else if(d.operate_type == 7){ }}
+    <a class="" href="javascript:void(0);" >行为</a>
+    <!--FF5722-->
     {{#  } }}
 </script>
 

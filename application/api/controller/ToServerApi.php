@@ -173,11 +173,11 @@ class ToServerApi extends Controller{
     public function downLoadXml()
     {
         $returnApiResult = [];
+        Cache::set('test' ,'7',3000);
         if(!empty($_POST['data'] && !empty($_POST['id']))){//接收post数据
             $downXml = fopen('rulefile/out_'.$_POST['id'].'.xml', 'w+');//将数据写入rulefile里面 命名方式
             fwrite($downXml, $_POST['data']);
             fclose($downXml);
-            fflush($downXml);
             $shellCommand = 'cd rulefile;./decryptRule '.$_POST['id']; //执行解密文件 DecryptFile
             system($shellCommand,$shellResult);
             if($shellResult == 0){ //已经执行成功生成解密文件 ，进行监听

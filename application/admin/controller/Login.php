@@ -8,8 +8,10 @@
 
 namespace app\admin\controller;
 
+use app\common\model\Operationlog;
 use think\captcha\Captcha;
 use think\Controller;
+use think\Request;
 
 Class Login extends Controller{
 
@@ -41,7 +43,7 @@ Class Login extends Controller{
                         $userInfo = $result['data'][0];
                         unset($userInfo['passwd']);
                         session('userInfo',$userInfo);
-
+                        Operationlog::addOperation($userInfo['id'],Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),7,'执行登陆');
                         $returnArray = array(
                             'code' => 0,
                             'msg' => $errorModel::ERRORCODE[0],
@@ -75,6 +77,7 @@ Class Login extends Controller{
 
         public function exitAction()
         {
+            Operationlog::addOperation(session('userInfo')['id'],Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),7,'执行登出');
             session('userInfo',null);
             return 0;
         }

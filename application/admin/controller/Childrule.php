@@ -7,11 +7,16 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\Operationlog;
+use app\common\model\Productdata;
+use app\common\model\Ruledata;
 use think\Controller;
+use think\Request;
 
 class Childrule extends  Common{
 
     /**
+     * 自动加载
      * 继承父类自动加载
      */
     public function _initialize()
@@ -62,6 +67,12 @@ class Childrule extends  Common{
             $data['createtime'] = time();
             $childruleDataModel = new \app\common\model\Childruledata();
             $result = $childruleDataModel->addChildrule($data);
+            $productDataModel = new Productdata();
+            $productData = $productDataModel->getProductOne($_POST['data']['productid']);
+            $ruledataDataModel = new Ruledata();
+            $ruleData = $ruledataDataModel->getRuleOne($_POST['data']['ruleid']);
+            Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),0,'[子规则管理]添加子规则:'.$_POST['data']['childrule_name'].'【'.$productData['data'][0]['product_name'].'|'.$ruleData['data'][0]['rule_name'].'】');
+//
         }else{
             $errorModel = new \app\common\model\Error();
             $result = array(

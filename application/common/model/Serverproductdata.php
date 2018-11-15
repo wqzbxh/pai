@@ -137,7 +137,6 @@ Class Serverproductdata extends Model{
                             $serverChildRuleDatas[$i]['createtime'] = time();
                             $serverChildRuleDatas[$i]['status'] = $status;
                             $serverChildRuleDatas[$i]['binding_childrule_host'] = '';
-                            $serverChildRuleDatas[$i]['binding_childrule_ratio'] = '';
                             $i ++;
                         }
 
