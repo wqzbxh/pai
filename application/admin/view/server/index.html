@@ -87,8 +87,6 @@
             var data = obj.data;
             if(obj.event === 'flow'){
                 window.location.href="{:url('serverstatistics/flow')}?serverid="+data.id;
-            }else if(obj.event === 'order'){
-                layer.alert('命令暂时未开放');
             } else if(obj.event === 'del'){
                 layer.confirm('数据无法恢复，确定执行删除操作？', function(index){
                     layui.use('jquery',function(){
@@ -280,6 +278,86 @@
                         });
                     });
                 });
+            }else if(obj.event === 'order'){
+                var id = data.id ;
+                var open = layer.open({
+                    type: 1 //Page层类型
+                    ,btn:["确定","取消"]
+                    ,title:'命令填写'
+                    ,skin: 'layui-layer-prompt'
+                    ,area:['730px','400px;']
+                    ,content: "<form><div class='layui-form'>" +
+                        "<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='请输入命令'></textarea></div></form>"
+                    ,yes: function(index, layero){
+                        var childrule_push_content = $(layero).find("textarea").val()
+                        layui.use('jquery',function(){
+                            var $=layui.$;
+                            $.ajax({
+                                type: 'post',
+                                url: "{:url('server/generateRuleCmd')}", // ajax请求路径
+                                beforeSend: function () {
+                                    i = showLoad();
+                                },
+                                data:{
+                                    "order" : childrule_push_content,
+                                    "id" : id,
+                                    'opcode':10
+                                },
+                                success: function(data){
+                                    console.log(data);
+                                    if(data == 200){
+                                        var startime = parseInt(Date.parse(new Date()) / 1000);
+                                        var c =  window.setInterval(function () {
+                                            var q = 1;
+                                            $.ajax({
+                                                type: 'post',
+                                                url: "{:url('server/upgradeLookStatus')}", // ajax请求路径
+                                                data: {
+                                                    id:id
+                                                },
+                                                success: function(data){
+                                                    var nowtime = parseInt(Date.parse(new Date()) / 1000);
+                                                    var mistiming =  nowtime - startime;
+                                                    if(data.code == 0){
+                                                        window.clearInterval(c);
+                                                        closeLoad(i);
+                                                        layer.close(index);
+                                                        layer.msg('服务器'+id+'：命令生成！', {
+                                                            offset: '6px'
+                                                        });
+                                                    }else if(data.code == 12004){
+                                                        window.clearInterval(c);
+                                                        closeLoad(i);
+                                                        layer.close(index);
+                                                        layer.msg(data.data);
+                                                    }
+
+                                                    if(mistiming > 15){
+                                                        window.clearInterval(c);
+                                                        closeLoad(i);
+                                                        return layer.msg('服务器'+id+'：命令生成超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                                    }
+                                                    q++;
+                                                }
+                                            })
+                                        }, 2000);
+                                    }else if (data.code == 12003){
+                                        window.clearInterval(c);
+                                        closeLoad(i);
+                                        return layer.msg('服务器'+id+'：命令程序执行失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    }else {
+                                        window.clearInterval(c);
+                                        closeLoad(i);
+                                        return layer.msg('服务器'+id+'：命令生成失败...（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    }
+                                }
+                            });
+                        });
+                    }
+                });
+
+
+
             }
         });
 

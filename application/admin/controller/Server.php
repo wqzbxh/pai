@@ -8,9 +8,12 @@
 namespace app\admin\controller;
 
 use app\common\model\Error;
+use app\common\model\Operationlog;
 use think\Cache;
+use think\Config;
 use think\Controller;
 use app\common\model\Serverdata;
+use think\Request;
 
 Class Server extends Common{
 
@@ -198,6 +201,7 @@ Class Server extends Common{
         return $result;
     }
 
+
     /**
      * @return mixed
      * 推送数产品页面渲染
@@ -206,6 +210,7 @@ Class Server extends Common{
     {
         return $this->fetch('product_push_the_number');
     }
+
 
     /**
      * @return mixed
@@ -270,9 +275,8 @@ Class Server extends Common{
     public function otherOperateServer()
     {
         $returnArray = array();
-        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){//接收服务器id
-            Cache::rm('code'.$_POST['serverid']);//清除缓存的该服务器提示代码
-
+        if(!empty($_POST['serverid']) && !empty($_POST['opcode'])){
+            Cache::rm('code'.$_POST['serverid']);
             $returnArray = Serverdata::operateServer($_POST['serverid'],$_POST['opcode']);
         }else{
             $returnArray = array(
@@ -283,7 +287,48 @@ Class Server extends Common{
         }
         return $returnArray;
     }
+
+
     /**
+     * 生成命令文件
+     */
+    public function generateRuleCmd()
+    {
+        if(!empty($_POST['order']) && !empty($_POST['id'])){
+            $myfile = fopen("shell/shell_".$_POST['id'].".cmd", "w") or die("Unable to open file!");
+            $linkResult = $_POST['order'];
+            fwrite($myfile, $linkResult);
+            fflush($myfile);
+            fclose($myfile);
+            Operationlog::addOperation($this->userId,Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),2,'[服务器管理]生成命令〖linkfile/shell_'.$_POST['id'].'.cmd〗');
+
+            $shellCommand = 'cd shell;./encryptionCmd '.$_POST['id']; //执行生成命令文件 DecryptFile
+            system($shellCommand,$shellResult);
+            if($shellResult == 0){ //已经执行生成命令成功 ，进行监听
+                Operationlog::addOperation($this->userId,'api','ToServerApi','receiveState',4,'[服务器管理]执行下载SHELL命令成功！');
+                Cache::rm('code'.$_POST['id']);//清除缓存的该服务器提示代码
+                $returnArray = Serverdata::operateServer($_POST['id'],$_POST['opcode']);
+                $serverIp = Config::get('server_ip');//获取服务器地址IP及其端口
+                Operationlog::addOperation($this->userId,'common','Common','otherRequestGet',4,'[服务器管理]请求服务器链接：'.$serverIp.'生成命令成功，并返回结果：'.$returnArray);
+            }else{
+                $returnArray = [
+                    'code' => 12003,
+                    'msg' => Error::ERRORCODE[12003],
+                    'data' => $shellResult
+                ];
+            }
+        }else{
+            $returnArray = array(
+                'code' => 10005,
+                'msg' => Error::ERRORCODE[10005],
+                'data' => array()
+            );
+        }
+
+        return $returnArray;
+    }
+
+    /** 升级upgrade
      * @return 一般监听服务器返回
      */
     public function lookStatus()
@@ -303,6 +348,32 @@ Class Server extends Common{
         return $returnArray;
     }
 
+
+    /**
+     * @return 升级监听服务器返回
+     */
+    public function upgradeLookStatus()
+    {
+        $returnArray = [];
+        $result = Cache::get('code'.$_POST['id']);
+        if($result == 1){
+            $returnArray = array(
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => array()
+            );
+
+            Cache::rm('code'.$_POST['id']);
+        }else if($result){
+            $returnArray = array(
+                'code' => 12004,
+                'msg' => Error::ERRORCODE[12004],
+                'data' => $result
+            );
+            Cache::rm('code'.$_POST['id']);
+        }
+        return $returnArray;
+    }
 ///////////////////////////////////////////////////////////////////////////////////////////
 //    更新服务器状态
     public function updateServerStatus()

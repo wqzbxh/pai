@@ -9,8 +9,10 @@
 namespace app\api\controller;
 
 use app\common\model\Error;
+use app\common\model\Operationlog;
 use app\common\model\Serverdata;
 use app\common\model\Warningdata;
+use function GuzzleHttp\Promise\is_settled;
 use think\Cache;
 use think\Controller;
 //给服务器提供的接口
@@ -80,6 +82,7 @@ class ToServerApi extends Controller{
         if(isset($_GET['rt'])){
             $rt= $_GET['rt'];
         }
+
 
         $data['updatetime'] = time();
 
@@ -287,5 +290,42 @@ class ToServerApi extends Controller{
             ];
         }
          return json_encode($returnApiResult);
+    }
+
+
+    /**
+     * 告诉服务器的执行结果 接受状态
+     */
+    public function receivecmdstate()
+    {
+        $where = [];
+        $data = [];
+        $returnArray = [];
+        $id = '';
+        if(isset($_GET['id'])){
+            $id= $_GET['id'];
+        }
+
+        if(isset($_GET['op'])){
+            $op = $_GET['op'];
+        }
+        if(!empty($id) && !empty($_GET['op'])){
+            Cache::set('code'.$id ,$op,3000);
+            Operationlog::addOperation(1,'api','ToServerApi','receiveState',4,'[服务器管理]服务器携带参数：id'.$id.'访问后台');
+            $result = Cache::get('code'.$id);
+            $returnArray = [
+                'code' => 0,
+                'msg' => Error::ERRORCODE[0],
+                'data' => []
+            ];
+        }else{
+            $returnArray = [
+                'code' => 40010,
+                'msg' => Error::ERRORCODE[40010],
+                'data' => array()
+            ];
+        }
+        return json_encode($returnArray);
+
     }
 }

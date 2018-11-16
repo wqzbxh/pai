@@ -120,6 +120,8 @@ class Error extends Model
 //       与服务器交互错误代码
         12001 => '执行命令失败！Execution order failed！',
         12002 => '解密文件失败！he decryption file failed!' ,
+        12003 => '命令程序执行失败！he decryption file failed!' ,
+        12004 => '服务器会返回失败！The server will fail back!' ,
 //        用户信息代码提示
         13001 => '查不到该用信息',
         13002 => '修改用户信息无效',
