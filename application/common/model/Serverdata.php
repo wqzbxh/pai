@@ -661,7 +661,7 @@ Class Serverdata extends Model{
              $url = $serverIp.'/?'.$opcode.'&id='.$serverid;//串接地址
              if($opcode == 7){
                  $data = Common::otherRequestGet($url);//发送GET请求
-             }elseif ($opcode == 5){
+             }elseif ($opcode == 10){
                  $data = Common::otherRequestGet($url);//发送GET请求
              }
              $data = Common::requestGet($url);//发送GET请求

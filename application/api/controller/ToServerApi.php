@@ -83,7 +83,6 @@ class ToServerApi extends Controller{
             $rt= $_GET['rt'];
         }
 
-
         $data['updatetime'] = time();
 
         if(!empty($rt) && !empty($where)){
@@ -298,19 +297,22 @@ class ToServerApi extends Controller{
      */
     public function receivecmdstate()
     {
+
         $where = [];
         $data = [];
         $returnArray = [];
         $id = '';
-        if(isset($_GET['id'])){
-            $id= $_GET['id'];
+        if(isset($_POST['id'])){
+            $id= $_POST['id'];
         }
 
-        if(isset($_GET['op'])){
-            $op = $_GET['op'];
+        if(isset($_POST['data'])){
+            $op = $_POST['data'];
         }
-        if(!empty($id) && !empty($_GET['op'])){
-            Cache::set('code'.$id ,$op,3000);
+
+        if(!empty($id) && !empty($_POST['data'])){
+            Cache::set('code'.$id ,$id,3000);
+            Cache::set('cmddata'.$id ,$op,3000);//储存命令返回信息
             Operationlog::addOperation(1,'api','ToServerApi','receiveState',4,'[服务器管理]服务器携带参数：id'.$id.'访问后台');
             $result = Cache::get('code'.$id);
             $returnArray = [

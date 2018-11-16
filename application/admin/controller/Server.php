@@ -243,7 +243,7 @@ Class Server extends Common{
     }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @explain 对服务器的操作
      * @param $serverid操作的id
@@ -290,7 +290,10 @@ Class Server extends Common{
 
 
     /**
-     * 生成命令文件
+     * @explain生成命令文件
+     * @param $serverid操作的id
+     * @param $opcode操作码
+     * @return array返回
      */
     public function generateRuleCmd()
     {
@@ -356,14 +359,15 @@ Class Server extends Common{
     {
         $returnArray = [];
         $result = Cache::get('code'.$_POST['id']);
-        if($result == 1){
+        if($result == $_POST['id']){
+            $cmddata = Cache::get('cmddata'.$_POST['id']);
             $returnArray = array(
                 'code' => 0,
                 'msg' => Error::ERRORCODE[0],
-                'data' => array()
+                'data' => $cmddata
             );
-
             Cache::rm('code'.$_POST['id']);
+            Cache::rm('cmddata'.$_POST['id']);
         }else if($result){
             $returnArray = array(
                 'code' => 12004,

@@ -225,7 +225,6 @@
                     layui.use('jquery',function(){
                         var i;
                         var $=layui.$;
-                        var startime = parseInt(Date.parse(new Date()) / 1000);
                         $.ajax({
                             type: 'post',
                             url: "{:url('server/generateRuleXml')}", // ajax请求路径
@@ -236,6 +235,7 @@
                             success: function(data){
                                 console.log(data);
                                 if(data == 200){
+                                    var startime = parseInt(Date.parse(new Date()) / 1000);
                                     var c =  window.setInterval(function () {
                                         var q = 1;
                                         $.ajax({
@@ -285,9 +285,10 @@
                     ,btn:["确定","取消"]
                     ,title:'命令填写'
                     ,skin: 'layui-layer-prompt'
-                    ,area:['730px','400px;']
+                    ,area:['830px','500px;']
                     ,content: "<form><div class='layui-form'>" +
-                        "<textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='请输入命令'></textarea></div></form>"
+                        "<textarea class='layui-textarea' style='height:100px;margin-top:5px;' placeholder='请输入命令'></textarea>" +
+                        "<textarea class='layui-textarea' style='height:250px;margin-top:5px;' id='cmdresult' placeholder='执行结果' disabled></textarea></div></form>"
                     ,yes: function(index, layero){
                         var childrule_push_content = $(layero).find("textarea").val()
                         layui.use('jquery',function(){
@@ -321,10 +322,10 @@
                                                     if(data.code == 0){
                                                         window.clearInterval(c);
                                                         closeLoad(i);
-                                                        layer.close(index);
                                                         layer.msg('服务器'+id+'：命令生成！', {
                                                             offset: '6px'
                                                         });
+                                                        $('#cmdresult').text(data.data)
                                                     }else if(data.code == 12004){
                                                         window.clearInterval(c);
                                                         closeLoad(i);
