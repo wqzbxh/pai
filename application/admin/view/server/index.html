@@ -285,10 +285,10 @@
                     ,btn:["确定","取消"]
                     ,title:'命令填写'
                     ,skin: 'layui-layer-prompt'
-                    ,area:['830px','500px;']
+                    ,area:['830px','700px;']
                     ,content: "<form><div class='layui-form'>" +
                         "<textarea class='layui-textarea' style='height:100px;margin-top:5px;' placeholder='请输入命令'></textarea>" +
-                        "<textarea class='layui-textarea' style='height:250px;margin-top:5px;' id='cmdresult' placeholder='执行结果' disabled></textarea></div></form>"
+                        "<textarea class='layui-textarea' style='height:450px;margin-top:5px;' id='cmdresult' placeholder='执行结果' disabled></textarea></div></form>"
                     ,yes: function(index, layero){
                         var childrule_push_content = $(layero).find("textarea").val()
                         layui.use('jquery',function(){
