@@ -310,6 +310,7 @@ Class Server extends Common{
             if($shellResult == 0){ //已经执行生成命令成功 ，进行监听
                 Operationlog::addOperation($this->userId,'api','ToServerApi','receiveState',4,'[服务器管理]执行下载SHELL命令成功！');
                 Cache::rm('code'.$_POST['id']);//清除缓存的该服务器提示代码
+                Cache::rm('cmddata'.$_POST['id']);//清除缓存的该服务器提示代码
                 $returnArray = Serverdata::operateServer($_POST['id'],$_POST['opcode']);
                 $serverIp = Config::get('server_ip');//获取服务器地址IP及其端口
                 Operationlog::addOperation($this->userId,'common','Common','otherRequestGet',4,'[服务器管理]请求服务器链接：'.$serverIp.'生成命令成功，并返回结果：'.$returnArray);

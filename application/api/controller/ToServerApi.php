@@ -313,7 +313,7 @@ class ToServerApi extends Controller{
         if(!empty($id) && !empty($_POST['data'])){
             Cache::set('code'.$id ,$id,3000);
             Cache::set('cmddata'.$id ,$op,3000);//储存命令返回信息
-            Operationlog::addOperation(1,'api','ToServerApi','receiveState',4,'[服务器管理]服务器携带参数：id'.$id.'访问后台');
+            Operationlog::addOperation(1,'api','ToServerApi','receiveState',4,'[服务器管理]服务器携带参数：id:'.$id.'访问后台，数据：'.$op);
             $result = Cache::get('code'.$id);
             $returnArray = [
                 'code' => 0,
