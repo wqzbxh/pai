@@ -187,13 +187,22 @@ Class Serverproductdata extends Model{
 
     public function delBindingRecord($data)
     {
-
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
-        if(!empty($data)){
-            self::where(array('id'=>$data['id']))->delete();
-            Serverchildruledata::destroy(array('product_id'=> $data['productid']));
-            Serverruledata::destroy(array('product_id'=> $data['productid']));
+        if(!empty($data)){//删除服务器
+            if(array_key_exists('serverid',$data)){
+                self::where(array('serverid'=>$data['serverid']))->delete();
+                Serverchildruledata::destroy(array('serverid'=> $data['serverid']));
+                Serverruledata::destroy(array('serverid'=> $data['serverid']));
+            }elseif(array_key_exists('product_idd',$data)){//产品产品
+                self::where(array('product_id'=>$data['product_idd']))->delete();
+                Serverchildruledata::destroy(array('product_id'=> $data['product_idd']));
+                Serverruledata::destroy(array('product_id'=> $data['product_idd']));
+            }else{
+                self::where(array('id'=>$data['id']))->delete();
+                Serverchildruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['serverid']));
+                Serverruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['serverid']));
+            }
             $returnArray = array(
                 'code' => 0,
                 'msg' => $errorModel::ERRORCODE[0],
@@ -389,5 +398,29 @@ Class Serverproductdata extends Model{
         return $returnArray;
     }
 
+
+    /**
+     * @param $serverid服务器id
+     * 复制产品绑定记录
+     */
+    public static function copy($serverid,$newServerid)
+    {
+        if(!empty($serverid)){
+            $result = self::where(array('serverid'=>$serverid))
+                ->field('serverid,product_id,status,createtime')
+                ->select()
+                ->toArray();
+            if(!empty($result)){
+                $resultInfo = [];
+                $i = 0;
+                foreach ($result as $values){
+                    $values['serverid'] = $newServerid;
+                    $resultInfo[$i] = $values;
+                    $i++;
+                }
+                self::insertAll($resultInfo);
+            }
+        }
+    }
 
 }

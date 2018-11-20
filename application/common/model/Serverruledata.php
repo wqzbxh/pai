@@ -330,4 +330,29 @@ Class Serverruledata extends Model{
         return $returnArray;
     }
 
+
+    /**
+     * @param $serverid服务器id
+     * 复制规则绑定记录
+     */
+    public static function copy($serverid,$newServerid)
+    {
+        if(!empty($serverid)){
+            $result = self::where(array('serverid'=>$serverid))
+                ->field('serverid,product_id,rule_id,status,createtime')
+                ->select()
+                ->toArray();
+            if(!empty($result)){
+                $resultInfo = [];
+                $i = 0;
+                foreach ($result as $values){
+                    $values['serverid'] = $newServerid;
+                    $resultInfo[$i] = $values;
+                    $i++;
+                }
+                self::insertAll($resultInfo);
+            }
+        }
+    }
+
 }

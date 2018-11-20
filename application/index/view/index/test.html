@@ -1,6 +1,38 @@
 
-<!--<form method="post"  class="layui-form" action="http://ht.paiqun.net/api/to_server_api/linkErrorStatistics"><br>-->
-<form method="post"  class="layui-form"  action="{:url('api/to_server_api/linkErrorStatistics')}"><br>
-        <textarea rows="3" cols="20"  name="data" style="width: 600px;height:700px;"></textarea><br>
+<!--<form method="get"  class="layui-form" action="http://ht.paiqun.net/api/to_server_api/acceptingState"><br>-->
+<!--<form method="post"  class="layui-form"  action="{:url('api/to_server_api/linkErrorStatistics')}"><br>-->
+        <!--<textarea rows="3" cols="20"  name="data" style="width: 600px;height:700px;"></textarea><br>-->
+    <!--<button type="submit"lay-submit="" lay-filter="demo1" class="btn btn-primary btn-block btn-large layui-input"  style="margin-top: 20px;">提交</button>-->
+<!--</form>-->
+
+
+<form method="POST"  class="layui-form"  action="http://ht.paiqun.net/api/to_server_api/receivecmdstate"><br>
+    serverId ：<input type="text" name="id" value="611"><br>
+    <textarea rows="3" cols="20"  name="data" style="width: 600px;height:700px;">processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 79
+model name      : Intel(R) Xeon(R) CPU E5-2682 v4 @ 2.50GHz
+stepping        : 1
+microcode       : 0x1
+cpu MHz         : 2499.996
+cache size      : 40960 KB
+physical id     : 0
+siblings        : 1
+core id         : 0
+cpu cores       : 1
+apicid          : 0
+initial apicid  : 0
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 13
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl eagerfpu pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm rdseed adx smap xsaveopt
+bogomips        : 4999.99
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 46 bits physical, 48 bits virtual
+power management:</textarea><br>
+    <!--flag ：<input type="text" name="flag"><br>-->
     <button type="submit"lay-submit="" lay-filter="demo1" class="btn btn-primary btn-block btn-large layui-input"  style="margin-top: 20px;">提交</button>
 </form>

@@ -5,7 +5,7 @@
 </blockquote>
 
 
-<table class="layui-table" lay-data="{width: 1300, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1350, height:680, url:'{:url('server/getServer')}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <div class=" demoTable layui-inline">
         <div class="layui-inline">
             <input class="layui-input" name="id" id="search" placeholder="请输入服务器名称">
@@ -21,7 +21,7 @@
         <th lay-data="{field:'inputcard', width:180}">入口网卡</th>
         <th lay-data="{field:'outcard', width:180}">回包网卡</th>
         <th lay-data="{field:'macaddress', width:180}">网关MAC地址</th>
-        <th lay-data="{fixed: 'right', width:400, align:'center', toolbar: '#barDemo'}">操作项</th>
+        <th lay-data="{fixed: 'right', width:450, align:'center', toolbar: '#barDemo'}">操作项</th>
     </tr>
     </thead>
 </table>
@@ -53,6 +53,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="order">命令</a>
     <a class="layui-btn layui-btn-xs" lay-event="download">下载规则</a>
     <a class="layui-btn layui-btn-xs" lay-event="flow" >流量</a>
+    <a class="layui-btn layui-btn-xs" lay-event="copy" >复制</a>
 </script>
 
 
@@ -109,6 +110,30 @@
                 });
             } else if(obj.event === 'edit'){
                 window.location.href="{:url('server/edit')}?id="+data.id;
+            } else if(obj.event === 'copy'){
+                var id = data.id ;
+                layer.confirm('确定复制？', function(index){
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('server/copy')}", // ajax请求路径
+                        data: {
+                            serverid:id,
+                        },
+                        beforeSend: function () {
+                            i = showLoad();
+                        },
+                        success: function(data){
+                            if(data.code == 0){
+                                closeLoad(i);
+                                layer.msg('服务器'+id+'：复制成功');
+                                table.reload('idTest');
+                            }else{
+                                closeLoad(i);
+                                return layer.msg('服务器'+id+'：复制失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                            }
+                        }
+                    })
+                })
             } else if(obj.event === 'download'){
                 var id = data.id ;
                 layer.confirm('确定下载？', function(index){

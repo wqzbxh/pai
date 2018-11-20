@@ -9,6 +9,9 @@ namespace app\admin\controller;
 
 use app\common\model\Error;
 use app\common\model\Operationlog;
+use app\common\model\Productdata;
+use app\common\model\Serverchildruledata;
+use app\common\model\Serverproductdata;
 use think\Cache;
 use think\Config;
 use think\Controller;
@@ -390,6 +393,65 @@ Class Server extends Common{
         }
     }
 
+    /**
+     * 复制服务器信息
+     * 复制绑定记录
+     */
+    public function copy()
+    {
+        if($_POST['serverid']){
+            $serverDataModel = new Serverdata();
+            $serverInfo = $serverDataModel->getServerOne($_POST['serverid']);
+            if($serverInfo['code'] == 0){
+                $serverdetails = $serverInfo['data'][0];
+                $serverdetails['servername'] = $serverdetails['servername'].time().rand(0000, 9999);
+                foreach ($serverdetails as $key=>$value)
+                {
+                    if ($key === 'id')
+                        unset($serverdetails[$key]);
+                }
+                $serverResult = $serverDataModel->addServer($serverdetails);
+                $newServerid = $serverDataModel->getLastInsID();
+                try {
+                    //复制产品绑定记录
+                    Serverproductdata::copy($_POST['serverid'],$newServerid);
+                    //复制规则绑定记录
+                    \app\common\model\Serverruledata::copy($_POST['serverid'],$newServerid);
+                    //复制子规则绑定记录
+                    Serverchildruledata::copy($_POST['serverid'],$newServerid);
+                    $returnArray = array(
+                        'code' => 0,
+                        'msg' => Error::ERRORCODE[0],
+                        'data' => []
+                    );
+                    return $returnArray;
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                    $returnArray = array(
+                        'code' => 40013,
+                        'msg' => Error::ERRORCODE[40013],
+                        'data' => $error
+                    );
+
+                    return $returnArray;
+                }
+            }else{
+                $returnArray = array(
+                    'code' => 40014,
+                    'msg' => Error::ERRORCODE[40014],
+                    'data' => []
+                );
+                return $returnArray;
+            }
+        }else{
+            $returnArray = array(
+                'code' => 40003,
+                'msg' => Error::ERRORCODE[40003],
+                'data' => []
+            );
+            return $returnArray;
+        }
+    }
 
 
 }

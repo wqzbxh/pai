@@ -155,7 +155,7 @@ class Product extends  Common{
                     $SreverProductdataModel = new \app\common\model\Serverproductdata();
                     $serverRuletModel = new \app\common\model\Serverruledata();
                     $serverChildruletModel = new \app\common\model\Serverchildruledata();
-                    $SreverProductdataModel->delBindingRecord(array('product_id' => $_POST['id']));
+                    $SreverProductdataModel->delBindingRecord(array('product_idd' => $_POST['id']));
 
                     $serverRuletModel->unbundle(array('product_id' => $_POST['id']));
 
