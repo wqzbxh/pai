@@ -200,8 +200,8 @@ Class Serverproductdata extends Model{
                 Serverruledata::destroy(array('product_id'=> $data['product_idd']));
             }else{
                 self::where(array('id'=>$data['id']))->delete();
-                Serverchildruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['serverid']));
-                Serverruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['serverid']));
+                Serverchildruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['server_id']));
+                Serverruledata::destroy(array('product_id'=> $data['productid'],'serverid'=> $data['server_id']));
             }
             $returnArray = array(
                 'code' => 0,

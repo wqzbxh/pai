@@ -51,7 +51,7 @@ Class Serverproduct extends  Common{
 
                 $data['id']  = $_POST['spid'];
                 $data['productid']  = $_POST['productid'];
-                $data['serverid']  = $_POST['serverid'];
+                $data['server_id']  = $_POST['serverid'];
                 $returnArray = $serverproductModel->delBindingRecord($data);
             }else{
                 $returnArray = array(
