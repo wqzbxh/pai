@@ -8,6 +8,8 @@
 namespace app\admin\controller;
 
 use app\common\model\Error;
+use app\common\model\Ipblacklist;
+use app\common\model\Ipwhitelist;
 use app\common\model\Operationlog;
 use app\common\model\Productdata;
 use app\common\model\Serverchildruledata;
@@ -419,6 +421,10 @@ Class Server extends Common{
                     \app\common\model\Serverruledata::copy($_POST['serverid'],$newServerid);
                     //复制子规则绑定记录
                     Serverchildruledata::copy($_POST['serverid'],$newServerid);
+                    //复制黑白名单
+                    Ipblacklist::copy($_POST['serverid'],$newServerid);
+                    Ipwhitelist::copy($_POST['serverid'],$newServerid);
+
                     $returnArray = array(
                         'code' => 0,
                         'msg' => Error::ERRORCODE[0],

@@ -237,4 +237,27 @@ Class Ipwhitelist extends Model{
         return $returnArray;
     }
 
+    /**
+     * @param $serverid服务器id
+     * 复制黑名单记录
+     */
+    public static function copy($serverid,$newServerid)
+    {
+        if(!empty($serverid)){
+            $result = self::where(array('serverid'=>$serverid))
+                ->field('serverid,iptype,content,format')
+                ->select()
+                ->toArray();
+            if(!empty($result)){
+                $resultInfo = [];
+                $i = 0;
+                foreach ($result as $values){
+                    $values['serverid'] = $newServerid;
+                    $resultInfo[$i] = $values;
+                    $i++;
+                }
+                self::insertAll($resultInfo);
+            }
+        }
+    }
 }
