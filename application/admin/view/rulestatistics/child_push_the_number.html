@@ -1,0 +1,284 @@
+{include file='layout/header'}
+<blockquote class="layui-elem-quote layui-text">
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('productstatistics/productpushthenumber')}?serverid={$serverid}&&time={$time}">产品统计</a>&nbsp>&nbsp规则统计
+    <!--<span class="back xhx"></span>-->
+</blockquote>
+<div class="layui-inline">
+    <label class="layui-form-label">日期时间范围</label>
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="date_time_range"  name="date_time_range" placeholder="请选择时间范围" style="width: 350px">
+    </div>
+</div>
+<script src="__static__js/echarts.min.js" charset="utf-8"></script>
+
+<div id="main" style="width: 1350px;height:400px;"></div>
+
+
+<script>
+
+
+</script>
+
+
+
+<table class="layui-table" lay-data="{width: 1300, height:700, url:'{:url('rulestatistics/getRulestatisticsTime')}?time={$time}&&serverid={$serverid}&&productid={$productid}&&topruleid={$topruleid}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+
+        <th lay-data="{field:'time', width:280,templet:'#Time'}">日期</th>
+        <th lay-data="{field:'rule_name', width:280,templet:'#name'}">产品名称</th>
+        <th lay-data="{field:'rulehitcount', width:280,templet:'#preciseVmax'}">产品推送数</th>
+    </tr>
+    </thead>
+</table>
+
+
+<script type="text/html" id="preciseVmax">
+    <a  class=""  lay-event="childrule" >{{d.rulehitcount}}</a>
+</script>
+
+<script type="text/html" id="name">
+    {{ d.rule_name }}
+</script>
+
+<script type="text/html" id="Time">
+    {{ time2date(d.time) }}
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        util = layui.util;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'rulePushTheNumber'){
+                window.location.href="{:url('rulestatistics/rulePushTheNumber')}?id="+{$serverid}+"&&time="+data.time;
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除服务器吗', function(index){
+                    layui.use('jquery',function(){
+                        var $=layui.$;
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('server/delAction')}", // ajax请求路径
+                            data: obj.data,
+                            success: function(data){
+                                if(data.code==0){
+                                    layer.msg('删除成功！');
+                                    obj.del();
+                                    layer.close(index);
+                                }else{
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    });
+                });
+            } else if(obj.event === 'childrule'){
+                window.location.href="{:url('rulestatistics/childrulePushTheNumber')}?serverid="+{$serverid}+"&&time="+data.time;
+            }
+        });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+    function time2date(t){
+        var t1 = parseInt(t + '000');
+
+        return util.toDateString(t1,"yyyy-MM-dd HH:mm:ss");
+    }
+
+
+    window.onload=function (){
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "{:url('rulestatistics/getRulestatisticsTime')}",
+                data: {serverid:{$serverid},topruleid:{$topruleid},productid:{$productid},time:{$time}},
+                dataType: "json",
+                success: function(result){
+                    if(result.code === 0){
+                        var xdata = [],sdata = [];
+                        // 基于准备好的dom，初始化echarts实例并赋值数据准备填充坐标
+                        for (var i =0 ; i < result.data.length;i++){
+                            xdata.push(result.data[i]['rulehitcount']);
+                            sdata.push(time2date(result.data[i]['time']))
+                        }
+                        var myChart = echarts.init(document.getElementById('main'));
+                        // 指定图表的配置项和数据，数据从上一步骤取出
+                        var option = {
+                            backgroundColor: '#FBFBFB',
+                            tooltip : {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data:['峰值流速','推送数']
+                            },
+                            toolbox: {
+                                show : true,
+                                feature : {
+                                    mark : {show: true},
+                                    dataView : {show: true, readOnly: false},
+                                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                                    restore : {show: true},
+                                    saveAsImage : {show: true}
+                                }
+                            },
+                            calculable : true,
+                            grid: {
+                                y2: 140
+                            },
+                            xAxis : [
+                                {
+                                    show:true,
+                                    name:'时间',
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : sdata,
+                                    axisLabel:{
+                                        interval:0,//横轴信息全部显示
+                                        rotate:-30,//-30度角倾斜显示
+                                    }
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value',
+                                    show:true,
+                                    name:'数值',
+                                    boundaryGap : false,
+                                }
+                            ],
+                            series : [
+                                {
+                                    name:'',
+                                    type:'line',
+                                    symbol:'none',
+                                    data:xdata
+                                }
+                            ]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                }
+            });
+
+
+
+
+        })
+    }
+
+    layui.use(["table","laydate"], function(){
+        var laydate = layui.laydate;
+        var table = layui.table;
+        laydate.render({
+            elem: '#date_time_range'
+            ,type: 'datetime'
+            ,range: true,
+            done: function(value, date, endDate){
+                var startTime = date.year+'-'+date.month+'-'+date.date+' '+date.hours+':'+date.minutes+':'+date.seconds
+                var endTime = endDate.year+'-'+endDate.month+'-'+endDate.date+' '+endDate.hours+':'+endDate.minutes+':'+endDate.seconds
+                table.reload('idTest',{
+                    limit:15,
+                    where:{
+                        serverid:{$serverid},
+                        topruleid:{$topruleid},
+                        productid:{$productid},
+                        time:startTime,
+                        endTime:endTime
+                    },
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "{:url('rulestatistics/getRulestatisticsTime')}",
+                    data: {serverid:{$serverid},topruleid:{$topruleid},productid:{$productid},time:startTime,endTime:endTime},
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code === 0){
+                            var xdata = [],sdata = [];
+                            // 基于准备好的dom，初始化echarts实例并赋值数据准备填充坐标
+                            for (var i =0 ; i < result.data.length;i++){
+                                xdata.push(result.data[i]['rulehitcount']);
+                                sdata.push(time2date(result.data[i]['time']))
+                            }
+                            var myChart = echarts.init(document.getElementById('main'));
+                            // 指定图表的配置项和数据，数据从上一步骤取出
+                            var option = {
+                                backgroundColor: '#FBFBFB',
+                                tooltip : {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data:['峰值流速','推送数']
+                                },
+                                toolbox: {
+                                    show : true,
+                                    feature : {
+                                        mark : {show: true},
+                                        dataView : {show: true, readOnly: false},
+                                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                                        restore : {show: true},
+                                        saveAsImage : {show: true}
+                                    }
+                                },
+                                calculable : true,
+                                grid: {
+                                    y2: 140
+                                },
+                                xAxis : [
+                                    {
+                                        show:true,
+                                        name:'时间',
+                                        type : 'category',
+                                        boundaryGap : false,
+                                        data : sdata,
+                                        axisLabel:{
+                                            interval:0,//横轴信息全部显示
+                                            rotate:-30,//-30度角倾斜显示
+                                        }
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value',
+                                        show:true,
+                                        name:'数值',
+                                        boundaryGap : false,
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'',
+                                        type:'line',
+                                        symbol:'none',
+                                        data:xdata
+                                    }
+                                ]
+                            };
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+                        }
+                    }
+                });
+
+
+                // console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date.year+'-'+date.month+'-'+date.date+' '+date.hours+':'+date.minutes+':'+date.seconds); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+    })
+</script>

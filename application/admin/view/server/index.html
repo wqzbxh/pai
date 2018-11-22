@@ -49,11 +49,11 @@
     <a class="layui-btn layui-btn-xs" lay-event="open">开启</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="detail">停止</a>
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-xs" lay-event="copy" >复制</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-xs" lay-event="order">命令</a>
     <a class="layui-btn layui-btn-xs" lay-event="download">下载规则</a>
     <a class="layui-btn layui-btn-xs" lay-event="flow" >流量</a>
-    <a class="layui-btn layui-btn-xs" lay-event="copy" >复制</a>
 </script>
 
 
@@ -102,7 +102,7 @@
                                     obj.del();
                                     layer.close(index);
                                 }else{
-                                    layer.msg(data.msg);
+                                    return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }
                             }
                         });
@@ -127,6 +127,8 @@
                                 closeLoad(i);
                                 layer.msg('服务器'+id+'：复制成功');
                                 table.reload('idTest');
+                            }else if(data.code == 17002){
+                                return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                             }else{
                                 closeLoad(i);
                                 return layer.msg('服务器'+id+'：复制失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
@@ -182,6 +184,8 @@
                                             }
                                         })
                                     }, 2000);
+                                }else if(data.code == 17002){
+                                    return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }else{
                                     closeLoad(i);
                                     return layer.msg('服务器'+id+'：向服务器发出请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
@@ -236,6 +240,8 @@
                                             }
                                         })
                                     }, 2000);
+                                }else if(data.code == 17002){
+                                    return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }else{
                                     closeLoad(i);
                                     return layer.msg('服务器'+id+'：向服务器请求失败（'+data+')', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
@@ -293,6 +299,8 @@
                                     window.clearInterval(c);
                                     closeLoad(i);
                                     return layer.msg('服务器'+id+'：加密文件失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                }else if(data.code == 17002){
+                                    return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                 }else{
                                     window.clearInterval(c);
                                     closeLoad(i);
@@ -371,6 +379,10 @@
                                         window.clearInterval(c);
                                         closeLoad(i);
                                         return layer.msg('服务器'+id+'：命令程序执行失败...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
+                                    }else if(data.code == 17002){
+                                        closeLoad(open);
+                                        closeLoad(i);
+                                        return layer.msg(data.msg, {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
                                     }else {
                                         window.clearInterval(c);
                                         closeLoad(i);

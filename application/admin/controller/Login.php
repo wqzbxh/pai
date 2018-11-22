@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 use app\common\model\Operationlog;
+use app\common\model\Userpermission;
 use think\captcha\Captcha;
 use think\Controller;
 use think\Request;
@@ -41,6 +42,7 @@ Class Login extends Controller{
                     $result = $userDataModel->loginSin($_POST['access'],$_POST['passwd']);
                     if($result['code'] == 0){
                         $userInfo = $result['data'][0];
+                        $userInfo['permission'] = Userpermission::getList(array('user_id'=>$userInfo['id']));
                         unset($userInfo['passwd']);
                         session('userInfo',$userInfo);
                         Operationlog::addOperation($userInfo['id'],Request::instance()->module(),Request::instance()->controller(),Request::instance()->action(),7,'执行登陆');

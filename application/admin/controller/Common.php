@@ -7,7 +7,11 @@
  */
 namespace  app\admin\controller;
 
+use app\common\model\Error;
+use app\common\model\Operationlog;
+use app\common\model\Permission;
 use think\Controller;
+use think\Request;
 
 /**
  * Class Common
@@ -24,7 +28,30 @@ Class Common extends Controller{
           session('userInfo',null);
           $this->redirect('index/index/login');
       }else{
-//          验证权限
+//          验证权限\
+          if(session('userInfo')['id'] != 1){
+              $Permission = [];
+              $Permission['module'] = Request::instance()->module();
+              $Permission['controller']  = Request::instance()->controller();
+              $Permission['method']  = Request::instance()->action();
+              $PermissionResult = Permission::getOne($Permission);
+              if($PermissionResult['code'] == 0){
+                  $userpermission = session('userInfo')['permission'];
+                  $actionPermission[0] = $PermissionResult['data']['id'];
+                  $result = array_intersect($userpermission,$actionPermission);
+                  if(empty($result)){//交集没有说明用户没有权限
+                      Operationlog::addOperation(session('userInfo')['id'],$Permission['module'], $Permission['controller'],$Permission['method'] ,7,Error::ERRORCODE[17002]);
+                      $resultArray = [
+                          'code' => 17002,
+                          'msg' => Error::ERRORCODE[17002],
+                          'data' => []
+                      ];
+
+                      json($resultArray)->send();
+                      exit;
+                  }
+              }
+          }
           $this->userId = session('userInfo')['id'];
       }
     }

@@ -25,10 +25,9 @@
 <table class="layui-table" lay-data="{width: 1300, height:700, url:'{:url('productstatistics/getProductstatistics')}?serverid={$serverid}&&time={$time}', page:true,limits:[15,30,45],limit:15, id:'idTest'}" lay-filter="demo">
     <thead>
     <tr>
-
         <th lay-data="{field:'id', width:280}">id</th>
         <th lay-data="{field:'time', width:280,templet:'#Time'}">日期</th>
-        <th lay-data="{field:'product_name', width:280,templet:'#name'}">规则名称</th>
+        <th lay-data="{field:'product_name', width:280,templet:'#name'}">产品名称</th>
         <th lay-data="{field:'producthitcount', width:280,templet:'#preciseVmax'}">产品推送数</th>
     </tr>
     </thead>
@@ -169,7 +168,7 @@
                             series : [
                                 {
                                     name:'',
-                                    type:'bar',
+                                    type:'line',
                                     symbol:'none',
                                     data:xdata
                                 }

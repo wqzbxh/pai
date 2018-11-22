@@ -14,7 +14,7 @@ Class Rulestatistics extends Model{
 
     protected $connection = 'db_config_cards3';
 
-    const RETURNFeild = 'r.rule_name,rss.rulehitcount,rss.time,rss.id';
+    const RETURNFeild = 'r.rule_name,rss.rulehitcount,rss.time,rss.id,rss.topruleid,rss.productid';
 
     /**
      * @param $startTime 开始时间
@@ -36,13 +36,53 @@ Class Rulestatistics extends Model{
             ->select()
             ->toArray();
         $count = self::alias('rss')
-            ->join('pai.ruledata r','rss.productid = r.productid','LEFT')
+            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)
             ->field(self::RETURNFeild)
+            ->order('rss.id DESC')
             ->count();
 
+        if(!empty($result))
+        {
+            $returnArray = array(
+                'code' => 0,
+                'msg' => $errorModel::ERRORCODE[0],
+                'count' => $count,
+                'data' => $result
+            );
+        }else{
+            $returnArray = array(
+                'code' => 80002,
+                'msg' => $errorModel::ERRORCODE[80002],
+                'data' => $result
+            );
+        }
+        return $returnArray;
+    }
+    public function getRulestatiscsTime($startTime,$endTime,$where,$offset,$limit)
+    {
+        $returnArray = array();
+        $errorModel = new \app\common\model\Error();
+        $result = self::alias('rss')
+            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->where($where)
+            ->where('rss.time','gt',$startTime)
+            ->where('rss.time','elt',$endTime)
+            ->limit($offset,$limit)
+            ->field(self::RETURNFeild)
+            ->order('rss.time asc')
+            ->select()
+            ->toArray();
+        $count = self::alias('rss')
+            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->where($where)
+            ->where('rss.time','gt',$startTime)
+            ->where('rss.time','elt',$endTime)
+            ->field(self::RETURNFeild)
+            ->order('rss.time asc')
+            ->count();
         if(!empty($result))
         {
             $returnArray = array(

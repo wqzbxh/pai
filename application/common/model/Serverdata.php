@@ -103,10 +103,13 @@ Class Serverdata extends Model{
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         $criteria['is_del'] = 0;
-        if($serveruserid != 1){
+        $userdata = Userdata::getOne(array('id'=> $serveruserid));
+
+        $userflag = $userdata['data']['userflag'];
+
+        if($serveruserid != 1 && $userflag != 1){
             $criteria['serveruserid'] = $serveruserid;
         }
-
         if(!empty($servername)){
             $result = self::where($criteria)
                 ->limit($offset,$limit)

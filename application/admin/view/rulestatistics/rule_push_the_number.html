@@ -27,7 +27,7 @@
     <tr>
 
         <th lay-data="{field:'time', width:280,templet:'#Time'}">日期</th>
-        <th lay-data="{field:'rule_name', width:280,templet:'#name'}">产品名称</th>
+        <th lay-data="{field:'rule_name', width:280,templet:'#name'}">规则名称</th>
         <th lay-data="{field:'rulehitcount', width:280,templet:'#preciseVmax'}">产品推送数</th>
     </tr>
     </thead>
@@ -35,7 +35,7 @@
 
 
 <script type="text/html" id="preciseVmax">
-    <a  class=""  lay-event="" >{{d.rulehitcount}}</a>
+    <a  class="xhx c009688"  lay-event="childrule" >{{d.rulehitcount}}</a>
 </script>
 
 <script type="text/html" id="name">
@@ -79,8 +79,8 @@
                         });
                     });
                 });
-            } else if(obj.event === 'edit'){
-                window.location.href="{:url('server/edit')}?id="+data.id;
+            } else if(obj.event === 'childrule'){
+                window.location.href="{:url('rulestatistics/childrulePushTheNumber')}?serverid="+{$serverid}+"&&productid="+data.productid+"&&topruleid="+data.topruleid+"&&time="+data.time;
             }
         });
 
