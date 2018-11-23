@@ -49,8 +49,11 @@ class Childrule extends  Common{
      */
     public function add()
     {
+        $prohibitpushModel = new \app\common\model\Prohibitpush();
+        $pushcount = $prohibitpushModel->count();
         $this->assign('ruleid',$_GET['ruleid']);
         $this->assign('productid',$_GET['productid']);
+        $this->assign('pushcount',$pushcount);
         $tactics = \app\common\model\Pushpolicy::getTactics('','seq,name',0,0);
         $this->assign('tactics',$tactics['data']);
         return $this->fetch('add');

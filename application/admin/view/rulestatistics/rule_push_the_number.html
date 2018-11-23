@@ -3,13 +3,14 @@
     <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('productstatistics/productpushthenumber')}?serverid={$serverid}&&time={$time}">产品统计</a>&nbsp>&nbsp规则展示
     <!--<span class="back xhx"></span>-->
 </blockquote>
-<div class="layui-btn-group demoTable">
+
+<div class="demoTable layui-inline">
     <div class="layui-inline">
-        <input class="layui-input"  autocomplete="off" name="id" placeholder="请输入搜索产品名称" style="width: 300px;" type="text">
+        <input class="layui-input" name="id"  placeholder="请输入搜索子规则/规则名称" id="demoReload" autocomplete="off" style="width: 400px">
     </div>
     <button class="layui-btn" data-type="reload">搜索</button>
-
 </div>
+
 <script src="__static__js/echarts.min.js" charset="utf-8"></script>
 
 <div id="main" style="width: 1350px;height:400px;"></div>
@@ -90,6 +91,19 @@
         });
 
 
+        var $ = layui.$, active = {
+            reload: function(){ //获取输入框数据
+                var demoReload = $('#demoReload').val();
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        seacher: demoReload
+                    }
+                });
+            }
+        };
 
         $('.demoTable .layui-btn').on('click', function(){
             var type = $(this).data('type');

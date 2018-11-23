@@ -396,6 +396,28 @@ Class Serverdata extends Model{
             }
         }
 
+        //源禁止推送
+        $userPushIpExclude = $doc->createElement("UserPushIpExclude");
+        $userPushIpExcludeResult = Prohibitpush::getListUpgrade(0,0,9,$serverid);
+        if($userPushIpExcludeResult['code'] == 0 && count($userPushIpExcludeResult['data']) > 0){
+            $pr = 0;
+            $pl = 0;
+            foreach ($userPushIpExcludeResult['data'] as $userPushIpExcludeResultvalue){
+                if($userPushIpExcludeResultvalue['iptype'] == 1){//源IP用户白名单列表
+                    $pl++;
+                    $srcIPBlackListLabel = $doc->createElement("IP");
+                    $srcIPBlackListLabel->setAttribute("address",$userPushIpExcludeResultvalue['content']);
+                    $srcIPBlackListLabel->setAttribute("format",$userPushIpExcludeResultvalue['format']);
+                    $userPushIpExclude->appendChild($srcIPBlackListLabel);
+                }
+            }
+            if($pl>0){
+                $flowRuleConvert  -> appendChild($userPushIpExclude);
+            }
+        }
+
+
+
         //域名规则
         $hostRuleList = $doc->createElement("HostRuleList");
         $generalRuleList = $doc->createElement("GeneralRuleList");
@@ -471,6 +493,10 @@ Class Serverdata extends Model{
                             $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
                         }
 
+                       if($ruleAllDataValue['pushexcloud'] == 1 && $userPushIpExcludeResult['code'] == 0){//是否过滤
+                           $ruleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['pushexcloud']);
+                       }
+
                         foreach ($ieLabelArray as $key => $value){
                             $ieLabel = $doc ->createElement('IE');
                             $ieLabel->setAttribute($key,$value);
@@ -536,6 +562,9 @@ Class Serverdata extends Model{
                         }
                         if($ruleAllDataValue['autoexclude'] != 0){
                             $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
+                        }
+                        if($ruleAllDataValue['pushexcloud'] == 1 && $userPushIpExcludeResult['code'] == 0){
+                            $apkRuleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['pushexcloud']);
                         }
                         if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
                             $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);

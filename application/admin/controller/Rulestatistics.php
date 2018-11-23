@@ -102,9 +102,15 @@ Class Rulestatistics extends Common{
                 'data' => array()
             );
         }
+        if(isset($_GET["seacher"])){
+            $seacher = $_GET["seacher"];
+        }else{
+            $seacher = '';
+        }
+
         if(empty($returnArray)){
             $rulestatisticsModel = new \app\common\model\Rulestatistics();
-            $result = $rulestatisticsModel->getRulestatiscs($startTime,$where,$offset,$limit) ;
+            $result = $rulestatisticsModel->getRulestatiscs($startTime,$where,$offset,$limit,$seacher) ;
         }
 
         if($result) {

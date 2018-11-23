@@ -237,4 +237,17 @@ class Index extends  Common{
     {
         return $this-> view ->fetch('operation/operation');
     }
+
+
+    public function prohibit_to_push()
+    {
+        $serverDataModel = new \app\common\model\Serverdata();
+//        获取服务器列表
+        $result = $serverDataModel->getServerList('',0,1000,$this->userId);
+        if($result['code'] == 0){
+            $this->assign('serverList',$result['data']);
+            $this->assign('serverDefault',$result['data'][0]['id']);
+            return $this->view->fetch('prohibit_to_push/index');
+        }
+    }
 }

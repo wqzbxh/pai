@@ -20,31 +20,57 @@ Class Rulestatistics extends Model{
      * @param $startTime 开始时间
      * @param $where 查询条件
      */
-    public function getRulestatiscs($startTime,$where,$offset,$limit)
+    public function getRulestatiscs($startTime,$where,$offset,$limit,$seacher)
     {
         $returnArray = array();
         $errorModel = new \app\common\model\Error();
         $endTime = $startTime + 86400;
-        $result = self::alias('rss')
-            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
-            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
-            ->where($where)
-            ->where('rss.time','gt',$startTime)
-            ->where('rss.time','elt',$endTime)
-            ->limit($offset,$limit)
-            ->field(self::RETURNFeild)
-            ->order('rss.id DESC')
-            ->select()
-            ->toArray();
-        $count = self::alias('rss')
-            ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
-            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
-            ->where($where)
-            ->where('rss.time','gt',$startTime)
-            ->where('rss.time','elt',$endTime)
-            ->field(self::RETURNFeild)
-            ->order('rss.id DESC')
-            ->count();
+        if(empty($seacher)){
+            $result = self::alias('rss')
+                ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+                ->join('pai.childruledata c','rss.ruleid = c.id ','left')
+                ->where($where)
+                ->where('rss.time','gt',$startTime)
+                ->where('rss.time','elt',$endTime)
+                ->limit($offset,$limit)
+                ->field(self::RETURNFeild)
+                ->order('rss.id DESC')
+                ->select()
+                ->toArray();
+            $count = self::alias('rss')
+                ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+                ->join('pai.childruledata c','rss.ruleid = c.id ','left')
+                ->where($where)
+                ->where('rss.time','gt',$startTime)
+                ->where('rss.time','elt',$endTime)
+                ->field(self::RETURNFeild)
+                ->order('rss.id DESC')
+                ->count();
+        }else{
+            $result = self::alias('rss')
+                ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+                ->join('pai.childruledata c','rss.ruleid = c.id ','left')
+                ->where($where)
+                ->where('rss.time','gt',$startTime)
+                ->where('rss.time','elt',$endTime)
+                ->where('c.childrule_name|r.rule_name','like','%'.$seacher.'%')
+                ->limit($offset,$limit)
+                ->field(self::RETURNFeild)
+                ->order('rss.id DESC')
+                ->select()
+                ->toArray();
+
+            $count = self::alias('rss')
+                ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+                ->join('pai.childruledata c','rss.ruleid = c.id ','left')
+                ->where('c.childrule_name|r.rule_name','like','%'.$seacher.'%')
+                ->where($where)
+                ->where('rss.time','gt',$startTime)
+                ->where('rss.time','elt',$endTime)
+                ->field(self::RETURNFeild)
+                ->order('rss.id DESC')
+                ->count();
+        }
 
         if(!empty($result))
         {
@@ -69,6 +95,7 @@ Class Rulestatistics extends Model{
         $errorModel = new \app\common\model\Error();
         $result = self::alias('rss')
             ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)
@@ -79,6 +106,7 @@ Class Rulestatistics extends Model{
             ->toArray();
         $count = self::alias('rss')
             ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)

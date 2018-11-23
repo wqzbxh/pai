@@ -71,6 +71,26 @@
         </div>
     </div>
 
+    {switch name="$pushcount"}
+        {case value="1"}
+            <div class="layui-form-item">
+                <label class="layui-form-label">推送过滤</label>
+                <div class="layui-input-block product_radio"  id="pushexcloud">
+                    <input type="radio" name="data[pushexcloud]" value="1" title="开启" class="product_radio">
+                    <input type="radio" name="data[pushexcloud]" value="0" title="关闭" class="product_radio">
+                </div>
+            </div>
+        {/case}
+    {/switch}
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">推送过滤</label>-->
+        <!--<div class="layui-input-block product_radio"  id="pushexcloud">-->
+            <!--<input type="radio" name="data[pushexcloud]" value="1" title="开启" class="product_radio">-->
+            <!--<input type="radio" name="data[pushexcloud]" value="0" title="关闭" class="product_radio">-->
+        <!--</div>-->
+    <!--</div>-->
+
     <div class="layui-form-item">
         <label class="layui-form-label">回包方式</label>
         <div class="layui-input-block tacq_radio" id="childrule_process_mode">
@@ -274,6 +294,7 @@
         $("#selected").find("option[value='{$childrule["childrule_ratio"]}']").prop("selected",true);
         $("#userpushtimepolicy").find("option[value='{$childrule["userpushtimepolicy"]}']").prop("selected",true);
         $("#childrule_status").find("input[value='{$childrule["childrule_status"]}']").prop("checked",true);
+        $("#pushexcloud").find("input[value='{$childrule["pushexcloud"]}']").prop("checked",true);
         $("#childrule_match_type").find("input[value='{$childrule["childrule_match_type"]}']").prop("checked",true);
         $("#childrule_match").find("input[value='{$childrule["childrule_match"]}']").prop("checked",true);
         $("#childrule_process_mode").find("input[value='{$childrule["childrule_process_mode"]}']").prop("checked",true);
