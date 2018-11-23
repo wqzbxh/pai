@@ -28,6 +28,7 @@
 
         <th lay-data="{field:'time', width:280,templet:'#Time'}">日期</th>
         <th lay-data="{field:'rule_name', width:280,templet:'#name'}">规则名称</th>
+        <th lay-data="{field:'childrule_name', width:280,templet:'#childrule_name'}">子规则名称</th>
         <th lay-data="{field:'rulehitcount', width:280,templet:'#preciseVmax'}">产品推送数</th>
     </tr>
     </thead>
@@ -40,6 +41,10 @@
 
 <script type="text/html" id="name">
     {{ d.rule_name }}
+</script>
+
+<script type="text/html" id="childrule_name">
+    {{ d.childrule_name }}
 </script>
 
 <script type="text/html" id="Time">
@@ -111,7 +116,7 @@
                         // 基于准备好的dom，初始化echarts实例并赋值数据准备填充坐标
                         for (var i =0 ; i < result.data.length;i++){
                             xdata.push(result.data[i]['rulehitcount']);
-                            sdata.push(result.data[i]['rule_name']);
+                            sdata.push(result.data[i]['rule_name']+'●'+result.data[i]['childrule_name']);
                         }
                         var myChart = echarts.init(document.getElementById('main'));
                         // 指定图表的配置项和数据，数据从上一步骤取出

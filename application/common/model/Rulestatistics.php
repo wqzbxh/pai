@@ -14,7 +14,7 @@ Class Rulestatistics extends Model{
 
     protected $connection = 'db_config_cards3';
 
-    const RETURNFeild = 'r.rule_name,rss.rulehitcount,rss.time,rss.id,rss.topruleid,rss.productid';
+    const RETURNFeild = 'r.rule_name,rss.rulehitcount,rss.time,rss.id,rss.topruleid,rss.productid,c.childrule_name';
 
     /**
      * @param $startTime 开始时间
@@ -27,6 +27,7 @@ Class Rulestatistics extends Model{
         $endTime = $startTime + 86400;
         $result = self::alias('rss')
             ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)
@@ -37,6 +38,7 @@ Class Rulestatistics extends Model{
             ->toArray();
         $count = self::alias('rss')
             ->join('pai.ruledata r','rss.topruleid = r.id','LEFT')
+            ->join('pai.childruledata c','rss.ruleid = c.id ','left')
             ->where($where)
             ->where('rss.time','gt',$startTime)
             ->where('rss.time','elt',$endTime)
