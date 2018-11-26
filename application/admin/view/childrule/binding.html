@@ -169,7 +169,7 @@
                                             ,content: "<form><div class='layui-form'><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.childrule_exuri+"' placeholder='渠道号'>" +
                                                 "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.binding_childrule_host+"' placeholder='HOST排除'>   " +
                                                 "<div class='opendiv'>权重比例：</div>" +
-                                                "<div class='layui-form-item' id='tpisshow'>\n" +
+                                                "<div class='' id='tpisshow'>\n" +
                                                 "        <div class='layui-inline'>\n" +
                                                 "            <div class=\"layui-input-inline\">\n" +
                                                 "                <select name='binding_childrule_ratio' lay-verify='required' lay-search='' class='selectWidth' id='selected'>\n" +
@@ -188,6 +188,11 @@
                                                 "            </div>\n" +
                                                 "        </div>\n" +
                                                 "    </div>" +
+                                                "<div class='opendiv'>推送过滤：</div>" +
+                                                " <div class=\"layui-form-item\"  id=\"pushexcloud\">\n" +
+                                                "            <input type=\"radio\" name=\"childpushexcloud\" value=\"1\" title=\"开启\" class=\"product_radio\">\n" +
+                                                "            <input type=\"radio\" name=\"childpushexcloud\" value=\"0\" title=\"关闭\" class=\"product_radio\" checked=''>\n" +
+                                                " </div>" +
                                                 "<div class='opendiv'>推送报文模板：</div><input type='text' disabled name='binding_childrule_host' style='width: 660px;' class='layui-layer-input openinput' value='"+ data.data.chidruleResult.childrule_push_content+"' placeholder='暂无模板'>" +
                                                 "<div class='opendiv'>推送报文：</div><textarea class='layui-textarea' style='height:230px;margin-top:5px;' placeholder='推送报文'>"+data.data.chidruleRelations.childrule_push_content+"</textarea></div></form>"
                                             ,yes: function(index, layero){
@@ -195,7 +200,8 @@
                                                 var childrule_exuri= $(layero).find("input[name='childrule_exuri']").val();
                                                 var binding_childrule_host= $(layero).find("input[name='binding_childrule_host']").val();
                                                 var childrule_push_content = $(layero).find("textarea").val()
-                                                var binding_childrule_ratio = $("#selected").find("option:selected").val()
+                                                var binding_childrule_ratio = $("#selected").find("option:selected").val();
+                                                var childpushexcloud =  $('#pushexcloud input[name="childpushexcloud"]:checked ').val()
                                                 form.on('select', function(data){
                                                     console.log(data); //得到被选中的值]
                                                 });
@@ -209,6 +215,7 @@
                                                         data:{
                                                             "childrule_push_content" : childrule_push_content,
                                                             "binding_childrule_host" : binding_childrule_host,
+                                                            "childpushexcloud":childpushexcloud,
                                                             "binding_childrule_ratio" :binding_childrule_ratio,
                                                             "childrule_exuri" : childrule_exuri,
                                                             "spid" : spid
@@ -229,6 +236,7 @@
                                                 });
                                             }
                                         });
+                                        $("#pushexcloud").find("input[value="+data.data.chidruleRelations.childpushexcloud+"]").prop("checked",true);
                                         $("#selected").find("option[value="+data.data.chidruleRelations.binding_childrule_ratio+"]").prop("selected",true);
 
                                         form.render();

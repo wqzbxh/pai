@@ -87,6 +87,7 @@ Class Serverchildrule extends  Common{
         }else{
             $data['childrule_push_content'] = '';
         }
+
         if($_POST['childrule_exuri']){
             $data['childrule_exuri'] = $_POST['childrule_exuri'];
         }else{
@@ -98,8 +99,12 @@ Class Serverchildrule extends  Common{
         }else{
             $data['binding_childrule_host'] = '';
         }
+
         if($_POST['binding_childrule_ratio']){
             $data['binding_childrule_ratio'] = $_POST['binding_childrule_ratio'];
+        }
+        if(isset($_POST['childpushexcloud'])){
+            $data['childpushexcloud'] = $_POST['childpushexcloud'];
         }
 
         if($_POST['spid']){
@@ -111,7 +116,6 @@ Class Serverchildrule extends  Common{
                 'data' => array()
             );
         }
-
 
         if(empty($returnArray)){
             $serverChildRuleDataModel = new \app\common\model\Serverchildruledata();

@@ -403,7 +403,7 @@ Class Serverdata extends Model{
             $pr = 0;
             $pl = 0;
             foreach ($userPushIpExcludeResult['data'] as $userPushIpExcludeResultvalue){
-                if($userPushIpExcludeResultvalue['iptype'] == 1){//源IP用户白名单列表
+                if($userPushIpExcludeResultvalue['iptype'] == 1){
                     $pl++;
                     $srcIPBlackListLabel = $doc->createElement("IP");
                     $srcIPBlackListLabel->setAttribute("address",$userPushIpExcludeResultvalue['content']);
@@ -493,8 +493,10 @@ Class Serverdata extends Model{
                             $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
                         }
 
-                       if($ruleAllDataValue['pushexcloud'] == 1 && $userPushIpExcludeResult['code'] == 0){//是否过滤
-                           $ruleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['pushexcloud']);
+                       if($userPushIpExcludeResult['code'] == 0){//是否过滤
+                           if($ruleAllDataValue['childpushexcloud'] == 1){
+                               $ruleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['childpushexcloud']);
+                           }
                        }
 
                         foreach ($ieLabelArray as $key => $value){
@@ -563,8 +565,10 @@ Class Serverdata extends Model{
                         if($ruleAllDataValue['autoexclude'] != 0){
                             $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
                         }
-                        if($ruleAllDataValue['pushexcloud'] == 1 && $userPushIpExcludeResult['code'] == 0){
-                            $apkRuleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['pushexcloud']);
+                        if($userPushIpExcludeResult['code'] == 0){
+                            if($ruleAllDataValue['childpushexcloud'] == 1){
+                                $apkRuleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['childpushexcloud']);
+                            }
                         }
                         if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
                             $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
