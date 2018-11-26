@@ -67,17 +67,13 @@
             </div>
         </div>
     </div>
-    {switch name="$pushcount"}
-        {case value="1"}
-            <div class="layui-form-item">
-                <label class="layui-form-label">推送过滤</label>
-                <div class="layui-input-block product_radio">
-                    <input type="radio" name="data[pushexcloud]" value="1" title="开启" class="product_radio">
-                    <input type="radio" name="data[pushexcloud]" value="0" title="关闭" class="product_radio"  checked="">
-                </div>
-            </div>
-        {/case}
-    {/switch}
+    <div class="layui-form-item">
+        <label class="layui-form-label">推送过滤</label>
+        <div class="layui-input-block product_radio">
+            <input type="radio" name="data[pushexcloud]" value="1" title="开启" class="product_radio">
+            <input type="radio" name="data[pushexcloud]" value="0" title="关闭" class="product_radio"  checked="">
+        </div>
+    </div>
 
 
     <div class="layui-form-item">
