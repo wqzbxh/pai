@@ -699,8 +699,9 @@ Class Serverdata extends Model{
                  $data = Common::otherRequestGet($url);//发送GET请求
              }elseif ($opcode == 10){
                  $data = Common::otherRequestGet($url);//发送GET请求
+             }else{
+                 $data = Common::requestGet($url);//发送GET请求
              }
-             $data = Common::requestGet($url);//发送GET请求
              if($data = 200){//第二步向服务器ip端口发送请求成功，把服务器的200 rerun出去
                  return $data;
              }else{

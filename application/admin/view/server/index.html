@@ -286,7 +286,7 @@
                                                     });
                                                     table.reload('idTest');
                                                 }
-                                                if(mistiming > 15){
+                                                if(mistiming > 60){
                                                     window.clearInterval(c);
                                                     closeLoad(i);
                                                     return layer.msg('服务器'+id+'：开启超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
@@ -366,7 +366,7 @@
                                                         layer.msg(data.data);
                                                     }
 
-                                                    if(mistiming > 15){
+                                                    if(mistiming > 60){
                                                         window.clearInterval(c);
                                                         closeLoad(i);
                                                         return layer.msg('服务器'+id+'：命令生成超时...', {icon: 0,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: 'auto', time:2000});
