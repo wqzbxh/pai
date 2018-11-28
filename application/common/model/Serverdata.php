@@ -458,11 +458,15 @@ Class Serverdata extends Model{
 
                        $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                        $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
+                       if(!empty($ruleAllDataValue['childrule_inreferer'])){
+                           $ieLabelArray['RefererCombine']  =  $ruleAllDataValue['referermatch'];
+                       }
                        $ieLabelArray = array_filter($ieLabelArray);
                        if($ruleAllDataValue['childrule_process_mode'] != 0){
                            $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];
                            $ieLabelArray['CollectTime'] = $ruleAllDataValue['childrule_collect_time'];//采集时间
                        }
+
                         $ruleLabel = $doc ->createElement('Rule');
                         $ruleLabel->setAttribute("id",$ruleAllDataValue['childruleid']);
                         $ruleLabel->setAttribute("productid",$ruleAllDataValue['productid']);
@@ -483,6 +487,7 @@ Class Serverdata extends Model{
                                 $ieLabelArray['DstHost'] = $ruleAllDataValue['model_childrule_push_content'];//来源排除字段
                             }
                         }
+
                         $ruleLabel->setAttribute("match",$ruleAllDataValue['childrule_match']);
                         $ruleLabel->setAttribute("ratio",$ruleAllDataValue['binding_childrule_ratio']);
                         $ruleLabel->setAttribute("combine",$ruleAllDataValue['childrule_match_type']);
@@ -529,6 +534,9 @@ Class Serverdata extends Model{
 
                         $ieLabelArray['ReferInclude'] = $ruleAllDataValue['childrule_inreferer'];//来源包含字段
                         $ieLabelArray['ReferExclude'] = $ruleAllDataValue['childrule_exreferer'];//来源排除字段
+                        if(!empty($ruleAllDataValue['childrule_inreferer'])){
+                            $ieLabelArray['RefererCombine']  =  $ruleAllDataValue['referermatch'];
+                        }
                         $ieLabelArray = array_filter($ieLabelArray);
                         if($ruleAllDataValue['childrule_process_mode'] != 0){
                             $ieLabelArray['ProcessMode'] = $ruleAllDataValue['childrule_process_mode'];

@@ -138,6 +138,11 @@
         <div class="layui-input-block">
             <input type="text" name="data[childrule_inreferer]"  value="{$childrule['childrule_inreferer']}"  autocomplete="off" placeholder="请输入referer 包含" class="layui-input inputWidth">
         </div>
+        <div class="layui-input-block gensui" id="referermatch" >
+            <input type="radio" name="data[referermatch]" value="1" title="与" >
+            <input type="radio" name="data[referermatch]" value="2" title="或" checked="checked" >
+            <input type="radio" name="data[referermatch]" value="3" title="顺序和" >
+        </div>
     </div>
 
     <div class="layui-form-item">
@@ -297,6 +302,8 @@
         $("#childrule_process_mode").find("input[value='{$childrule["childrule_process_mode"]}']").prop("checked",true);
         $("#childrule_type").find("input[value='{$childrule["childrule_type"]}']").prop("checked",true);
         $("#autoexclude").find("input[value='{$childrule["autoexclude"]}']").prop("checked",true);
+        $("#referermatch").find("input[value='{$childrule["referermatch"]}']").prop("checked",true);
+
         form.render();
     });
 
