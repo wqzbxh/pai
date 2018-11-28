@@ -13,10 +13,11 @@
     </div>
     <thead>
     <tr>
-        <th lay-data="{field:'id', width:180}">规则ID</th>
+        <th lay-data="{field:'id', width:100}">规则ID</th>
         <th lay-data="{field:'rule_name', width:180}">规则名称</th>
         <th lay-data="{field:'product_type', width:70,templet: '#titleTpl'}">类型</th>
         <th lay-data="{field:'rule_status', width:70,templet: '#rule_status'}">状态</th>
+        <th lay-data="{field:'order', width:70, edit: 'number'}">排序</th>
         <th lay-data="{field:'rule_host', width:180}">域名</th>
         <th lay-data="{field:'rule_exhost', width:180}">HOST排除</th>
         <th lay-data="{field:'rule_exuri', width:180}">URI排除</th>
@@ -59,6 +60,27 @@
         //监听表格复选框选择
         table.on('checkbox(demo)', function(obj){
             console.log(obj)
+        });
+        table.on('edit(demo)', function(obj){
+            var  data = [];
+            var value = obj.value //得到修改后的值
+                ,field = obj.field; //得到字段
+
+            layui.use('jquery',function(){
+                    var $=layui.$;
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('rule/editAction')}", // ajax请求路径
+                        data: {data: obj.data},
+                        success: function(data){
+                            if(data.code==0){
+                                layer.msg('修改成功！');
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                });
         });
         //监听工具条
         table.on('tool(demo)', function(obj){

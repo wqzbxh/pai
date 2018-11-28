@@ -237,6 +237,7 @@ Class Serverchildruledata extends Model{
                 ->join('ruledata r','r.id = scr.rule_id','LEFT')
                 ->join('childruledata c','c.id = scr.child_rule_id','LEFT')
                 ->join('serverruledata sr','sr.rule_id = scr.rule_id and sr.serverid = scr.serverid','LEFT')
+                ->order('r.order desc')
                 ->where($where)
                 ->field(self::XMLFILED)
                 ->select()

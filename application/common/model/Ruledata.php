@@ -39,6 +39,7 @@ class Ruledata extends Model
                 ->join('productdata p','r.productid = p.id',"LEFT" )
                 ->where($criteria)
                 ->where('rule_name','like','%'.$rule_name.'%')
+                ->order('r.order desc')
                 ->field(self::jionField)
                 ->limit($offset,$limit)
                 ->select()
@@ -47,12 +48,14 @@ class Ruledata extends Model
             $count = self::alias('r')
                 ->join('productdata p','r.productid = p.id',"LEFT" )
                 ->where('rule_name','like','%'.$rule_name.'%')
+                ->order('r.order desc')
                 ->where($criteria)
                 ->count();
         }else{
             $result = self::alias('r')
                 ->join('productdata p','r.productid = p.id',"LEFT" )
                 ->where($criteria)
+                ->order('r.order desc')
                 ->field(self::jionField)
                 ->limit($offset,$limit)
                 ->select()
@@ -60,7 +63,7 @@ class Ruledata extends Model
 
             $count = self::alias('r')
                 ->join('productdata p','r.productid = p.id',"LEFT" )
-                ->where($criteria)
+                ->where($criteria)->order('r.order desc')
                 ->count();
         }
 

@@ -142,6 +142,9 @@ class Rule extends  Common{
     {
         $errorModel = new \app\common\model\Error();
         if(!empty($_POST['data'])){
+            if(isset($_POST['data']['product_type'])){
+                unset($_POST['data']['product_type']);
+            }
             $ruleDataDataModel = new \app\common\model\Ruledata();
             $result = $ruleDataDataModel->updateRule($_POST['data']);
         }else{
