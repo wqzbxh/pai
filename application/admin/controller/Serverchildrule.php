@@ -80,10 +80,9 @@ Class Serverchildrule extends  Common{
     public function updateServerChildRule()
     {
         $returnArray = array();
-
         $errorModel = new \app\common\model\Error();
         if($_POST['childrule_push_content']){
-            $data['childrule_push_content'] = $_POST['childrule_push_content'];
+            $data["childrule_push_content"] = $_POST['childrule_push_content'];
         }else{
             $data['childrule_push_content'] = '';
         }
@@ -105,6 +104,9 @@ Class Serverchildrule extends  Common{
         }
         if(isset($_POST['childpushexcloud'])){
             $data['childpushexcloud'] = $_POST['childpushexcloud'];
+        }
+        if(isset($_POST['childuserpushtimepolicy'])){
+            $data['childuserpushtimepolicy'] = $_POST['childuserpushtimepolicy'];
         }
 
         if($_POST['spid']){
@@ -158,12 +160,21 @@ Class Serverchildrule extends  Common{
             }
 
             $chidruleResult = $chidruleDataModel->getChildruleOne($_POST['id']);
+            $PushpolicyModel =new \app\common\model\Pushpolicy();
+            $tactics = $PushpolicyModel->getListONe(array('seq'=>$chidruleResult['data'][0]['userpushtimepolicy']));
+            if($tactics['code'] == 0){
+                $PushpolicyResult = $tactics['data'][0]['name'];
+            }else{
+                $PushpolicyResult = '模板没有定义策略组';
+            }
+
             $returnArray = [
                 'code' => 0,
                 'msg' => Error::ERRORCODE[0],
                 'data' => [
                     'chidruleResult' => $chidruleResult['data'][0],
-                    'chidruleRelations' => $resultData
+                    'chidruleRelations' => $resultData,
+                    'chidrulePushpolicy' => $PushpolicyResult
                 ],
             ];
 

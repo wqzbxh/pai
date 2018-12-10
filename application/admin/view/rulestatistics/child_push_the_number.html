@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('productstatistics/productpushthenumber')}?serverid={$serverid}&&time={$time}">产品统计</a>&nbsp>&nbsp规则统计
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理({$server['servername']})</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('productstatistics/productpushthenumber')}?serverid={$serverid}&&time={$time}">产品统计</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('rulestatistics/rulePushTheNumber')}?serverid={$serverid}&&time={$time}&&id={$productid}">规则展示</a>&nbsp>&nbsp规则统计
     <!--<span class="back xhx"></span>-->
 </blockquote>
 <div class="layui-inline">
@@ -25,8 +25,8 @@
     <thead>
     <tr>
 
-        <th lay-data="{field:'time', width:280,templet:'#Time'}">日期</th>
-        <th lay-data="{field:'rule_name', width:280,templet:'#name'}">产品名称</th>
+        <th lay-data="{field:'time', width:280,sort: true,templet:'#Time'}">日期</th>
+        <th lay-data="{field:'childrule_name', width:280,templet:'#name'}">子规则名称</th>
         <th lay-data="{field:'rulehitcount', width:280,templet:'#preciseVmax'}">产品推送数</th>
     </tr>
     </thead>
@@ -38,7 +38,7 @@
 </script>
 
 <script type="text/html" id="name">
-    {{ d.rule_name }}
+    {{ d.childrule_name }}
 </script>
 
 <script type="text/html" id="Time">

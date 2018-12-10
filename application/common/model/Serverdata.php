@@ -494,9 +494,18 @@ Class Serverdata extends Model{
                        if($ruleAllDataValue['autoexclude'] != 0){
                            $ruleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
                        }
-                        if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
-                            $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                       if($ruleAllDataValue['iospolicy'] != 0){
+                           $ruleLabel->setAttribute("IosPolicy",$ruleAllDataValue['iospolicy']);
+                       }
+
+                        if(!empty($ruleAllDataValue['childuserpushtimepolicy']) && $ruleAllDataValue['childuserpushtimepolicy'] != 0){
+                            $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['childuserpushtimepolicy']);
+                        }else{
+                            if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                                $ruleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                            }
                         }
+
 
                        if($userPushIpExcludeResult['code'] == 0){//是否过滤
                            if($ruleAllDataValue['childpushexcloud'] == 1){
@@ -573,13 +582,20 @@ Class Serverdata extends Model{
                         if($ruleAllDataValue['autoexclude'] != 0){
                             $apkRuleLabel->setAttribute("AutoExclude",$ruleAllDataValue['autoexclude']);
                         }
+                        if($ruleAllDataValue['iospolicy'] != 0){
+                            $apkRuleLabel->setAttribute("IosPolicy",$ruleAllDataValue['iospolicy']);
+                        }
                         if($userPushIpExcludeResult['code'] == 0){
                             if($ruleAllDataValue['childpushexcloud'] == 1){
                                 $apkRuleLabel->setAttribute("PushIpExcludeFlag",$ruleAllDataValue['childpushexcloud']);
                             }
                         }
-                        if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
-                            $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                        if(!empty($ruleAllDataValue['childuserpushtimepolicy']) && $ruleAllDataValue['childuserpushtimepolicy'] != 0){
+                            $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['childuserpushtimepolicy']);
+                        }else{
+                            if(!empty($ruleAllDataValue['userpushtimepolicy']) && $ruleAllDataValue['userpushtimepolicy'] != 0){
+                                $apkRuleLabel->setAttribute("UserPushTimePolicy",$ruleAllDataValue['userpushtimepolicy']);
+                            }
                         }
                         if($ruleAllDataValue['match_type'] == 0){//APK类型 $iexe++;
                             if($iApk < 1){

@@ -159,7 +159,7 @@
                                         if(data.data.chidruleRelations.binding_childrule_host == null || data.data.chidruleRelations.binding_childrule_host == undefined ){
                                             data.data.chidruleRelations.binding_childrule_host = '';
                                         }
-                                        console.log(data.data)
+
                                         layer.open({
                                             type: 1 //Page层类型
                                             ,btn:["确定","取消"]
@@ -168,6 +168,15 @@
                                             ,area:['730px','500px;']
                                             ,content: "<form><div class='layui-form'><div class='opendiv'>渠道号：</div><input type='text' name='childrule_exuri' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.childrule_exuri+"' placeholder='渠道号'>" +
                                                 "<div class='opendiv'>HOST排除：</div><input type='text' name='binding_childrule_host' class='layui-layer-input openinput' value='"+data.data.chidruleRelations.binding_childrule_host+"' placeholder='HOST排除'>   " +
+                                                "<div class='opendiv'>推送策略：&nbsp&nbsp&nbsp(模板："+data.data.chidrulePushpolicy+")</div>" +
+                                                " <div class=\"layui-input-inline\">\n" +
+                                                "                <select name='childuserpushtimepolicy'  class=\"selectWidth\" id=\"childuserpushtimepolicy\">\n" +
+                                                "                    <option value=\"0\">————请选择————</option>\n" +
+                                                "                    {volist name='tactics' id='vo'}" +
+                                                "                    <option value='{$vo.seq}'>{$vo.name}</option>" +
+                                                "                    {/volist}" +
+                                                "                </select>" +
+                                                " </div>"+
                                                 "<div class='opendiv'>权重比例：</div>" +
                                                 "<div class='' id='tpisshow'>\n" +
                                                 "        <div class='layui-inline'>\n" +
@@ -201,6 +210,7 @@
                                                 var binding_childrule_host= $(layero).find("input[name='binding_childrule_host']").val();
                                                 var childrule_push_content = $(layero).find("textarea").val()
                                                 var binding_childrule_ratio = $("#selected").find("option:selected").val();
+                                                var childuserpushtimepolicy = $("#childuserpushtimepolicy").find("option:selected").val();
                                                 var childpushexcloud =  $('#pushexcloud input[name="childpushexcloud"]:checked ').val()
                                                 form.on('select', function(data){
                                                     console.log(data); //得到被选中的值]
@@ -218,6 +228,7 @@
                                                             "childpushexcloud":childpushexcloud,
                                                             "binding_childrule_ratio" :binding_childrule_ratio,
                                                             "childrule_exuri" : childrule_exuri,
+                                                            "childuserpushtimepolicy" :childuserpushtimepolicy,
                                                             "spid" : spid
                                                         },
                                                         success: function(data){
@@ -236,6 +247,9 @@
                                                 });
                                             }
                                         });
+                                        console.log(data.data.chidruleResult.userpushtimepolicy);
+
+                                        $("#childuserpushtimepolicy").find("option[value="+ data.data.chidruleRelations.childuserpushtimepolicy+"]").prop("selected",true);
                                         $("#pushexcloud").find("input[value="+data.data.chidruleRelations.childpushexcloud+"]").prop("checked",true);
                                         $("#selected").find("option[value="+data.data.chidruleRelations.binding_childrule_ratio+"]").prop("selected",true);
 

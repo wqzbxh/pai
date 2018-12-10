@@ -24,7 +24,7 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">状态</label>
+        <label class="layui-form-label">规则类型</label>
         <div class="layui-input-block product_radio" id="childrule_type">
             <input type="radio" name="data[childrule_type]" value="1" title="html" class="product_radio">
             <input type="radio" name="data[childrule_type]" value="2" title="js" class="product_radio">
@@ -68,6 +68,15 @@
                     {/volist}
                 </select>
             </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">IOS策略</label>
+        <div class="layui-input-block" id="iospolicy">
+            <input type="radio" name="data[iospolicy]" value="1" title="开启" class="product_radio">
+            <input type="radio" name="data[iospolicy]" value="0" title="关闭" class="product_radio"  checked="">
         </div>
     </div>
 
@@ -303,6 +312,7 @@
         $("#childrule_type").find("input[value='{$childrule["childrule_type"]}']").prop("checked",true);
         $("#autoexclude").find("input[value='{$childrule["autoexclude"]}']").prop("checked",true);
         $("#referermatch").find("input[value='{$childrule["referermatch"]}']").prop("checked",true);
+        $("#iospolicy").find("input[value='{$childrule["iospolicy"]}']").prop("checked",true);
 
         form.render();
     });

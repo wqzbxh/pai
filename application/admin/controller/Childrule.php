@@ -32,6 +32,7 @@ class Childrule extends  Common{
     public function index()
     {
         if(!empty($_GET['id'])){
+
             $ruleDataModel = new \app\common\model\Ruledata();
             $result = $ruleDataModel->getRuleOne($_GET['id']);
             if($result['code'] == 0 ){
@@ -201,6 +202,8 @@ class Childrule extends  Common{
     public function binding()
     {
         if(!empty($_GET['serverid']) && !empty($_GET['rule_id']) && !empty($_GET['product_id'])){
+            $tactics = \app\common\model\Pushpolicy::getTactics('','seq,name',0,0);
+            $this->assign('tactics',$tactics['data']);
             $this->assign('rule_id',$_GET['rule_id']);
             $this->assign('serverid',$_GET['serverid']);
             $this->assign('product_id',$_GET['product_id']);

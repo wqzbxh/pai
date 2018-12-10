@@ -1,6 +1,6 @@
 {include file='layout/header'}
 <blockquote class="layui-elem-quote layui-text">
-    <a class="xhx AA094" href="{:url('server/index')}">服务器管理</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示</a>&nbsp>&nbsp产品统计
+    <a class="xhx AA094" href="{:url('server/index')}">服务器管理({$server['servername']})</a>&nbsp>&nbsp<a class="xhx AA094" href="{:url('serverstatistics/flow')}?serverid={$serverid}">流量展示示</a>&nbsp>&nbsp产品统计
     <!--<span class="back xhx"></span>-->
 </blockquote>
 <div class="layui-btn-group demoTable">
@@ -149,7 +149,7 @@
                                     name:'时间',
                                     nameRotate:50,
                                     type : 'category',
-                                    boundaryGap : false,
+                                    boundaryGap : true,
                                     data : sdata,
                                     axisLabel:{
                                         interval:0,//横轴信息全部显示
@@ -168,7 +168,7 @@
                             series : [
                                 {
                                     name:'',
-                                    type:'line',
+                                    type:'bar',
                                     symbol:'none',
                                     data:xdata
                                 }

@@ -27,6 +27,9 @@ Class Rulestatistics extends Common{
         if(!empty($_GET['serverid']) && !empty($_GET['time']) && !empty($_GET['id'])){
             $productid = $_GET['id'];
             $serverid = $_GET['serverid'];
+            $serverDataModel = new \app\common\model\Serverdata();
+            $result = $serverDataModel->getServerOne($_GET['serverid']);
+            $this->assign('server',$result['data'][0]);
             $time = $_GET['time'];
             $this->assign('productid',$productid);
             $this->assign('serverid',$serverid);
@@ -45,6 +48,9 @@ Class Rulestatistics extends Common{
             $productid = $_GET['productid'];
             $serverid = $_GET['serverid'];
             $topruleid = $_GET['topruleid'];
+            $serverDataModel = new \app\common\model\Serverdata();
+            $result = $serverDataModel->getServerOne($_GET['serverid']);
+            $this->assign('server',$result['data'][0]);
             $time = $_GET['time'];
             $this->assign('productid',$productid);
             $this->assign('serverid',$serverid);

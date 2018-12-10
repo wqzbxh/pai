@@ -26,6 +26,9 @@ Class Productstatistics extends Common{
     {
         if(!empty($_GET['serverid']) && !empty($_GET['time'])){
             $serverid = $_GET['serverid'];
+            $serverDataModel = new \app\common\model\Serverdata();
+            $result = $serverDataModel->getServerOne($_GET['serverid']);
+            $this->assign('server',$result['data'][0]);
             $time = $_GET['time'];
             $this->assign('serverid',$serverid);
             $this->assign('time',$time);
